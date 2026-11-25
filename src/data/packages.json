@@ -13,7 +13,8 @@
       "includes": [
         "20 hrs online learning",
         "10 hrs home-link",
-        "10 hrs in-car training"
+        "10 hrs private in-car training",
+        "MTO-reported completion"
       ],
       "featured": false,
       "listLabel": "BDE Course",
@@ -28,7 +29,7 @@
       "ribbon": "MOST POPULAR",
       "includes": [
         "Full BDE course",
-        "Car for your road test",
+        "Our car for your road test",
         "Warm-up before the test"
       ],
       "featured": true,
@@ -45,7 +46,7 @@
       "includes": [
         "Full BDE course",
         "+2 hr practice lesson",
-        "Car for your road test"
+        "Our car for your road test"
       ],
       "featured": false,
       "listLabel": "BDE Ultimate",

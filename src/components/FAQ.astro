@@ -2,43 +2,56 @@
 // FAQ accordion. Uses native <details>: keyboard-accessible out of the box, and the shared
 // `name` makes it exclusive (opening one closes the others) with no JavaScript. Older browsers
 // that ignore `name` simply allow several open at once.
-// Questions come from faq.json; copy and layout from docs/mockup/Main.dc.html (#faq).
+// Questions come from faq.json; copy and layout from docs/mockup/Main.dc.html (#faq) and
+// docs/mockup/BDE.dc.html ("Good to know", on a cream band with an eyebrow).
 import faq from '../data/faq.json';
 
 interface Props {
-  /** Key in faq.json, so other pages (e.g. BDE) can show their own set. */
+  /** Key in faq.json, so each page can show its own set. */
   set?: keyof typeof faq;
   title?: string;
+  eyebrow?: string;
+  /** Cream section band with borders (BDE page). */
+  tinted?: boolean;
 }
-const { set = 'home', title = 'Questions, answered' } = Astro.props;
+const { set = 'home', title = 'Questions, answered', eyebrow, tinted = false } = Astro.props;
 const items = faq[set];
 const group = `faq-${set}`;
 ---
 
-<section id="faq" aria-labelledby={`${group}-title`} class="mx-auto max-w-[860px] scroll-mt-24 px-4 py-16 sm:px-6 sm:py-[88px]">
-  <h2 id={`${group}-title`} class="reveal mb-7 text-center text-[2rem] font-extrabold tracking-[-0.01em] sm:text-[40px]">
-    {title}
-  </h2>
+<section
+  id="faq"
+  aria-labelledby={`${group}-title`}
+  class:list={['scroll-mt-24', tinted && 'border-y border-border bg-section']}
+>
+  <div class="mx-auto max-w-[860px] px-4 py-16 sm:px-6 sm:py-[88px]">
+    <div class:list={['reveal text-center', eyebrow ? 'mb-10' : 'mb-7']}>
+      {eyebrow && <p class="mb-2.5 text-[13px] font-bold tracking-[0.14em] text-accent-text">{eyebrow}</p>}
+      <h2 id={`${group}-title`} class="text-[2rem] font-extrabold leading-[1.1] tracking-[-0.01em] sm:text-[40px]">
+        {title}
+      </h2>
+    </div>
 
-  <div class="flex flex-col gap-3">
-    {items.map((item) => (
-      <details name={group} class="group rounded-2xl border border-border bg-surface-raised open:border-gold">
-        <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 rounded-2xl px-[22px] py-[18px] text-[17px] font-bold [&::-webkit-details-marker]:hidden">
-          {item.q}
-          <svg
-            class="size-5 flex-none text-accent-text transition-transform duration-200 group-open:rotate-45"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            aria-hidden="true"
-          >
-            <path d="M12 5v14M5 12h14" />
-          </svg>
-        </summary>
-        <p class="-mt-1.5 px-[22px] pb-[18px] leading-relaxed text-fg-muted">{item.a}</p>
-      </details>
-    ))}
+    <div class="flex flex-col gap-3">
+      {items.map((item) => (
+        <details name={group} class="group rounded-2xl border border-border bg-surface-raised open:border-gold">
+          <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 rounded-2xl px-[22px] py-[18px] text-[17px] font-bold [&::-webkit-details-marker]:hidden">
+            {item.q}
+            <svg
+              class="size-5 flex-none text-accent-text transition-transform duration-200 group-open:rotate-45"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+          </summary>
+          <p class="-mt-1.5 px-[22px] pb-[18px] leading-relaxed text-fg-muted">{item.a}</p>
+        </details>
+      ))}
+    </div>
   </div>
 </section>

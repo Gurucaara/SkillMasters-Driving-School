@@ -20,5 +20,23 @@
       "q": "Do you teach nervous drivers?",
       "a": "Absolutely. Our patient, supportive approach helps every student build confidence."
     }
+  ],
+  "bde": [
+    {
+      "q": "Is Skillmasters MTO-approved for BDE?",
+      "a": "Yes. Skillmasters Driving School Ltd. is an MTO-licensed BDE course provider (licence #L4H7)."
+    },
+    {
+      "q": "Can I start BDE before getting my G1?",
+      "a": "You can start online learning, but you need a valid G1 before any in-car lessons."
+    },
+    {
+      "q": "How soon can I take my G2 test?",
+      "a": "BDE graduates can take the G2 road test after 8 months with a G1, instead of 12."
+    },
+    {
+      "q": "Do I get a certificate?",
+      "a": "Yes. Eligible students who complete all parts have their completion reported according to MTO requirements."
+    }
   ]
 }

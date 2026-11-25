@@ -5,6 +5,7 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageBanner from '../components/PageBanner.astro';
 import CtaBand from '../components/CtaBand.astro';
+import TickList from '../components/TickList.astro';
 import carFront from '../assets/images/real/car-front.jpg';
 import { site } from '../data/site';
 
@@ -85,14 +86,7 @@ const mapPins = [
     <div class="reveal min-w-0 lg:flex-[1_1_420px]">
       <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">AREAS WE SERVE</p>
       <h2 id="areas-title" class="mb-[18px] mt-2.5 text-[2rem] font-extrabold sm:text-[38px]">Pickup across London &amp; area</h2>
-      <ul class="flex flex-col gap-3.5">
-        {site.areas.map((area) => (
-          <li class="flex gap-3.5">
-            <span class="flex size-7 flex-none items-center justify-center rounded-full bg-gold text-sm font-extrabold text-ink" aria-hidden="true">✓</span>
-            <p class="leading-relaxed"><strong>{area}</strong><span class="text-fg-muted"> – {site.areaPickup[area]}</span></p>
-          </li>
-        ))}
-      </ul>
+      <TickList items={site.areas.map((area) => ({ title: area, text: site.areaPickup[area] }))} />
     </div>
 
     <figure

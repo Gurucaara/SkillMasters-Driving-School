@@ -1,0 +1,22 @@
+---
+// List with gold ✓ circles: "**Title** – detail". Used on Home (Why), About (areas) and BDE.
+interface Props {
+  items: { title: string; text?: string }[];
+  class?: string;
+}
+const { items, class: className } = Astro.props;
+---
+
+<ul class:list={['flex flex-col gap-3.5', className]}>
+  {items.map((item) => (
+    <li class="flex gap-3.5">
+      <span
+        class="flex size-7 flex-none items-center justify-center rounded-full bg-gold text-sm font-extrabold text-ink"
+        aria-hidden="true">✓</span
+      >
+      <p class="leading-relaxed">
+        <strong>{item.title}</strong>{item.text && <span class="text-fg-muted"> – {item.text}</span>}
+      </p>
+    </li>
+  ))}
+</ul>

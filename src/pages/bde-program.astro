@@ -1,0 +1,144 @@
+---
+// BDE Program page: banner → licence journey (G1 → BDE → G2 → G, drawn as a road) → G1
+// requirements + what BDE includes → 3 BDE package cards → BDE FAQ → gold CTA band.
+// Copy and layout from docs/mockup/BDE.dc.html. Prices come from packages.json.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageBanner from '../components/PageBanner.astro';
+import PackageCard from '../components/PackageCard.astro';
+import TickList from '../components/TickList.astro';
+import FAQ from '../components/FAQ.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { packages } from '../data/packages';
+import { site } from '../data/site';
+
+const bdePackages = packages.filter((p) => p.id.startsWith('bde'));
+
+// Licence journey stops. `style` picks the circle look from the mockup.
+const journey = [
+  { badge: 'G1', title: 'Pass your G1', text: 'Age 16+, vision test and knowledge test at DriveTest.', style: 'outline' },
+  { badge: 'BDE', title: 'Take BDE with us', text: '40 hrs: online, home-link and in-car training.', style: 'gold' },
+  { badge: 'G2', title: 'Earlier G2 test', text: 'BDE grads can test after 8 months instead of 12.', style: 'outline' },
+  { badge: 'G', title: 'Full G licence', text: 'Highway-ready and fully licensed.', style: 'dark' },
+];
+const circle = {
+  outline: 'border-[3px] border-gold bg-surface-raised text-fg',
+  gold: 'bg-gold text-ink',
+  dark: 'bg-ink text-[#F0C45A] dark:bg-black dark:ring-2 dark:ring-gold',
+};
+
+const g1Requirements = [
+  { title: 'Age', text: 'you must be at least 16 years old' },
+  { title: 'Eye test', text: 'pass a vision test' },
+  { title: 'Knowledge test', text: 'pass the written test on road rules and signs' },
+];
+const bdeIncludes = [
+  { title: '20 hrs online learning', text: 'rules, hazards and defensive driving' },
+  { title: '10 hrs home-link', text: 'flexible activities at your pace' },
+  { title: '10 hrs in-car training', text: 'private, in our dual-brake Mazda 3' },
+  { title: 'Certificate', text: 'completion reported to the MTO' },
+];
+---
+
+<BaseLayout
+  title="BDE Program"
+  description={`MTO-approved Beginner Driver Education in London, Ontario (licence #${site.licences.bde}): 40 hours of online, home-link and in-car training, and an earlier G2 road test.`}
+>
+  <PageBanner
+    crumb="BDE Program"
+    eyebrow="MTO-APPROVED BEGINNER DRIVER EDUCATION"
+    title="Beginner Driver Education (BDE)"
+    intro="The smartest way to start driving in Ontario: real training, an earlier road test, and a certificate when you finish."
+  >
+    <div class="mt-7 flex flex-wrap gap-3">
+      <a href="#bde-packages" class="rounded-full bg-[#E6B33C] px-6 py-3.5 font-bold text-ink transition hover:-translate-y-0.5 hover:brightness-95">
+        See BDE packages
+      </a>
+      <a href="/g1-practice-test" class="rounded-full border-2 border-[#F5EFE3] px-6 py-3 font-bold text-[#F5EFE3] transition hover:bg-[#F5EFE3] hover:text-ink">
+        Try the free G1 test
+      </a>
+    </div>
+  </PageBanner>
+
+  <!-- Licence journey -->
+  <section aria-labelledby="journey-title" class="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-[88px]">
+    <div class="reveal mb-10">
+      <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">YOUR LICENCE JOURNEY</p>
+      <h2 id="journey-title" class="mt-2.5 text-[2rem] font-extrabold leading-[1.1] sm:text-[40px]">From G1 to full G, mapped out</h2>
+    </div>
+
+    <div class="reveal relative">
+      <!-- The road: horizontal behind the circles on desktop, vertical on phones -->
+      <div aria-hidden="true" class="absolute inset-x-0 top-[34px] hidden h-2 rounded-full bg-road lg:block"></div>
+      <div aria-hidden="true" class="lane-h absolute inset-x-0 top-[37px] hidden h-0.5 lg:block"></div>
+      <div aria-hidden="true" class="absolute bottom-0 left-[34px] top-0 w-2 rounded-full bg-road lg:hidden"></div>
+      <div aria-hidden="true" class="lane-v absolute bottom-0 left-[37px] top-0 w-0.5 lg:hidden"></div>
+
+      <ol class="relative grid gap-8 lg:grid-cols-4 lg:gap-5">
+        {journey.map((step) => (
+          <li class="flex gap-5 lg:block">
+            <span class:list={['flex size-[76px] flex-none items-center justify-center rounded-full font-display text-[22px] font-extrabold', circle[step.style as keyof typeof circle]]}>
+              {step.badge}
+            </span>
+            <div class="pt-3 lg:pt-0">
+              <h3 class="mb-1.5 text-lg font-extrabold lg:mt-4">{step.title}</h3>
+              <p class="leading-relaxed text-fg-muted">{step.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- G1 requirements + what BDE includes -->
+  <section class="border-y border-border bg-section">
+    <div class="mx-auto grid max-w-[1200px] gap-12 px-4 py-16 sm:px-6 sm:py-[88px] lg:grid-cols-2">
+      <div class="reveal">
+        <h2 class="mb-[18px] text-[1.75rem] font-extrabold sm:text-[32px]">Before you start: getting your G1</h2>
+        <TickList items={g1Requirements} />
+        <p class="mt-[18px] leading-relaxed text-fg-muted">You need a valid G1 before in-car lessons.</p>
+      </div>
+      <div class="reveal">
+        <h2 class="mb-[18px] text-[1.75rem] font-extrabold sm:text-[32px]">What BDE includes</h2>
+        <TickList items={bdeIncludes} />
+        <p class="mt-[18px] leading-relaxed text-fg-muted">Many insurers offer discounts to BDE graduates. Ask your insurer.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BDE packages -->
+  <section id="bde-packages" aria-labelledby="bde-packages-title" class="mx-auto max-w-[1200px] scroll-mt-24 px-4 py-16 sm:px-6 sm:py-[88px]">
+    <div class="reveal mx-auto mb-10 max-w-[680px] text-center">
+      <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">BDE PACKAGES</p>
+      <h2 id="bde-packages-title" class="my-2.5 text-[2rem] font-extrabold leading-[1.1] sm:text-[40px]">Choose your BDE package</h2>
+      <p class="text-[17px] text-fg-muted">Every package includes the full 40-hour MTO-approved course.</p>
+    </div>
+    <ul class="grid gap-x-[22px] gap-y-8 pt-3 md:grid-cols-3">
+      {bdePackages.map((pkg) => (
+        <li class="reveal"><PackageCard pkg={pkg} /></li>
+      ))}
+    </ul>
+    <p class="mt-5 text-center text-[13px] text-fg-muted">
+      Savings vs buying separately at regular prices. All prices CAD + HST.
+    </p>
+  </section>
+
+  <FAQ set="bde" eyebrow="BDE QUESTIONS" title="Good to know" tinted />
+
+  <CtaBand
+    title="Start your BDE today"
+    text="Secure your spot and pay online with Stripe."
+    buttonLabel="Buy a package"
+    href="#bde-packages"
+    secondary={{ label: 'Ask a question', href: '/contact' }}
+  />
+</BaseLayout>
+
+<style>
+  /* Dashed gold lane markings on the journey road */
+  .lane-h {
+    background: repeating-linear-gradient(90deg, #f4d27a 0 24px, transparent 24px 48px);
+  }
+  .lane-v {
+    background: repeating-linear-gradient(180deg, #f4d27a 0 24px, transparent 24px 48px);
+  }
+</style>
