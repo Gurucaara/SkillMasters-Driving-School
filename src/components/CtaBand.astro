@@ -1,0 +1,33 @@
+---
+// Gold call-to-action band that ends every page, just above the footer (docs/design-spec.md).
+// Defaults are the Home copy from docs/mockup/Main.dc.html; other pages can pass their own.
+import { cta } from '../data/site';
+
+interface Props {
+  title?: string;
+  text?: string;
+  buttonLabel?: string;
+  href?: string;
+}
+const {
+  title = 'Ready to hit the road?',
+  text = 'Book your first lesson today. Flexible scheduling, 7 days a week.',
+  buttonLabel = 'Book a lesson',
+  href = cta.href,
+} = Astro.props;
+---
+
+<section aria-labelledby="cta-title" class="bg-gold text-ink">
+  <div class="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-6 px-4 py-14 sm:px-6">
+    <div class="reveal">
+      <h2 id="cta-title" class="mb-2 text-[1.75rem] font-extrabold sm:text-4xl">{title}</h2>
+      <p class="text-[17px]">{text}</p>
+    </div>
+    <a
+      href={href}
+      class="rounded-full bg-ink px-7 py-[17px] font-bold text-[#F0C45A] transition hover:-translate-y-0.5 hover:shadow-[0_10px_24px_#00000033]"
+    >
+      {buttonLabel} <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
