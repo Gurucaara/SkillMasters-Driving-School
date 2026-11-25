@@ -1,0 +1,58 @@
+{
+  "_note": "G1 practice test questions. `answer` is the 0-based index of the correct option. `sign` draws a sign above the question: \"stop\", \"yield\" or \"\" for none. passMark = minimum correct answers for the 'Great job' message.",
+  "passMark": 5,
+  "questions": [
+    {
+      "q": "What must you do at this sign?",
+      "sign": "stop",
+      "options": [
+        "Slow down and continue if clear",
+        "Come to a complete stop, then go when safe",
+        "Stop only if other cars are coming",
+        "Honk and proceed"
+      ],
+      "answer": 1,
+      "why": "A red octagon is a STOP sign. Always come to a complete stop at the line."
+    },
+    {
+      "q": "What does this sign mean?",
+      "sign": "yield",
+      "options": ["Speed up to merge", "Stop for 3 seconds", "Let traffic with the right-of-way go first", "No entry"],
+      "answer": 2,
+      "why": "The upside-down triangle is a YIELD sign: slow down or stop and let others go first."
+    },
+    {
+      "q": "As a G1 driver, your blood alcohol level must be:",
+      "sign": "",
+      "options": ["Under 0.08", "Under 0.05", "Zero", "Under 0.02"],
+      "answer": 2,
+      "why": "G1 and G2 drivers must have a blood alcohol level of zero."
+    },
+    {
+      "q": "A school bus ahead has red lights flashing on a road with no median. You must:",
+      "sign": "",
+      "options": [
+        "Pass slowly on the left",
+        "Stop, whether you are behind it or coming toward it",
+        "Stop only if behind it",
+        "Honk to warn children"
+      ],
+      "answer": 1,
+      "why": "On roads without a median, traffic in both directions must stop."
+    },
+    {
+      "q": "Unless signs say otherwise, the speed limit in Ontario cities and towns is:",
+      "sign": "",
+      "options": ["40 km/h", "50 km/h", "60 km/h", "70 km/h"],
+      "answer": 1,
+      "why": "The default limit in cities, towns and villages is 50 km/h."
+    },
+    {
+      "q": "A G1 driver must drive with a fully licensed driver who has at least:",
+      "sign": "",
+      "options": ["1 year of experience", "2 years of experience", "4 years of experience", "10 years of experience"],
+      "answer": 2,
+      "why": "Your accompanying driver needs at least 4 years of driving experience."
+    }
+  ]
+}

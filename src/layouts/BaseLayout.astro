@@ -53,6 +53,8 @@ const ogImage = image ? new URL(image, Astro.site).href : undefined;
         let stored = null;
         try { stored = localStorage.getItem('theme'); } catch {}
         document.documentElement.classList.toggle('dark', stored === 'dark');
+        // Lets CSS tell "JavaScript is running" apart from no-JS fallbacks (e.g. the G1 quiz).
+        document.documentElement.classList.add('js');
       })();
     </script>
     <slot name="head" />

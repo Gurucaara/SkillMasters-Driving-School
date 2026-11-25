@@ -1,0 +1,281 @@
+---
+// G1 practice test: banner → quiz card (one question at a time, right/wrong feedback with the
+// reason, progress bar, score at the end) → gold CTA band. Copy and layout from
+// docs/mockup/G1Test.dc.html; questions from src/data/g1-quiz.json.
+//
+// How it works: every question and the results panel are rendered here at build time; the small
+// script below only shows one panel at a time, marks answers and keeps the score. Without
+// JavaScript all questions show in a list with a note.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageBanner from '../components/PageBanner.astro';
+import CtaBand from '../components/CtaBand.astro';
+import quiz from '../data/g1-quiz.json';
+
+const { questions, passMark } = quiz;
+const total = questions.length;
+const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+---
+
+<BaseLayout
+  title="Free G1 Practice Test"
+  description={`Free Ontario G1 practice test: ${total} quick questions on road signs and rules with instant feedback and your score. No sign-up.`}
+>
+  <PageBanner
+    crumb="G1 Practice Test"
+    eyebrow="FREE · NO SIGN-UP"
+    title="G1 practice test"
+    intro={`${total === 6 ? 'Six' : total} quick questions on Ontario road rules and signs. See how ready you are.`}
+  />
+
+  <section aria-label="Practice test" class="border-y border-border bg-section">
+    <div class="mx-auto max-w-[1200px] px-4 py-14 sm:px-6 sm:py-[88px]">
+      <div
+        data-quiz
+        data-pass={passMark}
+        class="mx-auto max-w-[760px] rounded-[26px] border border-border bg-surface-raised p-6 shadow-[0_20px_50px_#00000014] sm:p-9"
+      >
+        <!-- Progress -->
+        <div data-progress-wrap>
+          <div class="mb-2.5 flex justify-between text-sm text-fg-muted">
+            <span data-progress-label aria-live="polite">Question 1 of {total}</span>
+            <span>Ontario G1</span>
+          </div>
+          <div
+            role="progressbar"
+            aria-label="Test progress"
+            aria-valuemin="0"
+            aria-valuemax={total}
+            aria-valuenow="0"
+            data-progress
+            class="mb-7 h-2 overflow-hidden rounded-full bg-section"
+          >
+            <div data-progress-fill class="h-full w-0 rounded-full bg-gold transition-[width] duration-300"></div>
+          </div>
+        </div>
+
+        <noscript>
+          <p class="mb-6 rounded-xl bg-section p-4 text-sm">Turn on JavaScript to answer and see your score. All questions are listed below.</p>
+        </noscript>
+
+        {questions.map((q, i) => (
+          <fieldset data-question={i} data-answer={q.answer} class="q-panel">
+            {q.sign === 'stop' && (
+              <svg role="img" aria-label="Red octagon sign with the word STOP" width="120" height="120" viewBox="0 0 100 100" class="mx-auto mb-[18px] block">
+                <polygon points="30,2 70,2 98,30 98,70 70,98 30,98 2,70 2,30" fill="#C81E1E" stroke="#FFFFFF" stroke-width="4" />
+                <text x="50" y="60" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="800" font-size="26" fill="#FFFFFF">STOP</text>
+              </svg>
+            )}
+            {q.sign === 'yield' && (
+              <svg role="img" aria-label="Upside-down triangle sign with a red border" width="130" height="116" viewBox="0 0 120 106" class="mx-auto mb-[18px] block">
+                <polygon points="4,4 116,4 60,102" fill="#FFFFFF" stroke="#C81E1E" stroke-width="10" stroke-linejoin="round" />
+              </svg>
+            )}
+            <legend class="contents">
+              <h2 tabindex="-1" class="mb-5 text-center text-[1.4rem] font-extrabold leading-[1.3] outline-none sm:text-[26px]">
+                <span class="sr-only">Question {i + 1} of {total}: </span>{q.q}
+              </h2>
+            </legend>
+            <div class="flex flex-col gap-2.5">
+              {q.options.map((opt, k) => (
+                <button type="button" data-option={k} class="option">
+                  <span class="option-letter" aria-hidden="true">{letters[k]}</span>
+                  <span class="flex-1">{opt}</span>
+                  <span class="option-mark" aria-hidden="true"></span>
+                </button>
+              ))}
+            </div>
+            <div data-feedback hidden class="mt-5 rounded-[14px] bg-section px-[18px] py-4 leading-relaxed" role="status">
+              <strong data-verdict></strong> {q.why}
+            </div>
+            <button
+              type="button"
+              data-next
+              hidden
+              class="mt-[18px] rounded-full bg-gold px-[26px] py-[15px] font-bold text-ink transition hover:-translate-y-0.5 hover:brightness-95"
+            >
+              {i === total - 1 ? 'See my score' : 'Next question'} <span aria-hidden="true">→</span>
+            </button>
+          </fieldset>
+        ))}
+
+        <!-- Results -->
+        <div data-results hidden class="text-center">
+          <p class="text-[13px] font-extrabold tracking-[0.14em] text-accent-text">YOUR SCORE</p>
+          <h2 tabindex="-1" data-score class="my-2 font-display text-7xl font-extrabold outline-none">0 / {total}</h2>
+          <p data-score-verdict class="mb-6 text-lg text-fg-soft"></p>
+          <div class="flex flex-wrap justify-center gap-3">
+            <a href="/bde-program" class="rounded-full bg-gold px-[26px] py-[15px] font-bold text-ink transition hover:-translate-y-0.5 hover:brightness-95">
+              Explore BDE <span aria-hidden="true">→</span>
+            </a>
+            <button type="button" data-restart class="rounded-full border-2 border-fg px-6 py-[13px] font-bold text-fg transition hover:bg-fg hover:text-surface-raised">
+              Retake test
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-5 text-center text-[13px] text-fg-muted">
+        Practice only. Study the official MTO Driver’s Handbook for your real test.
+      </p>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Ready for the real thing?"
+    text="Our MTO-approved BDE course covers every rule and sign, plus real driving."
+    buttonLabel="See BDE packages"
+    href="/bde-program#bde-packages"
+    secondary={{ label: 'Ask a question', href: '/contact' }}
+  />
+</BaseLayout>
+
+<style>
+  /* With JavaScript, only the current question shows (the script sets data-active). */
+  :global(.js) .q-panel:not([data-active]) {
+    display: none;
+  }
+  .q-panel + .q-panel {
+    margin-top: 2.5rem;
+  }
+  :global(.js) .q-panel + .q-panel {
+    margin-top: 0;
+  }
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    min-height: 54px;
+    padding: 0.75rem 1.125rem;
+    border-radius: 14px;
+    border: 2px solid var(--border);
+    background: var(--surface-raised);
+    color: var(--fg);
+    font-size: 1rem;
+    text-align: left;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .option:not(:disabled):hover {
+    border-color: var(--color-gold);
+    transform: translateY(-2px);
+  }
+  .option-letter {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    background: var(--section);
+    font-size: 0.8125rem;
+    font-weight: 800;
+  }
+  .option-mark {
+    font-weight: 800;
+  }
+  .option[data-state='correct'] {
+    border-color: #0b7a45;
+    background: #0b7a4514;
+  }
+  .option[data-state='correct'] .option-mark::after {
+    content: '✓';
+    color: var(--good);
+  }
+  .option[data-state='wrong'] {
+    border-color: #c81e1e;
+    background: #c81e1e14;
+  }
+  .option[data-state='wrong'] .option-mark::after {
+    content: '✗';
+    color: #c81e1e;
+  }
+  .option:disabled {
+    cursor: default;
+  }
+  [data-verdict][data-ok='true'] {
+    color: var(--good);
+  }
+  [data-verdict][data-ok='false'] {
+    color: #c81e1e;
+  }
+  :global(.dark) [data-verdict][data-ok='false'],
+  :global(.dark) .option[data-state='wrong'] .option-mark::after {
+    color: #ff7b7b;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-quiz]').forEach((root) => {
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-question]')];
+    const results = root.querySelector<HTMLElement>('[data-results]')!;
+    const progressWrap = root.querySelector<HTMLElement>('[data-progress-wrap]')!;
+    const bar = root.querySelector<HTMLElement>('[data-progress]')!;
+    const fill = root.querySelector<HTMLElement>('[data-progress-fill]')!;
+    const label = root.querySelector<HTMLElement>('[data-progress-label]')!;
+    const total = panels.length;
+    const passMark = Number(root.dataset.pass);
+    let current = 0;
+    let score = 0;
+
+    function show(index: number, moveFocus: boolean) {
+      current = index;
+      const done = index >= total;
+      panels.forEach((p, i) => p.toggleAttribute('data-active', i === index));
+      results.hidden = !done;
+      progressWrap.hidden = done;
+      fill.style.width = `${Math.round((Math.min(index, total) / total) * 100)}%`;
+      bar.setAttribute('aria-valuenow', String(Math.min(index, total)));
+      if (!done) label.textContent = `Question ${index + 1} of ${total}`;
+
+      if (done) {
+        results.querySelector('[data-score]')!.textContent = `${score} / ${total}`;
+        results.querySelector('[data-score-verdict]')!.textContent =
+          score >= passMark ? 'Great job! You know your basics.' : 'Keep practising. Our BDE course covers all of this.';
+      }
+      if (moveFocus) (done ? results : panels[index]).querySelector<HTMLElement>('h2')?.focus();
+    }
+
+    function reset() {
+      score = 0;
+      panels.forEach((p) => {
+        p.querySelectorAll<HTMLButtonElement>('[data-option]').forEach((b) => {
+          b.disabled = false;
+          b.removeAttribute('data-state');
+        });
+        p.querySelector<HTMLElement>('[data-feedback]')!.hidden = true;
+        p.querySelector<HTMLElement>('[data-next]')!.hidden = true;
+      });
+    }
+
+    root.addEventListener('click', (e) => {
+      const target = e.target as Element;
+      const option = target.closest<HTMLButtonElement>('[data-option]');
+      if (option && !option.disabled) {
+        const panel = option.closest<HTMLElement>('[data-question]')!;
+        const answer = Number(panel.dataset.answer);
+        const picked = Number(option.dataset.option);
+        const ok = picked === answer;
+        if (ok) score++;
+        panel.querySelectorAll<HTMLButtonElement>('[data-option]').forEach((b) => {
+          b.disabled = true;
+          const k = Number(b.dataset.option);
+          if (k === answer) b.dataset.state = 'correct';
+          else if (k === picked) b.dataset.state = 'wrong';
+        });
+        const verdict = panel.querySelector<HTMLElement>('[data-verdict]')!;
+        verdict.textContent = ok ? 'Correct!' : 'Not quite.';
+        verdict.dataset.ok = String(ok);
+        panel.querySelector<HTMLElement>('[data-feedback]')!.hidden = false;
+        const next = panel.querySelector<HTMLButtonElement>('[data-next]')!;
+        next.hidden = false;
+        next.focus();
+      } else if (target.closest('[data-next]')) {
+        show(current + 1, true);
+      } else if (target.closest('[data-restart]')) {
+        reset();
+        show(0, true);
+      }
+    });
+
+    show(0, false);
+  });
+</script>
