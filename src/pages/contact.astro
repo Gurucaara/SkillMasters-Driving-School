@@ -1,0 +1,347 @@
+---
+// Contact page: banner with live Open/Closed badge → 4 quick actions → message form + quick
+// answers → social links and photo grid → gold CTA band. Copy and layout from
+// docs/mockup/Contact.dc.html. Contact details from site.ts, prices from packages.json.
+//
+// The form posts JSON to /api/contact. Until that endpoint exists (or if sending fails), the
+// visitor sees a message with the phone, WhatsApp and email so nothing is silently lost.
+// Privacy: never ask for licence numbers, date of birth or other BDE student details here.
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageBanner from '../components/PageBanner.astro';
+import CtaBand from '../components/CtaBand.astro';
+import student1 from '../assets/images/real/student-1.jpg';
+import student2 from '../assets/images/real/student-2.jpg';
+import student3 from '../assets/images/real/student-3.jpg';
+import carFront from '../assets/images/real/car-front.jpg';
+import { site, cta } from '../data/site';
+import { getPackage, money } from '../data/packages';
+import reviews from '../data/reviews.json';
+
+const bde = getPackage('bde');
+const perHour = money(getPackage('lessons-10').price / 10);
+const googleUrl = reviews.rating.googleReviewUrl;
+
+const topics = ['BDE program', 'G2 lessons', 'G lessons', 'Road test car', 'Pricing', 'Something else'];
+const contactMethods = ['WhatsApp', 'Text', 'Phone call', 'Email'];
+
+const icon = {
+  phone: 'M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2',
+  chat: 'M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.4A9 9 0 1 1 21 12z',
+  mail: 'M3 7l9 6 9-6M5 5h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z',
+  calendar: 'M3 10h18M8 3v4M16 3v4M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z',
+};
+const actions = [
+  { title: 'Call or text', text: site.phone.display, href: site.phone.href, icon: icon.phone },
+  { title: 'WhatsApp', text: 'Fastest reply', href: site.whatsapp, icon: icon.chat, external: true },
+  { title: 'Email', text: site.email, href: `mailto:${site.email}`, icon: icon.mail },
+  { title: 'Book online', text: 'Pay securely with Stripe', href: cta.href, icon: icon.calendar },
+];
+
+const quickAnswers = [
+  { q: 'Prices?', a: `BDE from ${money(bde.price)}, lessons from ${perHour}/hr.`, link: { label: 'See all', href: '/pricing' } },
+  { q: 'Need a G1 first?', a: 'Yes, for in-car lessons.' },
+  { q: 'Where do lessons start?', a: 'We pick you up. No office visits.' },
+  { q: 'Hours?', a: `${site.hours.replace(', 7 days', '')}, 7 days a week.` },
+];
+
+const socials = [
+  { name: 'Instagram', text: '@skillmastersdrivingschool', cta: 'Follow', href: site.socials.instagram },
+  { name: 'Facebook', text: 'Skillmasters Driving School', cta: 'Like', href: site.socials.facebook },
+  ...(googleUrl ? [{ name: 'Google', text: 'Read or leave a review', cta: 'Review', href: googleUrl }] : []),
+];
+const photos = [
+  { src: student2, alt: 'A Skillmasters student beside the training car' },
+  { src: student1, alt: 'A smiling Skillmasters student with the Mazda 3' },
+  { src: student3, alt: 'A Skillmasters student in front of the car with its lion roof sign' },
+  { src: carFront, alt: 'The Skillmasters Mazda 3 training car' },
+];
+
+const field =
+  'mt-1.5 block w-full rounded-xl border border-border bg-surface-raised px-3.5 py-3 text-base text-fg placeholder:text-fg-muted focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/40 [&:user-invalid]:border-[#C81E1E]';
+const labelCls = 'block text-sm font-semibold';
+---
+
+<BaseLayout
+  title="Contact"
+  description={`Call, text or WhatsApp ${site.phone.display}, email ${site.email}, or send a message. Skillmasters Driving School, London, Ontario, ${site.hours}.`}
+>
+  <PageBanner
+    crumb="Contact"
+    eyebrow="GET IN TOUCH"
+    title="Questions? Let’s talk."
+    intro="Pick whatever’s easiest for you. Real person, quick reply, 7 days a week."
+  >
+    <p data-open-badge class="mt-6 inline-flex items-center gap-2.5 rounded-full border border-[#3A3426] bg-[#17150F] px-4 py-2 text-sm font-semibold">
+      <span data-open-dot class="size-2.5 rounded-full bg-[#E6A817]" aria-hidden="true"></span>
+      <span data-open-label>Open {site.hours} (Ontario time)</span>
+    </p>
+  </PageBanner>
+
+  <!-- Quick actions -->
+  <section aria-label="Quick ways to reach us" class="mx-auto max-w-[1200px] px-4 pt-12 sm:px-6 sm:pt-16">
+    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {actions.map((a) => (
+        <li class="reveal">
+          <a
+            href={a.href}
+            {...(a.external ? { rel: 'noopener', target: '_blank' } : {})}
+            class="lift flex h-full items-center gap-4 rounded-[20px] border border-border bg-surface-raised p-5 hover:border-gold"
+          >
+            <span class="flex size-12 flex-none items-center justify-center rounded-2xl bg-gold text-ink">
+              <svg aria-hidden="true" class="size-[22px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={a.icon} /></svg>
+            </span>
+            <span class="min-w-0">
+              <strong class="block">{a.title}</strong>
+              <span class="block truncate text-sm text-fg-muted">{a.text}</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- Form + quick answers -->
+  <section class="mx-auto grid max-w-[1200px] gap-8 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.6fr_1fr]">
+    <form
+      data-contact-form
+      action="/api/contact"
+      method="post"
+      aria-labelledby="form-title"
+      class="reveal rounded-[24px] border border-border bg-surface-raised p-6 sm:p-8"
+    >
+      <h2 id="form-title" class="text-[1.75rem] font-extrabold">Send us a message</h2>
+      <p class="mb-6 mt-1 text-fg-muted">Takes 1 minute. We'll reply the way you prefer.</p>
+
+      <fieldset class="mb-5">
+        <legend class={labelCls}>What can we help with?</legend>
+        <div class="mt-2 flex flex-wrap gap-2">
+          {topics.map((t, i) => (
+            <label class="chip">
+              <input type="radio" name="topic" value={t} class="sr-only" checked={i === 0} />
+              <span>{t}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <div class="grid gap-4 sm:grid-cols-2">
+        <label class={labelCls}>
+          Full name <span class="text-[#C81E1E]" aria-hidden="true">*</span>
+          <input class={field} type="text" name="name" autocomplete="name" required maxlength="100" />
+        </label>
+        <label class={labelCls}>
+          Phone <span class="text-[#C81E1E]" aria-hidden="true">*</span>
+          <input class={field} type="tel" name="phone" autocomplete="tel" required inputmode="tel" pattern="[0-9+() .\-]{10,20}" title="A phone number with at least 10 digits" />
+        </label>
+        <label class={labelCls}>
+          Email <span class="font-normal text-fg-muted">(optional)</span>
+          <input class={field} type="email" name="email" autocomplete="email" maxlength="150" />
+        </label>
+        <label class={labelCls}>
+          Best way to reach you
+          <select class={field} name="contactMethod">
+            {contactMethods.map((m) => <option>{m}</option>)}
+          </select>
+        </label>
+        <label class={labelCls}>
+          Pickup area
+          <select class={field} name="area">
+            {site.areas.map((a) => <option>{a}</option>)}
+          </select>
+        </label>
+        <label class={labelCls}>
+          Preferred language
+          <select class={field} name="language">
+            {site.languages.map((l) => <option>{l}</option>)}
+          </select>
+        </label>
+      </div>
+
+      <label class:list={[labelCls, 'mt-4']}>
+        Message
+        <textarea class={field} name="message" rows="4" maxlength="2000" placeholder="e.g. I have my G1 and want to start BDE in January"></textarea>
+      </label>
+      <p class="mt-2 text-xs text-fg-muted">Please don't include licence numbers or dates of birth.</p>
+
+      <!-- Spam trap: hidden from people, bots tend to fill it. The server ignores messages that do. -->
+      <div class="hidden" aria-hidden="true">
+        <label>Leave this empty <input type="text" name="company" tabindex="-1" autocomplete="off" /></label>
+      </div>
+
+      <button
+        type="submit"
+        data-submit
+        class="mt-5 rounded-full bg-gold px-7 py-4 font-bold text-ink transition hover:-translate-y-0.5 hover:brightness-95 disabled:cursor-wait disabled:opacity-70"
+      >
+        Send message <span aria-hidden="true">→</span>
+      </button>
+      <p class="mt-3 text-xs text-fg-muted">
+        We only use your details to reply to you. See our <a href="/legal#privacy" class="text-accent-text underline">Privacy Policy</a>.
+      </p>
+
+      <div data-form-status role="status" aria-live="polite" class="mt-4" tabindex="-1"></div>
+    </form>
+
+    <aside class="reveal flex flex-col gap-6">
+      <div class="rounded-[24px] bg-ink p-6 text-[#F5EFE3] sm:p-7 dark:bg-black dark:ring-1 dark:ring-border">
+        <h2 class="mb-4 text-xl font-extrabold text-[#F0C45A]">Quick answers</h2>
+        <dl class="flex flex-col gap-3.5">
+          {quickAnswers.map((x) => (
+            <div>
+              <dt class="font-bold">{x.q}</dt>
+              <dd class="text-[#C9BFAE]">
+                {x.a}
+                {x.link && <a href={x.link.href} class="ml-1 font-semibold text-[#F0C45A] underline">{x.link.label}</a>}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+      <div class="rounded-[24px] border border-border bg-section p-6 sm:p-7">
+        <h2 class="text-xl font-extrabold">Areas we serve</h2>
+        <p class="mb-3.5 mt-1 text-fg-muted">Home, school or work pickup</p>
+        <ul class="flex flex-wrap gap-2">
+          {site.areas.map((a) => (
+            <li class="rounded-full border border-border bg-surface-raised px-3.5 py-1.5 text-sm font-semibold">{a}</li>
+          ))}
+        </ul>
+      </div>
+    </aside>
+  </section>
+
+  <!-- Socials -->
+  <section aria-labelledby="follow-title" class="border-y border-border bg-section">
+    <div class="mx-auto grid max-w-[1200px] items-center gap-10 px-4 py-16 sm:px-6 sm:py-[88px] lg:grid-cols-2">
+      <div class="reveal">
+        <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">FOLLOW THE JOURNEY</p>
+        <h2 id="follow-title" class="mb-3 mt-2.5 text-[2rem] font-extrabold leading-[1.1] sm:text-[38px]">See new drivers pass, every week</h2>
+        <p class="mb-6 text-[17px] text-fg-muted">Test-day photos, quick driving tips and road-test advice for London drivers.</p>
+        <ul class="flex flex-col gap-3">
+          {socials.map((s) => (
+            <li>
+              <a href={s.href} rel="noopener" target="_blank" class="lift flex items-center gap-4 rounded-[18px] border border-border bg-surface-raised p-4 hover:border-gold">
+                <span class="flex size-12 flex-none items-center justify-center rounded-full bg-ink text-[#F0C45A] dark:bg-black" aria-hidden="true">
+                  {s.name === 'Instagram' && (
+                    <svg class="size-[26px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" /></svg>
+                  )}
+                  {s.name === 'Facebook' && (
+                    <svg class="size-[26px]" viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v8h4v-8h3l1-4h-4V8z" /></svg>
+                  )}
+                  {s.name === 'Google' && (
+                    <svg class="size-[26px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z" /></svg>
+                  )}
+                </span>
+                <span class="min-w-0 flex-1">
+                  <strong class="block">{s.name}</strong>
+                  <span class="block truncate text-sm text-fg-muted">{s.text}</span>
+                </span>
+                <span class="font-bold text-accent-text">{s.cta} <span aria-hidden="true">→</span></span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="reveal">
+        <ul class="grid grid-cols-2 gap-3">
+          {photos.map((p) => (
+            <li>
+              <a href={site.socials.instagram} rel="noopener" target="_blank" class="lift block overflow-hidden rounded-2xl" aria-label={`${p.alt} (opens Instagram)`}>
+                <Image src={p.src} alt="" widths={[280, 560]} sizes="(min-width: 1024px) 280px, 45vw" class="aspect-square w-full object-cover object-[50%_30%]" />
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-3 text-center text-[13px] text-fg-muted">More on <a href={site.socials.instagram} rel="noopener" target="_blank" class="font-semibold text-accent-text underline">Instagram</a></p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Rather just book?"
+    text="Choose a package and pay online in 2 minutes."
+    buttonLabel="Buy a package"
+    secondary={{ label: `Call ${site.phone.display}`, href: site.phone.href }}
+  />
+</BaseLayout>
+
+<style>
+  /* Topic chips: radio buttons styled as pills */
+  .chip span {
+    display: inline-block;
+    min-height: 44px;
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface-raised);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .chip:hover span {
+    border-color: var(--color-gold);
+  }
+  .chip input:checked + span {
+    border-color: var(--color-gold);
+    background: var(--color-gold);
+    color: var(--color-ink);
+  }
+  .chip input:focus-visible + span {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+</style>
+
+<script>
+  import { site } from '../data/site';
+
+  // Open / Closed badge, in Ontario time (hours 9 am – 6 pm, 7 days).
+  const label = document.querySelector<HTMLElement>('[data-open-label]');
+  const dot = document.querySelector<HTMLElement>('[data-open-dot]');
+  if (label && dot) {
+    try {
+      const hourPart = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto', hour: 'numeric', hour12: false })
+        .formatToParts(new Date())
+        .find((p) => p.type === 'hour');
+      const hour = Number(hourPart?.value) % 24;
+      const open = hour >= 9 && hour < 18;
+      label.textContent = open ? 'Open now · usually replies within an hour' : 'Closed now · we reply from 9 am (Ontario time)';
+      dot.style.background = open ? '#22C55E' : '#E6A817';
+    } catch {
+      /* keep the static hours text */
+    }
+  }
+
+  // Message form: send as JSON, show success, or fall back to direct contact details.
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  if (form) {
+    const status = form.querySelector<HTMLElement>('[data-form-status]')!;
+    const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const box = (tone: 'ok' | 'error', html: string) =>
+      `<div class="rounded-xl border px-4 py-3 ${tone === 'ok' ? 'border-good bg-good/10' : 'border-[#C81E1E] bg-[#C81E1E]/10'}">${html}</div>`;
+    const fallback = `Please reach us directly: call or text <a class="font-semibold underline" href="${site.phone.href}">${site.phone.display}</a>, <a class="font-semibold underline" href="${site.whatsapp}">WhatsApp</a> or <a class="font-semibold underline" href="mailto:${site.email}">${site.email}</a>.`;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      submit.disabled = true;
+      status.innerHTML = '';
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        status.innerHTML = box('ok', '<strong>Thanks! Your message is on its way.</strong> We’ll get back to you soon, the way you prefer.');
+      } catch {
+        status.innerHTML = box('error', `<strong>Sorry, your message couldn’t be sent.</strong> ${fallback}`);
+      } finally {
+        submit.disabled = false;
+        status.focus();
+      }
+    });
+  }
+</script>
