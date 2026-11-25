@@ -9,6 +9,9 @@
 //
 // Content honesty: the photos are real; the rating and reviews are SAMPLE until replaced in
 // reviews.json, and say so on the page.
+//
+// variant="reviews" (Reviews page): "Test-day smiles" heading and the photo row only; that page
+// shows the rating in its banner and the reviews as a grid.
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import data from '../data/reviews.json';
@@ -31,19 +34,38 @@ const passes = repeat(data.passes, 280);
 const reviews = repeat(data.reviews, 380);
 const { rating } = data;
 const anySampleReview = data.reviews.some((r) => r.sample);
+
+interface Props {
+  variant?: 'home' | 'reviews';
+}
+const { variant = 'home' } = Astro.props;
+const isHome = variant === 'home';
 ---
 
-<section aria-labelledby="passwall-title" class="overflow-hidden border-t border-border bg-section">
-  <div class="mx-auto flex max-w-[1200px] flex-wrap items-end justify-between gap-6 px-4 pb-8 pt-16 sm:px-6 sm:pt-[88px]">
+<section
+  aria-labelledby="passwall-title"
+  class:list={['overflow-hidden', isHome ? 'border-t border-border bg-section' : 'pb-6']}
+>
+  <div class:list={['mx-auto flex max-w-[1200px] flex-wrap items-end justify-between gap-6 px-4 pb-8 sm:px-6', isHome ? 'pt-16 sm:pt-[88px]' : 'pt-16 sm:pt-[72px]']}>
     <div class="reveal min-w-0 flex-[1_1_520px]">
-      <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">REAL STUDENTS · REAL PASSES</p>
-      <h2 id="passwall-title" class="my-2.5 text-[2.25rem] font-extrabold leading-[1.1] tracking-[-0.01em] sm:text-[44px]">
-        The <span class="grad">pass wall</span>
-      </h2>
-      <p class="max-w-[560px] text-[17px] text-fg-muted">Our students on test day, next to the car they learned in.</p>
+      {isHome ? (
+        <>
+          <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">REAL STUDENTS · REAL PASSES</p>
+          <h2 id="passwall-title" class="my-2.5 text-[2.25rem] font-extrabold leading-[1.1] tracking-[-0.01em] sm:text-[44px]">
+            The <span class="grad">pass wall</span>
+          </h2>
+          <p class="max-w-[560px] text-[17px] text-fg-muted">Our students on test day, next to the car they learned in.</p>
+        </>
+      ) : (
+        <>
+          <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">THE PASS WALL</p>
+          <h2 id="passwall-title" class="mt-2.5 text-[2rem] font-extrabold leading-[1.1] sm:text-[40px]">Test-day smiles</h2>
+        </>
+      )}
     </div>
 
     <div class="flex flex-wrap items-center gap-3">
+      {isHome && (
       <a
         href={rating.url}
         class="flex items-center gap-3.5 rounded-[18px] border border-border bg-surface-raised px-5 py-3.5 text-fg transition hover:-translate-y-0.5"
@@ -56,6 +78,7 @@ const anySampleReview = data.reviews.some((r) => r.sample);
           </span>
         </span>
       </a>
+      )}
       <button
         type="button"
         data-marquee-toggle
@@ -95,7 +118,8 @@ const anySampleReview = data.reviews.some((r) => r.sample);
     </ul>
   </div>
 
-  <!-- Row 2: review cards, scrolling the other way -->
+  <!-- Row 2 (home only): review cards, scrolling the other way -->
+  {isHome && (
   <div class="marquee-fade pb-16 pt-3 sm:pb-[88px]">
     <ul class="marquee marquee-rev" aria-label={anySampleReview ? 'Sample reviews' : 'Google reviews'}>
       {[0, 1].map((copy) =>
@@ -103,14 +127,14 @@ const anySampleReview = data.reviews.some((r) => r.sample);
           <li aria-hidden={copy === 1 ? 'true' : undefined} data-copy={copy}>
             <blockquote class="flex h-full w-[min(360px,calc(100vw-48px))] flex-col gap-3 rounded-[20px] border border-border bg-surface-raised p-6">
               <div class="flex justify-between gap-3">
-                <span class="tracking-[3px] text-[#B87800] dark:text-[#E39B00]" aria-label="5 out of 5 stars">★★★★★</span>
+                <span class="tracking-[3px] text-[#B87800] dark:text-[#E39B00]" aria-label={`${r.stars} out of 5 stars`}>{'★'.repeat(r.stars)}</span>
                 <span class="text-xs text-fg-muted">
                   Google review{r.sample && <> · <strong class="text-accent-text">SAMPLE</strong></>}
                 </span>
               </div>
               <p class="text-[15px] leading-relaxed text-fg-soft">“{r.quote}”</p>
               <footer class="mt-auto text-[15px] font-bold">
-                {r.name} <span class="text-[13px] font-normal text-fg-muted">· {r.tag}</span>
+                {r.name}{r.tag && <span class="text-[13px] font-normal text-fg-muted"> · {r.tag}</span>}
               </footer>
             </blockquote>
           </li>
@@ -118,6 +142,7 @@ const anySampleReview = data.reviews.some((r) => r.sample);
       )}
     </ul>
   </div>
+  )}
 </section>
 
 <style>

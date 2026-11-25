@@ -1,52 +1,104 @@
 {
-  "_note": "Pass-wall photos are real. The rating and every review below are SAMPLE placeholders from the mockup and must be replaced with real Google reviews before launch (set sample: false).",
+  "_note": "Pass-wall photos are real. Reviews are real Google reviews, copied word for word from Rahul's Google Business Profile (first name + last initial). Only reviews with written text are featured; reviews from anyone with a conflict of interest (owner, staff, family, the site builder) are never shown. rating.value/count = what Google shows. Set sample: true on any placeholder. rating.googleReviewUrl = the 'write a review' link.",
   "rating": {
     "value": "5.0",
-    "count": 48,
-    "sample": true,
-    "url": "/reviews"
+    "count": 29,
+    "sample": false,
+    "url": "/reviews",
+    "googleReviewUrl": "https://g.page/r/CVSSwvJ8qeU1EBM/review"
   },
   "passes": [
-    { "photo": "student-1", "badge": "Passed road test", "caption": "Skillmasters grad", "area": "" },
-    { "photo": "student-2", "badge": "Passed road test", "caption": "Skillmasters grad", "area": "" },
-    { "photo": "student-3", "badge": "Passed road test", "caption": "Skillmasters grad", "area": "" }
+    {
+      "photo": "student-1",
+      "badge": "Passed road test",
+      "caption": "Skillmasters grad",
+      "area": ""
+    },
+    {
+      "photo": "student-2",
+      "badge": "Passed road test",
+      "caption": "Skillmasters grad",
+      "area": ""
+    },
+    {
+      "photo": "student-3",
+      "badge": "Passed road test",
+      "caption": "Skillmasters grad",
+      "area": ""
+    }
   ],
   "reviews": [
     {
-      "name": "Emily R.",
+      "name": "Abhaye M.",
+      "tag": "Got licence",
+      "quote": "Had a great experience with Skillmasters Driving School! A special thanks to Mr. Rahul for his patience, understanding, and excellent guidance throughout my training. He made learning comfortable and helped me gain the confidence to get my licence. Really appreciate all the support. Highly recommend!",
+      "stars": 5,
+      "when": "November 2026",
+      "sample": false
+    },
+    {
+      "name": "James K.",
       "tag": "Passed G2",
-      "quote": "I was so nervous before my first lesson, but Rahul was patient the whole way. Passed my G2 on the first try!",
-      "sample": true
+      "quote": "Rahul is an excellent driving instructor! He is very patient, professional, and very knowledgeable in this field. He gave me the confidence, skills, and guidance I needed to pass my G2 road test. I'm truly grateful for his support and highly recommend Skill masters Driving School Ltd. to anyone looking to become a confident driver. Five stars!",
+      "stars": 5,
+      "when": "November 2026",
+      "sample": false
     },
     {
-      "name": "Daniel O.",
-      "tag": "BDE student",
-      "quote": "Moved to Canada last year and the lessons in Punjabi made everything click. Super clear about Ontario rules.",
-      "sample": true
+      "name": "Daksh S.",
+      "tag": "Passed G2 & G",
+      "quote": "The best instructor you can find in town. I passed both G2 and G in first attempt. The way they teach you and guide you throughout the process is really helpful and I highly recommend them.",
+      "stars": 5,
+      "when": "November 2026",
+      "sample": false
     },
     {
-      "name": "Aisha M.",
-      "tag": "Passed G2",
-      "quote": "The BDE course was worth it. Pickup from school was so convenient and the car felt really safe.",
-      "sample": true
+      "name": "Dev S.",
+      "tag": "",
+      "quote": "One of the best driving school and instructor. Rahul is very knowledgeable, instruct every single thing in detail and gives the confidence. One of the best driving school to get your classes. Every dollar worth with Mr. Rahul’s guidance.",
+      "stars": 5,
+      "when": "November 2026",
+      "sample": false
     },
     {
-      "name": "Harpreet S.",
-      "tag": "BDE student",
-      "quote": "Booked the road test package. The warm-up drive before the test calmed me down completely. Passed!",
-      "sample": true
+      "name": "Leon R.",
+      "tag": "",
+      "quote": "Rahul is an amazing driving instructor! Very patient, supportive, and professional. He explains everything so clearly and makes learning to drive comfortable and stress-free. You can tell he genuinely cares about his students’ success. Highly recommend him to anyone looking for a great instructor!",
+      "stars": 5,
+      "when": "November 2026",
+      "sample": false
     },
     {
-      "name": "Simran K.",
-      "tag": "Passed G2",
-      "quote": "Hadn’t driven in years. Two refresher lessons and I was confident on the highway again.",
-      "sample": true
+      "name": "Koli H.",
+      "tag": "",
+      "quote": "One of the best driving instructors out there! Rahul is very knowledgeable, friendly, and patient. He builds your confidence and makes sure you understand everything properly before hitting the road. His dedication and teaching style are outstanding. Definitely recommend him to everyone learning to drive!",
+      "stars": 5,
+      "when": "November 2026",
+      "sample": false
     },
     {
-      "name": "Jacob T.",
-      "tag": "BDE student",
-      "quote": "Great value with the 10-hour pack. Every lesson had a plan, and he pointed out exactly what examiners look for.",
-      "sample": true
+      "name": "Jaskarn S.",
+      "tag": "Passed road test",
+      "quote": "Great instructor calm, punctual, and easy to understand. Helped me build confidence and pass my road test on the first try.",
+      "stars": 5,
+      "when": "November 2026",
+      "sample": false
+    },
+    {
+      "name": "Bishal C.",
+      "tag": "",
+      "quote": "I had a great experience with Skillmasters Driving School. The instructors are professional, patient, and knowledgeable. They explain everything clearly, provide helpful guidance, and make you feel comfortable and confident behind the wheel. The lessons are well-structured, and they focus on building safe driving habits rather than just preparing you for the road test. Highly recommend Skillmasters Driving School to anyone looking to learn driving or improve their skills!",
+      "stars": 5,
+      "when": "November 2026",
+      "sample": false
+    },
+    {
+      "name": "Prajesh K.",
+      "tag": "",
+      "quote": "Instructor was so friendly and polite. Makes lesson very easy never felt that driving for the first time…..",
+      "stars": 5,
+      "when": "November 2026",
+      "sample": false
     }
   ]
 }

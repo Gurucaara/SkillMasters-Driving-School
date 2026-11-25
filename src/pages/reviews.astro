@@ -1,0 +1,101 @@
+---
+// Reviews page: banner with rating badge → pass wall photo marquee → grid of review cards →
+// gold CTA band. Copy and layout from docs/mockup/Reviews.dc.html; data from reviews.json.
+//
+// Honesty: while any review is a SAMPLE, the banner doesn't claim the reviews come from Google,
+// each card is tagged SAMPLE, and a note says real reviews are coming. The "Review us on Google"
+// button only appears once rating.googleReviewUrl is filled in.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageBanner from '../components/PageBanner.astro';
+import PassWall from '../components/PassWall.astro';
+import CtaBand from '../components/CtaBand.astro';
+import data from '../data/reviews.json';
+
+const { rating, reviews } = data;
+const anySample = rating.sample || reviews.some((r) => r.sample);
+const intro = anySample
+  ? 'Every photo is a real student on their test day. The reviews below are samples until our Google reviews are added.'
+  : 'Every review here comes from Google, and every photo is a student on their test day.';
+---
+
+<BaseLayout
+  title="Reviews"
+  description="Real Skillmasters students on their test day, and what they say about learning to drive with us in London, Ontario."
+>
+  <PageBanner crumb="Reviews" eyebrow="STUDENT REVIEWS" title="Real students. Real passes." intro={intro}>
+    <div class="mt-7 inline-flex flex-wrap items-center gap-4 rounded-[18px] border border-[#3A3426] bg-[#17150F] px-5 py-3.5">
+      <span class="font-display text-4xl font-extrabold text-[#F0C45A]">{rating.value}</span>
+      <span>
+        <span class="tracking-[2px] text-[#E6B33C]" aria-label={`${rating.value} out of 5 stars`}>★★★★★</span>
+        <span class="block text-[13px] text-[#C9BFAE]">from {rating.count} Google reviews{rating.sample && ' (sample)'}</span>
+      </span>
+      {rating.googleReviewUrl && (
+        <a
+          href={rating.googleReviewUrl}
+          rel="noopener"
+          target="_blank"
+          class="rounded-full bg-[#E6B33C] px-[18px] py-[11px] text-sm font-bold text-ink transition hover:brightness-95"
+        >
+          Review us on Google
+        </a>
+      )}
+    </div>
+  </PageBanner>
+
+  <PassWall variant="reviews" />
+
+  <section aria-labelledby="google-title" class="border-y border-border bg-section">
+    <div class="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-[88px]">
+      <div class="reveal mb-9 max-w-[680px]">
+        <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">GOOGLE REVIEWS</p>
+        <h2 id="google-title" class="mt-2.5 text-[2rem] font-extrabold leading-[1.1] sm:text-[40px]">What our students say</h2>
+      </div>
+
+      <ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {reviews.map((r) => (
+          <li class="reveal">
+            <blockquote class="lift flex h-full flex-col gap-3 rounded-[20px] border border-border bg-surface-raised p-6">
+              <footer class="flex items-center gap-3">
+                <span class="flex size-11 flex-none items-center justify-center rounded-full bg-[#2A2418] font-extrabold text-[#F0C45A]" aria-hidden="true">
+                  {r.name[0]}
+                </span>
+                <span>
+                  <span class="block font-bold">{r.name}</span>
+                  <span class="block text-xs text-fg-muted">{r.when}{r.tag && ` · ${r.tag}`}</span>
+                </span>
+              </footer>
+              <div class="flex items-center justify-between">
+                <span class="tracking-[3px] text-[#B87800] dark:text-[#E39B00]" aria-label={`${r.stars} out of 5 stars`}>{'★'.repeat(r.stars)}</span>
+                {r.sample && <span class="text-[11px] font-extrabold tracking-[0.1em] text-accent-text">SAMPLE</span>}
+              </div>
+              <p class="leading-relaxed text-fg-soft">“{r.quote}”</p>
+            </blockquote>
+          </li>
+        ))}
+      </ul>
+
+      <div class="mt-6 flex flex-wrap items-center justify-between gap-4">
+        {anySample ? (
+          <p class="text-[13px] text-fg-muted">These are sample reviews. Real Google reviews will appear here before launch.</p>
+        ) : <span />}
+        {rating.googleReviewUrl && (
+          <a
+            href={rating.googleReviewUrl}
+            rel="noopener"
+            target="_blank"
+            class="rounded-full border-2 border-fg px-5 py-3 text-sm font-bold text-fg transition hover:bg-fg hover:text-surface-raised"
+          >
+            Leave a review on Google <span aria-hidden="true">↗</span>
+          </a>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Be our next success story"
+    text="Book online in minutes. Pay securely with Stripe."
+    buttonLabel="Buy a package"
+    secondary={{ label: 'Ask a question', href: '/contact' }}
+  />
+</BaseLayout>
