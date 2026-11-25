@@ -1,0 +1,50 @@
+---
+// "Why Skillmasters?": 5 gold-tick points beside the real dual-brake photo.
+// Copy and layout from docs/mockup/Main.dc.html (#why).
+import { Image } from 'astro:assets';
+import dualBrake from '../assets/images/real/dual-brake.jpg';
+import { site } from '../data/site';
+
+const langs = site.languages;
+const points = [
+  { title: 'MTO-approved BDE', text: 'a recognized Beginner Driver Education course' },
+  { title: 'Flexible scheduling', text: 'lessons 7 days a week' },
+  { title: 'Personalized teaching', text: 'patient, one-on-one, at your pace' },
+  { title: 'Three languages', text: `${langs.slice(0, -1).join(', ')} and ${langs.at(-1)}` },
+  { title: 'Pickup included', text: 'home, school or work across London & area' },
+];
+---
+
+<section
+  id="why"
+  aria-labelledby="why-title"
+  class="mx-auto flex max-w-[1200px] flex-col gap-12 px-4 py-16 sm:px-6 sm:py-[88px] lg:flex-row lg:items-center"
+>
+  <div class="reveal min-w-0 lg:flex-[1_1_460px]">
+    <h2 id="why-title" class="mb-3 text-[2rem] font-extrabold tracking-[-0.01em] sm:text-[40px]">Why Skillmasters?</h2>
+    <p class="mb-[26px] text-[17px] leading-relaxed text-fg-muted">
+      We focus on each student's needs, building confidence, patience and real-world skills, not just passing a test.
+    </p>
+    <ul class="flex flex-col gap-4">
+      {points.map((p) => (
+        <li class="flex gap-3.5">
+          <span
+            class="flex size-7 flex-none items-center justify-center rounded-full bg-gold text-sm font-extrabold text-ink"
+            aria-hidden="true">✓</span
+          >
+          <p><strong>{p.title}</strong><span class="text-fg-muted"> – {p.text}</span></p>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="reveal relative h-[260px] min-w-0 overflow-hidden rounded-3xl sm:h-[380px] lg:flex-[1_1_420px]">
+    <Image
+      src={dualBrake}
+      alt="Instructor dual brake on the passenger side of the training car"
+      widths={[480, 720, 1080, 1440]}
+      sizes="(min-width: 1024px) 560px, calc(100vw - 32px)"
+      class="absolute inset-0 size-full object-cover"
+    />
+  </div>
+</section>
