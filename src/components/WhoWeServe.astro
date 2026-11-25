@@ -1,0 +1,79 @@
+---
+// "Who we serve": 4 photo cards linking to the package finder (#finder).
+// Copy and layout from docs/mockup/Main.dc.html. Three cards use real student photos (plates and
+// test slips already blurred); the Refresher image is a Canva placeholder and carries a SAMPLE tag
+// until it is replaced.
+import { Image } from 'astro:assets';
+import student1 from '../assets/images/real/student-1.jpg';
+import student2 from '../assets/images/real/student-2.jpg';
+import student3 from '../assets/images/real/student-3.jpg';
+import refresherSample from '../assets/images/sample/refresher-SAMPLE.jpg';
+
+const cards = [
+  {
+    title: 'Teens & New Drivers',
+    text: 'Start right with our MTO-approved BDE course.',
+    img: student2,
+    alt: 'A Skillmasters student standing beside the training car',
+  },
+  {
+    title: 'Newcomers to Canada',
+    text: 'Learn Ontario rules, in English, Hindi or Punjabi.',
+    img: student1,
+    alt: 'A smiling Skillmasters student with the Mazda 3 training car',
+  },
+  {
+    title: 'Adults',
+    text: 'Never too late. Calm, judgment-free lessons.',
+    img: student3,
+    alt: 'A Skillmasters student in front of the car with its lion roof sign',
+  },
+  {
+    title: 'Refresher Drivers',
+    text: 'Back on the road with confidence.',
+    img: refresherSample,
+    alt: 'A driver’s hands on the steering wheel on a quiet residential street',
+    sample: true,
+  },
+];
+---
+
+<section aria-labelledby="serve-title" class="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-[88px]">
+  <div class="reveal mx-auto mb-10 max-w-[640px] text-center">
+    <h2 id="serve-title" class="mb-3 text-[2rem] font-extrabold tracking-[-0.01em] sm:text-[40px]">Who we serve</h2>
+    <p class="text-[17px] text-fg-muted">
+      Wherever you are in your driving journey, there's a program built for you.
+    </p>
+  </div>
+
+  <ul class="reveal grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-5">
+    {cards.map((card) => (
+      <li>
+        <a
+          href="#finder"
+          class="lift group relative block h-[300px] overflow-hidden rounded-[20px] bg-[#2A2418] text-white"
+        >
+          <Image
+            src={card.img}
+            alt={card.alt}
+            widths={[300, 450, 563]}
+            sizes="(min-width: 1200px) 285px, (min-width: 640px) 50vw, 100vw"
+            class="absolute inset-0 size-full object-cover object-[50%_25%] transition-transform duration-500 group-hover:scale-[1.03]"
+          />
+          {card.sample && (
+            <span class="absolute right-3 top-3 rounded-md bg-[#0B0B0BB3] px-[7px] py-[3px] text-[10px] font-bold tracking-[0.1em]">
+              SAMPLE
+            </span>
+          )}
+          <div class="absolute inset-x-0 bottom-0 bg-linear-to-t from-[#000000E6] to-transparent p-5 pt-12">
+            <h3 class="text-xl font-extrabold">{card.title}</h3>
+            <p class="mb-2.5 mt-1.5 text-sm leading-normal text-[#E2D9C7]">{card.text}</p>
+            <span class="text-sm font-bold text-[#F0C45A]">
+              View programs <span aria-hidden="true">→</span>
+            </span>
+          </div>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
