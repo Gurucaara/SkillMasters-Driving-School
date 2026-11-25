@@ -132,7 +132,7 @@ const labelCls = 'block text-sm font-semibold';
         </label>
         <label class={labelCls}>
           Phone <span class="text-[#C81E1E]" aria-hidden="true">*</span>
-          <input class={field} type="tel" name="phone" autocomplete="tel" required inputmode="tel" pattern="[0-9+() .\-]{10,20}" title="A phone number with at least 10 digits" />
+          <input class={field} type="tel" name="phone" autocomplete="tel" required inputmode="tel" pattern="[0-9+\(\)\-. ]{10,20}" title="A phone number with at least 10 digits" />
         </label>
         <label class={labelCls}>
           Email <span class="font-normal text-fg-muted">(optional)</span>

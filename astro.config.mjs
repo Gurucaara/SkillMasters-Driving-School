@@ -20,10 +20,37 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+  // No code blocks on this site; Shiki's inline styles would also clash with the CSP below.
+  markdown: { syntaxHighlight: false },
   integrations: [
     sitemap({
       filter: (page) => !noindexPaths.includes(new URL(page).pathname),
     }),
   ],
   adapter: cloudflare(),
+  // Content Security Policy. Astro hashes every inline <script>/<style> it outputs and adds a
+  // <meta> CSP to each page, so no 'unsafe-inline' is needed for scripts. Inline style="…"
+  // attributes (e.g. the About map pins) are allowed. Rules that only work as an HTTP header
+  // (frame-ancestors) live in public/_headers.
+  // When adding Stripe.js, Turnstile or Cal.com later, add their domains here.
+  security: {
+    csp: {
+      directives: [
+        "default-src 'self'",
+        "img-src 'self' data:",
+        "font-src 'self'",
+        "connect-src 'self'",
+        "manifest-src 'self'",
+        "frame-src 'none'",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'self'",
+        'upgrade-insecure-requests',
+      ],
+      scriptDirective: { resources: ["'self'"] },
+      styleDirective: {
+        resources: ["'self'", { resource: "'unsafe-inline'", kind: 'attribute' }],
+      },
+    },
+  },
 });

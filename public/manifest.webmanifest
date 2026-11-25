@@ -1,0 +1,16 @@
+{
+  "name": "Skillmasters Driving School",
+  "short_name": "Skillmasters",
+  "description": "MTO-approved BDE and private driving lessons in London, Ontario.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#E6A817",
+  "lang": "en-CA",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
