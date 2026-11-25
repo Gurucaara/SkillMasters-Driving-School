@@ -86,6 +86,13 @@
 
 /* Shared motion helpers (from the mockup). All switched off by the reduced-motion rule below. */
 @layer components {
+  /* Gold gradient headline accent */
+  .grad {
+    background: var(--grad-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
   /* Card hover lift */
   .lift {
     transition: transform 0.25s ease, box-shadow 0.25s ease;

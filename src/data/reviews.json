@@ -1,0 +1,52 @@
+{
+  "_note": "Pass-wall photos are real. The rating and every review below are SAMPLE placeholders from the mockup and must be replaced with real Google reviews before launch (set sample: false).",
+  "rating": {
+    "value": "5.0",
+    "count": 48,
+    "sample": true,
+    "url": "/reviews"
+  },
+  "passes": [
+    { "photo": "student-1", "badge": "Passed road test", "caption": "Skillmasters grad", "area": "" },
+    { "photo": "student-2", "badge": "Passed road test", "caption": "Skillmasters grad", "area": "" },
+    { "photo": "student-3", "badge": "Passed road test", "caption": "Skillmasters grad", "area": "" }
+  ],
+  "reviews": [
+    {
+      "name": "Emily R.",
+      "tag": "Passed G2",
+      "quote": "I was so nervous before my first lesson, but Rahul was patient the whole way. Passed my G2 on the first try!",
+      "sample": true
+    },
+    {
+      "name": "Daniel O.",
+      "tag": "BDE student",
+      "quote": "Moved to Canada last year and the lessons in Punjabi made everything click. Super clear about Ontario rules.",
+      "sample": true
+    },
+    {
+      "name": "Aisha M.",
+      "tag": "Passed G2",
+      "quote": "The BDE course was worth it. Pickup from school was so convenient and the car felt really safe.",
+      "sample": true
+    },
+    {
+      "name": "Harpreet S.",
+      "tag": "BDE student",
+      "quote": "Booked the road test package. The warm-up drive before the test calmed me down completely. Passed!",
+      "sample": true
+    },
+    {
+      "name": "Simran K.",
+      "tag": "Passed G2",
+      "quote": "Hadn’t driven in years. Two refresher lessons and I was confident on the highway again.",
+      "sample": true
+    },
+    {
+      "name": "Jacob T.",
+      "tag": "BDE student",
+      "quote": "Great value with the 10-hour pack. Every lesson had a plan, and he pointed out exactly what examiners look for.",
+      "sample": true
+    }
+  ]
+}

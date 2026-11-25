@@ -1,0 +1,179 @@
+---
+// "The pass wall": rating badge, a marquee of real student photos and a second marquee of review
+// cards scrolling the other way. Layout and copy from docs/mockup/Main.dc.html.
+//
+// Marquee technique: each row's items are rendered twice and the track slides left by exactly
+// half its width, so the loop is seamless. The second copy is aria-hidden so screen readers read
+// each item once. Rows pause on hover/focus and with the Pause button (WCAG 2.2.2), and become a
+// static wrapped grid under prefers-reduced-motion.
+//
+// Content honesty: the photos are real; the rating and reviews are SAMPLE until replaced in
+// reviews.json, and say so on the page.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import data from '../data/reviews.json';
+
+// Photos are looked up by name so reviews.json can stay plain JSON.
+const photoFiles = import.meta.glob<{ default: ImageMetadata }>('../assets/images/real/student-*.jpg', { eager: true });
+const photo = (name: string) => {
+  const file = photoFiles[`../assets/images/real/${name}.jpg`];
+  if (!file) throw new Error(`Pass-wall photo not found: ${name}.jpg`);
+  return file.default;
+};
+
+// With only a few photos, one copy is narrower than a wide screen, which would leave a gap in the
+// loop. Repeat the set until one copy is at least ~1800px (cards are 260px + 20px gap).
+const minRun = 1800;
+const repeat = <T,>(items: T[], itemWidth: number) =>
+  Array.from({ length: Math.max(1, Math.ceil(minRun / (items.length * itemWidth))) }, () => items).flat();
+
+const passes = repeat(data.passes, 280);
+const reviews = repeat(data.reviews, 380);
+const { rating } = data;
+const anySampleReview = data.reviews.some((r) => r.sample);
+---
+
+<section aria-labelledby="passwall-title" class="overflow-hidden border-t border-border bg-section">
+  <div class="mx-auto flex max-w-[1200px] flex-wrap items-end justify-between gap-6 px-4 pb-8 pt-16 sm:px-6 sm:pt-[88px]">
+    <div class="reveal min-w-0 flex-[1_1_520px]">
+      <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">REAL STUDENTS · REAL PASSES</p>
+      <h2 id="passwall-title" class="my-2.5 text-[2.25rem] font-extrabold leading-[1.1] tracking-[-0.01em] sm:text-[44px]">
+        The <span class="grad">pass wall</span>
+      </h2>
+      <p class="max-w-[560px] text-[17px] text-fg-muted">Our students on test day, next to the car they learned in.</p>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-3">
+      <a
+        href={rating.url}
+        class="flex items-center gap-3.5 rounded-[18px] border border-border bg-surface-raised px-5 py-3.5 text-fg transition hover:-translate-y-0.5"
+      >
+        <span class="font-display text-[32px] font-extrabold">{rating.value}</span>
+        <span>
+          <span class="tracking-[2px] text-[#B87800] dark:text-[#E39B00]" aria-label={`${rating.value} out of 5 stars`}>★★★★★</span>
+          <span class="block text-[13px] text-fg-muted">
+            {rating.count} Google reviews{rating.sample && ' (sample)'} <span aria-hidden="true">→</span>
+          </span>
+        </span>
+      </a>
+      <button
+        type="button"
+        data-marquee-toggle
+        aria-pressed="false"
+        class="motion-reduce:hidden min-h-11 rounded-full border border-border bg-surface-raised px-4 text-sm font-semibold text-fg hover:border-gold"
+      >
+        Pause scrolling
+      </button>
+    </div>
+  </div>
+
+  <!-- Row 1: real pass photos -->
+  <div class="marquee-fade py-3">
+    <ul class="marquee" aria-label="Students who passed">
+      {[0, 1].map((copy) =>
+        passes.map((p) => (
+          <li aria-hidden={copy === 1 ? 'true' : undefined} data-copy={copy}>
+            <figure class="relative h-[340px] w-[260px] overflow-hidden rounded-[22px] bg-[#2A2418] text-white">
+              <Image
+                src={photo(p.photo)}
+                alt={copy === 0 ? 'A Skillmasters student after passing their road test, next to the training car' : ''}
+                widths={[260, 520]}
+                sizes="260px"
+                class="absolute inset-0 size-full object-cover"
+              />
+              <p class="absolute left-3.5 top-3.5 rounded-full bg-[#E6B33C] px-2.5 py-[5px] text-xs font-extrabold text-ink">
+                <span aria-hidden="true">✓</span> {p.badge}
+              </p>
+              <figcaption class="absolute inset-x-0 bottom-0 bg-linear-to-t from-[#000000E6] to-transparent p-[18px] pt-10">
+                <span class="block font-bold">{p.caption}</span>
+                {p.area && <span class="block text-[13px] text-[#E2D9C7]">{p.area}</span>}
+              </figcaption>
+            </figure>
+          </li>
+        ))
+      )}
+    </ul>
+  </div>
+
+  <!-- Row 2: review cards, scrolling the other way -->
+  <div class="marquee-fade pb-16 pt-3 sm:pb-[88px]">
+    <ul class="marquee marquee-rev" aria-label={anySampleReview ? 'Sample reviews' : 'Google reviews'}>
+      {[0, 1].map((copy) =>
+        reviews.map((r) => (
+          <li aria-hidden={copy === 1 ? 'true' : undefined} data-copy={copy}>
+            <blockquote class="flex h-full w-[min(360px,calc(100vw-48px))] flex-col gap-3 rounded-[20px] border border-border bg-surface-raised p-6">
+              <div class="flex justify-between gap-3">
+                <span class="tracking-[3px] text-[#B87800] dark:text-[#E39B00]" aria-label="5 out of 5 stars">★★★★★</span>
+                <span class="text-xs text-fg-muted">
+                  Google review{r.sample && <> · <strong class="text-accent-text">SAMPLE</strong></>}
+                </span>
+              </div>
+              <p class="text-[15px] leading-relaxed text-fg-soft">“{r.quote}”</p>
+              <footer class="mt-auto text-[15px] font-bold">
+                {r.name} <span class="text-[13px] font-normal text-fg-muted">· {r.tag}</span>
+              </footer>
+            </blockquote>
+          </li>
+        ))
+      )}
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* Soft fade at both edges */
+  .marquee-fade {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .marquee {
+    display: flex;
+    gap: 20px;
+    width: max-content;
+    animation: slide 45s linear infinite;
+  }
+  .marquee-rev {
+    animation-direction: reverse;
+    animation-duration: 60s;
+  }
+  .marquee:hover,
+  .marquee:focus-within,
+  :global([data-marquee-paused]) .marquee {
+    animation-play-state: paused;
+  }
+  @keyframes slide {
+    to {
+      transform: translateX(calc(-50% - 10px));
+    }
+  }
+  /* Reduced motion: no scrolling, show each item once in a wrapped grid. */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-fade {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+    .marquee {
+      width: auto;
+      max-width: 1200px;
+      margin-inline: auto;
+      padding-inline: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .marquee li[data-copy='1'] {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Pause / resume button for both rows.
+  document.querySelectorAll<HTMLButtonElement>('[data-marquee-toggle]').forEach((btn) => {
+    const section = btn.closest('section')!;
+    btn.addEventListener('click', () => {
+      const paused = section.toggleAttribute('data-marquee-paused');
+      btn.setAttribute('aria-pressed', String(paused));
+      btn.textContent = paused ? 'Resume scrolling' : 'Pause scrolling';
+    });
+  });
+</script>
