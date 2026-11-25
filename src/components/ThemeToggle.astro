@@ -50,12 +50,5 @@ const { class: className = '' } = Astro.props;
     setTheme(root.classList.contains('dark') ? 'light' : 'dark', true);
   });
 
-  // Follow the OS setting until the visitor picks a theme themselves.
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    let stored: string | null = null;
-    try { stored = localStorage.getItem('theme'); } catch {}
-    if (!stored) setTheme(e.matches ? 'dark' : 'light', false);
-  });
-
   syncLabels();
 </script>

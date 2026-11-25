@@ -37,8 +37,8 @@ https://claude.ai/artifact/JUJeKb3qj5zULdAJ9Lt7Wb
 
 - Colours: gold `#E6A817` (buttons, accents), gold text on white `#8A5F00`, ink `#0B0B0B`,
   cream `#FBF5EA` (section backgrounds), line `#EADFCB`, muted text `#5A5348`
-- Light theme is default; dark theme = black `#0B0B0B` + gold. Toggle remembers choice
-  in localStorage and follows `prefers-color-scheme` on first visit. No flash on load.
+- Light theme is always the default (the system dark-mode setting is ignored); dark theme =
+  black `#0B0B0B` + gold. The toggle remembers the visitor's choice in localStorage. No flash on load.
 - Logo: lion head, gold/black/white, on a cream rounded square.
 - Real car: dark blue Mazda 3 (automatic, dual brake) with a lion roof sign.
 
