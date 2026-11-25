@@ -20,6 +20,13 @@ export const site = {
   hours: '9 am – 6 pm, 7 days',
   pickupNote: 'Pickup only, no office',
   areas: ['London', 'St. Thomas', 'Thorndale', 'Dorchester'],
+  // Pickup note per area (About page). Keep in the same order as `areas`.
+  areaPickup: {
+    London: 'home, school or work pickup',
+    'St. Thomas': 'pickup in London for St. Thomas students',
+    Thorndale: 'home and school pickup',
+    Dorchester: 'home and school pickup',
+  } as Record<string, string>,
   regionShort: 'London, ON & area',
   languages: ['English', 'Hindi', 'Punjabi'],
   languageCodes: ['EN', 'HI', 'PA'],

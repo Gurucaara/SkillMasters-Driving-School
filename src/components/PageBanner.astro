@@ -1,0 +1,40 @@
+---
+// Black banner that opens every inner page: breadcrumb, gold eyebrow, H1, short intro and a faint
+// lion watermark (docs/design-spec.md, "Other pages"). Layout from docs/mockup/About.dc.html.
+import { Image } from 'astro:assets';
+import logo from '../assets/images/real/logo.png';
+
+interface Props {
+  /** Current page name for the breadcrumb, e.g. "About". */
+  crumb: string;
+  eyebrow: string;
+  title: string;
+  intro?: string;
+}
+const { crumb, eyebrow, title, intro } = Astro.props;
+---
+
+<section class="relative overflow-hidden bg-ink text-[#F5EFE3] dark:bg-black">
+  <Image
+    src={logo}
+    alt=""
+    aria-hidden="true"
+    width={360}
+    class="pointer-events-none absolute -right-10 -top-10 w-[260px] opacity-[0.06] grayscale invert sm:w-[360px]"
+  />
+  <div class="relative mx-auto max-w-[1200px] px-4 pb-[72px] pt-12 sm:px-6 sm:pt-16">
+    <nav aria-label="Breadcrumb" class="text-sm text-[#C9BFAE]">
+      <ol class="flex flex-wrap items-center gap-1.5">
+        <li><a href="/" class="hover:text-[#F0C45A] hover:underline">Home</a></li>
+        <li aria-hidden="true" class="text-[#E6B33C]">→</li>
+        <li aria-current="page">{crumb}</li>
+      </ol>
+    </nav>
+    <p class="mt-7 text-[13px] font-bold tracking-[0.14em] text-[#F0C45A]">{eyebrow}</p>
+    <h1 class="mb-3.5 mt-3 max-w-[820px] text-[2.25rem] font-extrabold leading-[1.05] tracking-[-0.01em] sm:text-5xl lg:text-[54px]">
+      {title}
+    </h1>
+    {intro && <p class="max-w-[640px] text-lg leading-relaxed text-[#E2D9C7]">{intro}</p>}
+    <slot />
+  </div>
+</section>

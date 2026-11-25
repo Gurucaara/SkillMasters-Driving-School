@@ -1,0 +1,131 @@
+---
+// About page: banner → Rahul's story with the car photo → instructor facts → service area with a
+// schematic map → gold CTA band. Copy and layout from docs/mockup/About.dc.html.
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageBanner from '../components/PageBanner.astro';
+import CtaBand from '../components/CtaBand.astro';
+import carFront from '../assets/images/real/car-front.jpg';
+import { site } from '../data/site';
+
+const { experience, licences, languages } = site;
+const facts = [
+  { value: `${experience.drivingYears} yrs`, label: 'driving experience' },
+  { value: `${experience.teachingYears} yrs`, label: 'teaching new drivers' },
+  { value: 'Licensed', label: `MTO driving instructor #${licences.instructor}` },
+  { value: String(languages.length), label: `languages: ${languages.join(', ')}` },
+];
+
+// Rough positions on the schematic map (percent of the box). Not to scale.
+const mapPins = [
+  { name: 'London', left: '46%', top: '44%', main: true },
+  { name: 'Thorndale', left: '62%', top: '14%' },
+  { name: 'Dorchester', left: '66%', top: '62%' },
+  { name: 'St. Thomas', left: '18%', top: '78%' },
+];
+---
+
+<BaseLayout
+  title="About"
+  description={`Meet Rahul, the licensed instructor behind ${site.shortName} Driving School: ${experience.drivingYears} years driving, lessons in ${languages.join(', ')}, pickup across ${site.areas.join(', ')}.`}
+>
+  <PageBanner
+    crumb="About"
+    eyebrow="ABOUT SKILLMASTERS"
+    title="Turning a passion for driving into confident new drivers."
+    intro="A local, owner-run driving school serving London and the surrounding area, one student at a time."
+  />
+
+  <!-- Our story -->
+  <section aria-labelledby="story-title" class="mx-auto flex max-w-[1200px] flex-col gap-12 px-4 py-16 sm:px-6 sm:py-[88px] lg:flex-row lg:items-center">
+    <div class="reveal min-w-0 lg:flex-[1_1_460px]">
+      <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">OUR STORY</p>
+      <h2 id="story-title" class="mb-[18px] mt-2.5 text-[2rem] font-extrabold leading-[1.15] sm:text-[38px]">Why I started Skillmasters</h2>
+      <blockquote class="space-y-4 text-[17px] leading-[1.75] text-fg-soft">
+        <p>
+          I started Skillmasters Driving School because I wanted to turn my passion for driving and teaching into
+          something of my own. My goal is to help new drivers become safe, confident, and responsible drivers while
+          providing quality, affordable driver education.
+        </p>
+        <p>I wanted to make a positive difference on the road, one student at a time.</p>
+      </blockquote>
+      <p class="mt-5 font-bold">Rahul, founder &amp; instructor</p>
+    </div>
+    <div class="reveal relative h-[300px] min-w-0 overflow-hidden rounded-[22px] sm:h-[400px] lg:flex-[1_1_420px]">
+      <Image
+        src={carFront}
+        alt="The Skillmasters Mazda 3 training car"
+        widths={[480, 720, 898]}
+        sizes="(min-width: 1024px) 540px, calc(100vw - 32px)"
+        class="absolute inset-0 size-full object-cover object-[50%_40%]"
+      />
+    </div>
+  </section>
+
+  <!-- Instructor facts -->
+  <section aria-labelledby="instructor-title" class="border-y border-border bg-section">
+    <div class="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-[88px]">
+      <div class="reveal mx-auto mb-10 max-w-[680px] text-center">
+        <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">MEET YOUR INSTRUCTOR</p>
+        <h2 id="instructor-title" class="mt-2.5 text-[2rem] font-extrabold leading-[1.1] sm:text-[40px]">Experience you can trust</h2>
+      </div>
+      <dl class="reveal grid gap-[18px] sm:grid-cols-2 lg:grid-cols-4">
+        {facts.map((f) => (
+          <div class="flex flex-col-reverse rounded-[20px] border border-border bg-surface-raised p-6">
+            <dt class="text-fg-muted">{f.label}</dt>
+            <dd class="font-display text-[34px] font-extrabold">{f.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- Areas we serve -->
+  <section aria-labelledby="areas-title" class="mx-auto flex max-w-[1200px] flex-col gap-12 px-4 py-16 sm:px-6 sm:py-[88px] lg:flex-row lg:items-center">
+    <div class="reveal min-w-0 lg:flex-[1_1_420px]">
+      <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">AREAS WE SERVE</p>
+      <h2 id="areas-title" class="mb-[18px] mt-2.5 text-[2rem] font-extrabold sm:text-[38px]">Pickup across London &amp; area</h2>
+      <ul class="flex flex-col gap-3.5">
+        {site.areas.map((area) => (
+          <li class="flex gap-3.5">
+            <span class="flex size-7 flex-none items-center justify-center rounded-full bg-gold text-sm font-extrabold text-ink" aria-hidden="true">✓</span>
+            <p class="leading-relaxed"><strong>{area}</strong><span class="text-fg-muted"> – {site.areaPickup[area]}</span></p>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <figure
+      class="reveal relative h-[300px] min-w-0 overflow-hidden rounded-3xl border border-border bg-section sm:h-[380px] lg:flex-[1_1_460px]"
+      aria-label="Schematic map: Thorndale is north-east of London, Dorchester to the east and St. Thomas to the south."
+    >
+      <svg aria-hidden="true" viewBox="0 0 500 380" preserveAspectRatio="none" class="absolute inset-0 size-full">
+        <path d="M0 200 C120 180 200 230 300 190 S460 150 500 170" class="stroke-border" stroke-width="10" fill="none" />
+        <path d="M240 0 C230 120 260 220 230 380" class="stroke-border" stroke-width="8" fill="none" />
+        <path d="M80 380 C140 300 200 260 250 200" class="stroke-border" stroke-width="6" fill="none" />
+      </svg>
+      {mapPins.map((pin) => (
+        <div
+          aria-hidden="true"
+          class:list={['absolute flex items-center gap-2', pin.main ? 'font-extrabold' : 'font-bold']}
+          style={`left:${pin.left};top:${pin.top}`}
+        >
+          <span
+            class:list={[
+              'rounded-full',
+              pin.main ? 'size-[18px] bg-gold shadow-[0_0_0_6px_var(--glow)]' : 'size-3.5 bg-fg',
+            ]}
+          ></span>
+          {pin.name}
+        </div>
+      ))}
+      <figcaption class="absolute bottom-3 left-4 text-xs text-fg-muted">Schematic, not to scale</figcaption>
+    </figure>
+  </section>
+
+  <CtaBand
+    text="Book online in minutes. Pay securely with Stripe."
+    buttonLabel="Buy a package"
+    secondary={{ label: 'Ask a question', href: '/contact' }}
+  />
+</BaseLayout>

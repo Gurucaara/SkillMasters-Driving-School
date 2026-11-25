@@ -1,6 +1,7 @@
 ---
 // Gold call-to-action band that ends every page, just above the footer (docs/design-spec.md).
-// Defaults are the Home copy from docs/mockup/Main.dc.html; other pages can pass their own.
+// Defaults are the Home copy from docs/mockup/Main.dc.html; other pages can pass their own,
+// plus an optional outlined second button (e.g. About: "Ask a question").
 import { cta } from '../data/site';
 
 interface Props {
@@ -8,12 +9,14 @@ interface Props {
   text?: string;
   buttonLabel?: string;
   href?: string;
+  secondary?: { label: string; href: string };
 }
 const {
   title = 'Ready to hit the road?',
   text = 'Book your first lesson today. Flexible scheduling, 7 days a week.',
   buttonLabel = 'Book a lesson',
   href = cta.href,
+  secondary,
 } = Astro.props;
 ---
 
@@ -23,11 +26,21 @@ const {
       <h2 id="cta-title" class="mb-2 text-[1.75rem] font-extrabold sm:text-4xl">{title}</h2>
       <p class="text-[17px]">{text}</p>
     </div>
-    <a
-      href={href}
-      class="rounded-full bg-ink px-7 py-[17px] font-bold text-[#F0C45A] transition hover:-translate-y-0.5 hover:shadow-[0_10px_24px_#00000033]"
-    >
-      {buttonLabel} <span aria-hidden="true">→</span>
-    </a>
+    <div class="flex flex-wrap gap-3">
+      <a
+        href={href}
+        class="rounded-full bg-ink px-7 py-[17px] font-bold text-[#F0C45A] transition hover:-translate-y-0.5 hover:shadow-[0_10px_24px_#00000033]"
+      >
+        {buttonLabel} <span aria-hidden="true">→</span>
+      </a>
+      {secondary && (
+        <a
+          href={secondary.href}
+          class="rounded-full border-2 border-ink px-6 py-[15px] font-bold text-ink transition hover:bg-ink hover:text-[#F0C45A]"
+        >
+          {secondary.label}
+        </a>
+      )}
+    </div>
   </div>
 </section>
