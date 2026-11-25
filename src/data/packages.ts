@@ -66,6 +66,19 @@ export function money(amount: number): string {
   return `$${amount.toLocaleString('en-CA')}`;
 }
 
+/** Ontario HST rate (13%). */
+export const HST_RATE = 0.13;
+
+/** HST on a price, rounded to the cent. */
+export function hst(amount: number): number {
+  return Math.round(amount * HST_RATE * 100) / 100;
+}
+
+/** "$676.87" style, always with cents (for order totals). */
+export function cad(amount: number): string {
+  return amount.toLocaleString('en-CA', { style: 'currency', currency: 'CAD', currencyDisplay: 'narrowSymbol' });
+}
+
 /** Link that starts checkout with a package pre-selected. */
 export function checkoutHref(id: PackageId): string {
   return `/checkout?package=${id}`;

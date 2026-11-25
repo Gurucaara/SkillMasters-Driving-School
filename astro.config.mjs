@@ -11,6 +11,9 @@ const sampleBlogPaths = readdirSync('./src/content/blog')
   .filter((f) => /^sample:\s*true\s*$/m.test(readFileSync(`./src/content/blog/${f}`, 'utf8')))
   .map((f) => `/blog/${f.replace(/\.md$/, '')}/`);
 
+// Other noindex pages (checkout flow) also stay out of the sitemap.
+const noindexPaths = [...sampleBlogPaths, '/checkout/', '/checkout/success/'];
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://skillmastersdrivingschool.ca',
@@ -19,7 +22,7 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      filter: (page) => !sampleBlogPaths.some((path) => new URL(page).pathname === path),
+      filter: (page) => !noindexPaths.includes(new URL(page).pathname),
     }),
   ],
   adapter: cloudflare(),

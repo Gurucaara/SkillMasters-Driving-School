@@ -1,0 +1,49 @@
+---
+// Where Stripe sends people back after paying (step 4 · Schedule).
+// Until the Stripe webhook confirms orders and Cal.com is connected, this page does not claim
+// a specific payment or show made-up time slots: it thanks the student and explains what
+// happens next, with direct contact options. noindex: nobody should land here from search.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageBanner from '../../components/PageBanner.astro';
+import { site } from '../../data/site';
+---
+
+<BaseLayout title="Thank you" description="Thanks for booking with Skillmasters Driving School." noindex>
+  <PageBanner crumb="Checkout" eyebrow="STEP 4 · SCHEDULE" title="Thank you! Let’s pick your first lesson." />
+
+  <section class="border-b border-border bg-section">
+    <div class="mx-auto max-w-[760px] px-4 py-12 sm:px-6 sm:py-16">
+      <div class="rounded-[24px] border border-border bg-surface-raised p-6 sm:p-9">
+        <div class="flex items-start gap-4">
+          <span class="flex size-12 flex-none items-center justify-center rounded-full bg-good text-xl font-extrabold text-on-good" aria-hidden="true">✓</span>
+          <div>
+            <h2 class="text-2xl font-extrabold">Your order is in</h2>
+            <p class="mt-1 text-fg-muted">Stripe emails your receipt. Keep it for your records.</p>
+          </div>
+        </div>
+
+        <h3 class="mt-8 text-lg font-extrabold">What happens next</h3>
+        <ol class="mt-3 list-decimal space-y-2 pl-5 text-fg-soft marker:font-bold marker:text-accent-text">
+          <li>Rahul will text or WhatsApp you within a day ({site.hours}) to book your first lesson.</li>
+          <li>We'll confirm your pickup spot in {site.areas.join(', ').replace(/, ([^,]*)$/, ' or $1')}.</li>
+          <li>You'll get a reminder the day before your lesson.</li>
+        </ol>
+
+        <!-- Cal.com scheduler goes here once Rahul's Cal.com account is connected. -->
+        <div class="mt-8 rounded-2xl border border-dashed border-border bg-section p-5">
+          <p class="font-semibold">Prefer to arrange it now?</p>
+          <div class="mt-3 flex flex-wrap gap-3">
+            <a href={site.whatsapp} rel="noopener" target="_blank" class="rounded-full bg-gold px-5 py-3 font-bold text-ink hover:brightness-95">WhatsApp us</a>
+            <a href={site.phone.href} class="rounded-full border-2 border-fg px-5 py-2.5 font-bold text-fg hover:bg-fg hover:text-surface-raised">Call {site.phone.display}</a>
+          </div>
+        </div>
+
+        <p class="mt-8 text-sm text-fg-muted">
+          <a href="/" class="font-semibold text-accent-text underline">Back to home</a>
+          <span aria-hidden="true"> · </span>
+          <a href="/g1-practice-test" class="font-semibold text-accent-text underline">Warm up with the G1 practice test</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

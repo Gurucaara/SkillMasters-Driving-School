@@ -1,0 +1,329 @@
+---
+// Checkout: 1 Package → 2 Your details → 3 Review & pay (→ Stripe) → 4 Schedule (on
+// /checkout/success). Copy and layout from docs/mockup/Checkout.dc.html.
+//
+// How it works:
+// - Every price, HST and total is calculated here at build time from packages.json and stored
+//   on the package's radio button; the script only shows/hides steps and copies those values
+//   into the order summary. The browser never decides a price.
+// - "Pay" posts { packageId, details } to /api/checkout. That endpoint (to be built) looks the
+//   price up again on the server, creates a Stripe Checkout Session and returns its URL.
+//   Until it exists, the visitor sees a message with the phone, WhatsApp and email.
+// - Privacy: no licence numbers, dates of birth or licence expiry dates are collected here
+//   (CLAUDE.md, "Rules: honesty and privacy").
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageBanner from '../../components/PageBanner.astro';
+import { packages, savings, money, cad, hst, withVariant } from '../../data/packages';
+import data from '../../data/packages.json';
+import { site } from '../../data/site';
+
+// Order on the page: BDE packages, then lessons and road test (lesson wording).
+const options = packages.map((p) => {
+  const pkg = p.id.startsWith('bde') ? p : withVariant(p, 'lessons');
+  const tax = hst(pkg.price);
+  return {
+    id: pkg.id,
+    name: pkg.name,
+    price: money(pkg.price),
+    was: pkg.separately ? money(pkg.separately) : '',
+    save: savings(pkg) ? `Save ${money(savings(pkg))}` : '',
+    sub: cad(pkg.price),
+    hst: cad(tax),
+    total: cad(pkg.price + tax),
+  };
+});
+const steps = ['Package', 'Your details', 'Review & pay', 'Schedule'];
+const prefTimes = ['Morning', 'Afternoon', 'Evening', 'Weekend'];
+const today = new Date().toISOString().slice(0, 10);
+
+const field =
+  'mt-1.5 block w-full rounded-xl border border-border bg-surface-raised px-3.5 py-3 text-base text-fg focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/40 [&:user-invalid]:border-[#C81E1E]';
+const labelCls = 'block text-sm font-semibold';
+const req = '<span class="text-[#C81E1E]" aria-hidden="true">*</span>';
+const btnPrimary =
+  'rounded-full bg-gold px-7 py-4 font-bold text-ink transition hover:-translate-y-0.5 hover:brightness-95 disabled:cursor-wait disabled:opacity-70';
+const btnGhost = 'min-h-11 rounded-full px-4 font-semibold text-accent-text hover:underline';
+---
+
+<BaseLayout
+  title="Checkout"
+  description="Choose your driving package, add your details and pay securely with Stripe."
+  noindex
+>
+  <PageBanner
+    crumb="Checkout"
+    eyebrow="SECURE CHECKOUT"
+    title="Book & pay online"
+    intro="Choose your package, add your details, and pay securely with Stripe. Then pick your first lesson time right away."
+  />
+
+  <section class="border-b border-border bg-section">
+    <div class="mx-auto max-w-[1200px] px-4 py-12 sm:px-6 sm:py-16">
+      <!-- Step chips -->
+      <ol class="mb-8 flex flex-wrap gap-2" aria-label="Checkout steps">
+        {steps.map((s, i) => (
+          <li data-step-chip={i} aria-current={i === 0 ? 'step' : undefined} class="step-chip">
+            <span class="font-extrabold">{i + 1}</span> · {s}
+          </li>
+        ))}
+      </ol>
+
+      <div class="grid items-start gap-8 lg:grid-cols-[1.6fr_1fr]">
+        <form data-checkout action="/api/checkout" method="post" class="rounded-[24px] border border-border bg-surface-raised p-6 sm:p-8" novalidate>
+          <!-- Step 1: package -->
+          <fieldset data-panel="0" class="panel">
+            <legend class="contents"><h2 tabindex="-1" class="mb-5 text-[1.6rem] font-extrabold outline-none">Choose your package</h2></legend>
+            <div class="flex flex-col gap-2.5">
+              {options.map((o, i) => (
+                <label class="pkg-option">
+                  <input
+                    type="radio"
+                    name="packageId"
+                    value={o.id}
+                    required
+                    checked={i === 0}
+                    data-name={o.name}
+                    data-sub={o.sub}
+                    data-hst={o.hst}
+                    data-total={o.total}
+                    class="size-5 flex-none accent-[#E6A817]"
+                  />
+                  <span class="flex min-w-0 flex-1 flex-wrap items-center justify-between gap-x-3 gap-y-1">
+                    <span class="font-bold">{o.name}</span>
+                    <span class="flex items-center gap-2.5">
+                      {o.save && <span class="rounded-full bg-good px-2.5 py-1 text-xs font-extrabold text-on-good">{o.save}</span>}
+                      {o.was && <s class="text-sm text-fg-muted"><span class="sr-only">Bought separately: </span>{o.was}</s>}
+                      <span class="font-display text-xl font-extrabold">{o.price}</span>
+                    </span>
+                  </span>
+                </label>
+              ))}
+            </div>
+            <p class="mt-4 text-sm text-fg-muted">
+              Prices + 13% HST. Pay in full today. Packages are valid for {data.validityMonths} months.
+            </p>
+            <div class="mt-6 flex justify-end">
+              <button type="button" data-go="1" class={btnPrimary}>Continue <span aria-hidden="true">→</span></button>
+            </div>
+          </fieldset>
+
+          <!-- Step 2: details -->
+          <fieldset data-panel="1" class="panel">
+            <legend class="contents"><h2 tabindex="-1" class="mb-5 text-[1.6rem] font-extrabold outline-none">Student details</h2></legend>
+            <div class="grid gap-4 sm:grid-cols-2">
+              <label class={labelCls}>First name <Fragment set:html={req} />
+                <input class={field} type="text" name="firstName" autocomplete="given-name" required maxlength="60" />
+              </label>
+              <label class={labelCls}>Last name <Fragment set:html={req} />
+                <input class={field} type="text" name="lastName" autocomplete="family-name" required maxlength="60" />
+              </label>
+              <label class={labelCls}>Email <Fragment set:html={req} />
+                <input class={field} type="email" name="email" autocomplete="email" required maxlength="150" />
+              </label>
+              <label class={labelCls}>Phone <Fragment set:html={req} />
+                <input class={field} type="tel" name="phone" autocomplete="tel" inputmode="tel" required pattern="[0-9+() .\-]{10,20}" title="A phone number with at least 10 digits" />
+              </label>
+              <label class={labelCls}>Licence stage <Fragment set:html={req} />
+                <select class={field} name="licenceStage" required>
+                  <option>G1</option><option>G2</option>
+                </select>
+              </label>
+              <label class={labelCls}>Pickup area <Fragment set:html={req} />
+                <select class={field} name="area" required>
+                  {site.areas.map((a) => <option>{a}</option>)}
+                </select>
+              </label>
+              <label class={labelCls}>Preferred start date
+                <input class={field} type="date" name="startDate" min={today} />
+              </label>
+              <label class={labelCls}>Preferred time
+                <select class={field} name="preferredTime">
+                  {prefTimes.map((t) => <option>{t}</option>)}
+                </select>
+              </label>
+            </div>
+            <p class="mt-4 text-sm text-fg-muted">
+              We only ask what we need to schedule you. Licence details for MTO reporting are collected securely later, if your package needs them.
+            </p>
+            <div class="mt-6 flex flex-wrap items-center justify-between gap-3">
+              <button type="button" data-go="0" class={btnGhost}><span aria-hidden="true">←</span> Back</button>
+              <button type="button" data-go="2" class={btnPrimary}>Review order <span aria-hidden="true">→</span></button>
+            </div>
+          </fieldset>
+
+          <!-- Step 3: review & pay -->
+          <fieldset data-panel="2" class="panel">
+            <legend class="contents"><h2 tabindex="-1" class="mb-5 text-[1.6rem] font-extrabold outline-none">Review &amp; pay</h2></legend>
+            <div class="rounded-2xl border border-border bg-section p-5">
+              <strong data-review-package class="block text-lg"></strong>
+              <span data-review-details class="text-fg-muted"></span>
+            </div>
+            <label class="mt-5 flex items-start gap-3">
+              <input type="checkbox" name="agree" value="yes" required class="mt-1 size-5 flex-none accent-[#E6A817]" />
+              <span>I agree to the <a href="/legal#terms" class="font-semibold text-accent-text underline">Terms</a> and the <a href="/legal#refunds" class="font-semibold text-accent-text underline">Refund &amp; Cancellation Policy</a>.</span>
+            </label>
+            <button type="submit" data-pay class:list={[btnPrimary, 'mt-6 w-full sm:w-auto']}>
+              Pay <span data-pay-amount></span> securely with Stripe
+            </button>
+            <p class="mt-3 text-sm text-fg-muted">
+              You'll go to Stripe's secure checkout page. Cards, Apple Pay and Google Pay accepted. We never see or store your card number.
+            </p>
+            <div data-pay-status role="status" aria-live="polite" tabindex="-1" class="mt-4"></div>
+            <button type="button" data-go="1" class:list={[btnGhost, 'mt-4']}><span aria-hidden="true">←</span> Edit details</button>
+          </fieldset>
+        </form>
+
+        <!-- Order summary -->
+        <aside aria-labelledby="summary-title" class="rounded-[24px] bg-ink p-6 text-[#F5EFE3] sm:p-7 lg:sticky lg:top-28 dark:bg-black dark:ring-1 dark:ring-border">
+          <h2 id="summary-title" class="text-xs font-extrabold tracking-[0.14em] text-[#F0C45A]">ORDER SUMMARY</h2>
+          <p data-sum-name class="mt-3 font-display text-xl font-extrabold">{options[0].name}</p>
+          <dl class="mt-5 space-y-2.5 text-[15px]">
+            <div class="flex justify-between"><dt class="text-[#C9BFAE]">Subtotal</dt><dd data-sum-sub>{options[0].sub}</dd></div>
+            <div class="flex justify-between"><dt class="text-[#C9BFAE]">HST (13%)</dt><dd data-sum-hst>{options[0].hst}</dd></div>
+            <div class="flex justify-between border-t border-[#3A3426] pt-3 text-lg font-extrabold"><dt>Total due today</dt><dd data-sum-total class="text-[#F0C45A]">{options[0].total}</dd></div>
+          </dl>
+          <p class="mt-5 flex items-center gap-2 text-sm text-[#C9BFAE]">
+            <svg aria-hidden="true" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg>
+            Secure payment by Stripe
+          </p>
+        </aside>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .step-chip {
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface-raised);
+    padding: 0.5rem 0.95rem;
+    font-size: 0.875rem;
+    color: var(--fg-muted);
+  }
+  .step-chip[aria-current='step'] {
+    border-color: var(--color-gold);
+    background: var(--color-gold);
+    color: var(--color-ink);
+    font-weight: 700;
+  }
+  .step-chip[data-done] {
+    color: var(--fg);
+    border-color: var(--color-gold);
+  }
+  .pkg-option {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    min-height: 60px;
+    padding: 0.875rem 1.125rem;
+    border-radius: 16px;
+    border: 2px solid var(--border);
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .pkg-option:hover,
+  .pkg-option:has(input:checked) {
+    border-color: var(--color-gold);
+  }
+  .pkg-option:has(input:checked) {
+    background: color-mix(in srgb, var(--color-gold) 8%, transparent);
+  }
+  /* With JavaScript, show one step at a time. */
+  :global(.js) .panel:not([data-active]) {
+    display: none;
+  }
+  .panel + .panel {
+    margin-top: 2.5rem;
+  }
+  :global(.js) .panel + .panel {
+    margin-top: 0;
+  }
+</style>
+
+<script>
+  import { site } from '../../data/site';
+
+  const form = document.querySelector<HTMLFormElement>('[data-checkout]');
+  if (form) {
+    const panels = [...form.querySelectorAll<HTMLElement>('[data-panel]')];
+    const chips = [...document.querySelectorAll<HTMLElement>('[data-step-chip]')];
+    const status = form.querySelector<HTMLElement>('[data-pay-status]')!;
+    const payBtn = form.querySelector<HTMLButtonElement>('[data-pay]')!;
+    const $ = (sel: string) => document.querySelector<HTMLElement>(sel)!;
+
+    const selected = () => form.querySelector<HTMLInputElement>('input[name="packageId"]:checked')!;
+
+    // Pre-select the package from ?package=<id> (every Buy button links here with one).
+    const wanted = new URLSearchParams(location.search).get('package');
+    const match = wanted && form.querySelector<HTMLInputElement>(`input[name="packageId"][value="${CSS.escape(wanted)}"]`);
+    if (match) match.checked = true;
+
+    function updateSummary() {
+      const r = selected();
+      $('[data-sum-name]').textContent = r.dataset.name!;
+      $('[data-sum-sub]').textContent = r.dataset.sub!;
+      $('[data-sum-hst]').textContent = r.dataset.hst!;
+      $('[data-sum-total]').textContent = r.dataset.total!;
+      $('[data-pay-amount]').textContent = r.dataset.total!;
+    }
+
+    function validPanel(i: number) {
+      const fields = [...panels[i].querySelectorAll<HTMLInputElement | HTMLSelectElement>('input, select')];
+      return fields.every((f) => f.reportValidity());
+    }
+
+    function show(i: number, focus = true) {
+      panels.forEach((p, k) => p.toggleAttribute('data-active', k === i));
+      chips.forEach((c, k) => {
+        c.toggleAttribute('data-done', k < i);
+        if (k === i) c.setAttribute('aria-current', 'step');
+        else c.removeAttribute('aria-current');
+      });
+      if (i === 2) {
+        const f = new FormData(form);
+        $('[data-review-package]').textContent = `${selected().dataset.name} · ${selected().dataset.total}`;
+        $('[data-review-details]').textContent = `${f.get('firstName')} ${f.get('lastName')} · ${f.get('email')} · ${f.get('area')}`;
+      }
+      status.innerHTML = '';
+      if (focus) panels[i].querySelector<HTMLElement>('h2')?.focus();
+    }
+
+    form.addEventListener('change', (e) => {
+      if ((e.target as HTMLInputElement).name === 'packageId') updateSummary();
+    });
+
+    form.addEventListener('click', (e) => {
+      const go = (e.target as Element).closest<HTMLElement>('[data-go]');
+      if (!go) return;
+      const to = Number(go.dataset.go);
+      const from = panels.findIndex((p) => p.hasAttribute('data-active'));
+      if (to > from && !validPanel(from)) return; // only check when moving forward
+      show(to);
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (![0, 1, 2].every(validPanel)) return;
+      payBtn.disabled = true;
+      try {
+        const body = Object.fromEntries(new FormData(form));
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const json = res.ok ? await res.json() : null;
+        if (!json?.url) throw new Error('no checkout url');
+        location.href = json.url; // Stripe's hosted checkout page
+      } catch {
+        status.innerHTML = `<div class="rounded-xl border border-[#C81E1E] bg-[#C81E1E]/10 px-4 py-3"><strong>Online payment isn't available right now.</strong> Your card has not been charged. To book, call or text <a class="font-semibold underline" href="${site.phone.href}">${site.phone.display}</a>, <a class="font-semibold underline" href="${site.whatsapp}">WhatsApp us</a> or email <a class="font-semibold underline" href="mailto:${site.email}">${site.email}</a>.</div>`;
+        status.focus();
+        payBtn.disabled = false;
+      }
+    });
+
+    updateSummary();
+    show(0, false);
+  }
+</script>
