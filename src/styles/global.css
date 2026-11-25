@@ -13,9 +13,10 @@
   --color-muted: #5A5348;
 }
 
-/* Semantic tokens that flip with the theme: use bg-surface, text-fg, border-border, etc. */
+/* Semantic tokens that flip with the theme: use bg-surface (page), bg-section (cream bands), text-fg, border-border, etc. */
 :root {
-  --surface: #FBF5EA;
+  --surface: #FFFFFF; /* page background */
+  --section: #FBF5EA; /* cream section bands */
   --surface-raised: #FFFFFF;
   --fg: #0B0B0B;
   --fg-muted: #5A5348;
@@ -32,6 +33,7 @@
 
 .dark {
   --surface: #0B0B0B;
+  --section: #141210;
   --surface-raised: #17150F;
   --fg: #FBF5EA;
   --fg-muted: #B8AE9C;
@@ -48,6 +50,7 @@
 
 @theme inline {
   --color-surface: var(--surface);
+  --color-section: var(--section);
   --color-surface-raised: var(--surface-raised);
   --color-fg: var(--fg);
   --color-fg-muted: var(--fg-muted);
