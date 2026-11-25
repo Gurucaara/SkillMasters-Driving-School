@@ -1,0 +1,56 @@
+---
+// Blog article card: cover (photo if the article has one, otherwise a designed black-and-gold
+// tile), kicker, title, summary and "Read more". Used on /blog and the home teaser.
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  /** Home teaser uses a compact card without the cover. */
+  compact?: boolean;
+}
+const { post, compact = false } = Astro.props;
+const { title, description, kicker, cover, coverAlt } = post.data;
+---
+
+<a
+  href={`/blog/${post.id}`}
+  class="lift flex h-full flex-col overflow-hidden rounded-[22px] border border-border bg-surface-raised text-fg hover:border-gold"
+>
+  {!compact && (
+    <div class="relative h-[180px] overflow-hidden">
+      {cover ? (
+        <Image
+          src={cover}
+          alt={coverAlt ?? ''}
+          widths={[400, 800]}
+          sizes="(min-width: 1024px) 380px, calc(100vw - 32px)"
+          class="absolute inset-0 size-full object-cover"
+        />
+      ) : (
+        <div class="cover absolute inset-0 flex items-center bg-ink px-6 dark:bg-black" aria-hidden="true">
+          <span class="font-display text-[34px] font-extrabold leading-none text-[#F0C45A]">{kicker}</span>
+        </div>
+      )}
+    </div>
+  )}
+  <div class:list={['flex flex-1 flex-col gap-2.5', compact ? 'p-7' : 'p-[22px]']}>
+    <span class="text-xs font-extrabold tracking-[0.12em] text-accent-text">{kicker}</span>
+    <h3 class:list={['font-extrabold leading-[1.3]', compact ? 'text-[21px]' : 'text-xl']}>{title}</h3>
+    <p class="leading-relaxed text-fg-muted">{description}</p>
+    <span class="mt-auto font-bold text-accent-text">{compact ? 'Read' : 'Read more'} <span aria-hidden="true">→</span></span>
+  </div>
+</a>
+
+<style>
+  /* Designed cover: dashed gold lane line along the bottom of the black tile */
+  .cover::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: 22px;
+    height: 4px;
+    background: repeating-linear-gradient(90deg, #f4d27a 0 36px, transparent 36px 72px);
+    opacity: 0.85;
+  }
+</style>

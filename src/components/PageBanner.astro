@@ -7,11 +7,13 @@ import logo from '../assets/images/real/logo.png';
 interface Props {
   /** Current page name for the breadcrumb, e.g. "About". */
   crumb: string;
+  /** Optional middle breadcrumb step, e.g. { label: 'Blog', href: '/blog' }. */
+  parent?: { label: string; href: string };
   eyebrow: string;
   title: string;
   intro?: string;
 }
-const { crumb, eyebrow, title, intro } = Astro.props;
+const { crumb, parent, eyebrow, title, intro } = Astro.props;
 ---
 
 <section class="relative overflow-hidden bg-ink text-[#F5EFE3] dark:bg-black">
@@ -27,6 +29,12 @@ const { crumb, eyebrow, title, intro } = Astro.props;
       <ol class="flex flex-wrap items-center gap-1.5">
         <li><a href="/" class="hover:text-[#F0C45A] hover:underline">Home</a></li>
         <li aria-hidden="true" class="text-[#E6B33C]">→</li>
+        {parent && (
+          <>
+            <li><a href={parent.href} class="hover:text-[#F0C45A] hover:underline">{parent.label}</a></li>
+            <li aria-hidden="true" class="text-[#E6B33C]">→</li>
+          </>
+        )}
         <li aria-current="page">{crumb}</li>
       </ol>
     </nav>

@@ -1,0 +1,66 @@
+---
+// One blog article, built from its Markdown file in src/content/blog/.
+// Placeholder articles (sample: true) show a SAMPLE notice and are marked noindex.
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageBanner from '../../components/PageBanner.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, description, kicker, pubDate, sample } = post.data;
+
+// Two other articles to keep reading.
+const more = (await getCollection('blog'))
+  .filter((p) => p.id !== post.id)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 2);
+
+const dateLabel = pubDate.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout title={title} description={description} noindex={sample}>
+  <PageBanner crumb={title} parent={{ label: 'Blog', href: '/blog' }} eyebrow={kicker} title={title} intro={description}>
+    <p class="mt-5 text-sm text-[#C9BFAE]">
+      By Rahul, licensed driving instructor · <time datetime={pubDate.toISOString()}>{dateLabel}</time>
+    </p>
+  </PageBanner>
+
+  <article class="mx-auto max-w-[760px] px-4 py-14 sm:px-6 sm:py-[72px]">
+    {sample && (
+      <p class="mb-8 rounded-2xl border border-gold bg-section px-5 py-4 text-[15px]">
+        <strong class="text-accent-text">SAMPLE</strong> – this article is a placeholder. The full guide will be published before launch.
+      </p>
+    )}
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+
+  <section aria-labelledby="more-title" class="border-t border-border bg-section">
+    <div class="mx-auto max-w-[1200px] px-4 py-14 sm:px-6">
+      <div class="mb-7 flex flex-wrap items-end justify-between gap-4">
+        <h2 id="more-title" class="text-[1.75rem] font-extrabold">Keep reading</h2>
+        <a href="/blog" class="font-bold text-accent-text hover:underline">All articles <span aria-hidden="true">→</span></a>
+      </div>
+      <ul class="grid gap-[22px] md:grid-cols-2">
+        {more.map((p) => <li><BlogCard post={p} compact /></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand
+    text="Book online in minutes. Pay securely with Stripe."
+    buttonLabel="Buy a package"
+    secondary={{ label: 'Ask a question', href: '/contact' }}
+  />
+</BaseLayout>

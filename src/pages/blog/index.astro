@@ -1,0 +1,53 @@
+---
+// Blog listing: banner → G1 practice test promo → article cards → gold CTA band.
+// Copy and layout from docs/mockup/Blog.dc.html. Articles come from src/content/blog/.
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageBanner from '../../components/PageBanner.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => a.data.order - b.data.order || b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout
+  title="Blog"
+  description="Plain-language guides to getting your G1, G2 and full G licence in Ontario, plus a free G1 practice test, from Skillmasters Driving School in London, ON."
+>
+  <PageBanner
+    crumb="Blog"
+    eyebrow="LEARN BEFORE YOU DRIVE"
+    title="Guides, tips & practice"
+    intro="Plain-language guides to getting licensed in Ontario, written by your instructor."
+  />
+
+  <section aria-labelledby="articles-title" class="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-[88px]">
+    <!-- G1 practice test promo -->
+    <a
+      href="/g1-practice-test"
+      class="lift reveal mb-10 flex flex-wrap items-center justify-between gap-6 rounded-3xl bg-ink p-7 text-[#F5EFE3] sm:p-8 dark:bg-black dark:ring-1 dark:ring-border"
+    >
+      <span>
+        <span class="block text-xs font-extrabold tracking-[0.12em] text-[#F0C45A]">FREE TOOL</span>
+        <span class="mt-2 block font-display text-2xl font-extrabold sm:text-[28px]">Take the G1 practice test</span>
+        <span class="text-[#C9BFAE]">6 questions · instant score · no sign-up</span>
+      </span>
+      <span class="rounded-full bg-[#E6B33C] px-[26px] py-[15px] font-bold text-ink">Start now <span aria-hidden="true">→</span></span>
+    </a>
+
+    <h2 id="articles-title" class="sr-only">Articles</h2>
+    <ul class="grid gap-[22px] md:grid-cols-2 lg:grid-cols-3">
+      {posts.map((post) => (
+        <li class="reveal"><BlogCard post={post} /></li>
+      ))}
+    </ul>
+  </section>
+
+  <CtaBand
+    text="Book online in minutes. Pay securely with Stripe."
+    buttonLabel="Buy a package"
+    secondary={{ label: 'Ask a question', href: '/contact' }}
+  />
+</BaseLayout>

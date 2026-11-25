@@ -1,24 +1,12 @@
 ---
 // "Free guides & practice": the G1 practice test card (black) + 2 article cards.
-// Copy and layout from docs/mockup/Main.dc.html.
-// TODO: when src/content/blog/ exists, read these two articles from the collection instead of
-// listing them here, so titles and slugs can't drift.
-const articles = [
-  {
-    kicker: 'GUIDE',
-    title: 'How to get your G1 in Ontario: step by step',
-    text: 'Age, eye test, knowledge test and what to bring.',
-    href: '/blog/how-to-get-your-g1-in-ontario',
-  },
-  {
-    kicker: 'CHECKLIST',
-    title: 'G2 road test checklist for London, ON',
-    text: 'What examiners look for and the mistakes to avoid.',
-    href: '/blog/g2-road-test-checklist-london',
-  },
-];
+// Copy and layout from docs/mockup/Main.dc.html. The two articles are read from the blog
+// collection (src/content/blog/), so titles and links always match the real articles.
+import { getEntry } from 'astro:content';
+import BlogCard from './BlogCard.astro';
 
-const card = 'lift reveal flex h-full flex-col gap-3 rounded-[22px] p-7';
+const featured = ['how-to-get-your-g1-in-ontario', 'g2-road-test-checklist-london'];
+const posts = (await Promise.all(featured.map((id) => getEntry('blog', id)))).filter((p) => p !== undefined);
 ---
 
 <section aria-labelledby="guides-title" class="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-[88px]">
@@ -33,8 +21,11 @@ const card = 'lift reveal flex h-full flex-col gap-3 rounded-[22px] p-7';
   </div>
 
   <ul class="grid gap-[22px] md:grid-cols-3">
-    <li>
-      <a href="/g1-practice-test" class:list={[card, 'min-h-[220px] bg-ink text-[#F5EFE3] dark:bg-black dark:ring-1 dark:ring-border']}>
+    <li class="reveal">
+      <a
+        href="/g1-practice-test"
+        class="lift flex h-full min-h-[220px] flex-col gap-3 rounded-[22px] bg-ink p-7 text-[#F5EFE3] dark:bg-black dark:ring-1 dark:ring-border"
+      >
         <span class="text-xs font-extrabold tracking-[0.12em] text-[#F0C45A]">INTERACTIVE</span>
         <h3 class="text-2xl font-extrabold leading-tight">Free G1 practice test</h3>
         <span class="leading-relaxed text-[#C9BFAE]">
@@ -43,15 +34,8 @@ const card = 'lift reveal flex h-full flex-col gap-3 rounded-[22px] p-7';
         <span class="mt-auto font-bold text-[#F0C45A]">Start the test <span aria-hidden="true">→</span></span>
       </a>
     </li>
-    {articles.map((a) => (
-      <li>
-        <a href={a.href} class:list={[card, 'border border-border bg-surface-raised text-fg hover:border-gold']}>
-          <span class="text-xs font-extrabold tracking-[0.12em] text-accent-text">{a.kicker}</span>
-          <h3 class="text-[21px] font-extrabold leading-[1.25]">{a.title}</h3>
-          <span class="leading-relaxed text-fg-muted">{a.text}</span>
-          <span class="mt-auto font-bold text-accent-text">Read <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
+    {posts.map((post) => (
+      <li class="reveal"><BlogCard post={post} compact /></li>
     ))}
   </ul>
 </section>
