@@ -1,0 +1,16 @@
+---
+// Black strip of short trust points under the home hero (docs/mockup/Main.dc.html, 2nd section).
+// Items live in site.ts so Rahul can change them without touching markup.
+import { site } from '../data/site';
+---
+
+<section aria-label="Why families trust us" class="bg-ink text-[#F5EFE3] dark:bg-black">
+  <ul class="mx-auto flex max-w-[1200px] flex-col gap-x-6 gap-y-3.5 px-4 py-[22px] text-[15px] font-medium sm:flex-row sm:flex-wrap sm:justify-between sm:px-6">
+    {site.trustPoints.map((point) => (
+      <li class="flex items-center gap-2">
+        <span class="text-[#E6B33C]" aria-hidden="true">◆</span>
+        {point}
+      </li>
+    ))}
+  </ul>
+</section>

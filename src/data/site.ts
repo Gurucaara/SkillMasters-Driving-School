@@ -35,6 +35,14 @@ export const site = {
     instagram: 'https://www.instagram.com/skillmastersdrivingschool/',
   },
 
+  // Black trust strip under the home hero.
+  trustPoints: [
+    'MTO-approved BDE course',
+    'Licensed & commercially insured',
+    'Dual-brake Mazda 3',
+    'Home, school & work pickup',
+  ],
+
   // Gold top bar message. "Up to $80" = BDE Ultimate saving in packages.json.
   topBar: 'MTO-approved BDE · Licence #L4H7 · Bundle & save up to $80',
 };
