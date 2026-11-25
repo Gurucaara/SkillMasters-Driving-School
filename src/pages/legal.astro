@@ -1,0 +1,161 @@
+---
+// Legal page: Privacy Policy · Terms of Service · Refund & Cancellation as tabs.
+// Copy and layout from docs/mockup/Legal.dc.html; the policy text lives in
+// src/content/legal/*.md so Rahul (or a lawyer) can edit it without touching code.
+//
+// Tabs follow the WAI-ARIA tabs pattern (arrow keys, Home/End) and stay in sync with the URL
+// hash, so footer links like /legal#refunds open the right tab. Without JavaScript all three
+// policies show one after another, each with its own #anchor.
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageBanner from '../components/PageBanner.astro';
+import { site } from '../data/site';
+
+const policies = await Promise.all(
+  (await getCollection('legal'))
+    .sort((a, b) => a.data.order - b.data.order)
+    .map(async (p) => ({ ...p, Content: (await render(p)).Content }))
+);
+const lastUpdated = new Date(Math.max(...policies.map((p) => p.data.updated.valueOf())));
+const updatedLabel = lastUpdated.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+---
+
+<BaseLayout
+  title="Privacy, Terms & Refunds"
+  description="Skillmasters Driving School's privacy policy, terms of service, and refund and cancellation policy, in plain language."
+>
+  <PageBanner
+    crumb="Legal"
+    eyebrow="POLICIES"
+    title="Privacy, terms & refunds"
+    intro="Plain-language policies so you know exactly how we work."
+  />
+
+  <section class="border-b border-border bg-section">
+    <div class="mx-auto max-w-[900px] px-4 py-12 sm:px-6 sm:py-16">
+      <div data-tabs>
+        <div role="tablist" aria-label="Policies" class="mb-5 hidden flex-wrap gap-2 [.js_&]:flex">
+          {policies.map((p, i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`tab-${p.id}`}
+              aria-controls={p.id}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              tabindex={i === 0 ? 0 : -1}
+              data-tab={p.id}
+              class="tab"
+            >
+              {p.data.tab}
+            </button>
+          ))}
+        </div>
+
+        <div class="rounded-[24px] border border-border bg-surface-raised p-6 sm:p-9">
+          <p class="mb-6 rounded-xl border border-gold bg-section px-4 py-3 text-sm">
+            <strong class="text-accent-text">Draft</strong> – Rahul should review these policies, and ideally have a lawyer check them, before launch.
+          </p>
+
+          {policies.map((p, i) => (
+            <div
+              id={p.id}
+              role="tabpanel"
+              aria-labelledby={`tab-${p.id}`}
+              tabindex="0"
+              data-panel={p.id}
+              class="panel scroll-mt-32 outline-none"
+              data-active={i === 0 ? '' : undefined}
+            >
+              <h2 class="text-2xl font-extrabold">{p.data.title}</h2>
+              <div class="prose mt-2 [&_h2]:mt-7 [&_h2]:text-lg">
+                <p.Content />
+              </div>
+            </div>
+          ))}
+
+          <p class="mt-8 border-t border-border pt-5 text-sm text-fg-muted">
+            Last updated: {updatedLabel} · Questions: <a href={`mailto:${site.email}`} class="font-semibold text-accent-text underline">{site.email}</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .tab {
+    min-height: 44px;
+    padding: 0.6rem 1.1rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface-raised);
+    color: var(--fg);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    transition: border-color 0.2s;
+  }
+  .tab:hover {
+    border-color: var(--color-gold);
+  }
+  .tab[aria-selected='true'] {
+    border-color: var(--color-ink);
+    background: var(--color-ink);
+    color: #f0c45a;
+  }
+  :global(.dark) .tab[aria-selected='true'] {
+    border-color: var(--color-gold);
+    background: #000;
+  }
+  /* With JavaScript only the selected policy shows; without it, all three stack. */
+  :global(.js) .panel:not([data-active]) {
+    display: none;
+  }
+  .panel + .panel {
+    margin-top: 3rem;
+  }
+  :global(.js) .panel + .panel {
+    margin-top: 0;
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-tabs]');
+  if (root) {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
+    const ids = tabs.map((t) => t.dataset.tab!);
+
+    function select(id: string, { focus = false, updateHash = false } = {}) {
+      if (!ids.includes(id)) return;
+      tabs.forEach((t) => {
+        const on = t.dataset.tab === id;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        if (on && focus) t.focus();
+      });
+      panels.forEach((p) => p.toggleAttribute('data-active', p.dataset.panel === id));
+      if (updateHash) history.replaceState(null, '', `#${id}`);
+    }
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(tab.dataset.tab!, { updateHash: true }));
+      tab.addEventListener('keydown', (e) => {
+        const next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+        if (next === undefined) return;
+        e.preventDefault();
+        select(ids[(next + tabs.length) % tabs.length], { focus: true, updateHash: true });
+      });
+    });
+
+    // Open the tab named in the URL (/legal#refunds), and follow in-page links like #refunds.
+    const fromHash = () => {
+      const id = location.hash.slice(1);
+      if (ids.includes(id)) {
+        select(id);
+        root.scrollIntoView({ block: 'start' });
+      }
+    };
+    window.addEventListener('hashchange', fromHash);
+    fromHash();
+  }
+</script>

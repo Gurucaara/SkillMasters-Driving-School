@@ -23,4 +23,16 @@ const blog = defineCollection({
     }),
 });
 
-export const collections = { blog };
+// Legal policies shown as tabs on /legal. The file name is the tab's anchor (#privacy, …).
+const legal = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/legal' }),
+  schema: z.object({
+    title: z.string(),
+    /** Short label on the tab button. */
+    tab: z.string(),
+    order: z.number(),
+    updated: z.coerce.date(),
+  }),
+});
+
+export const collections = { blog, legal };
