@@ -22,6 +22,8 @@ export const site = {
   areas: ['London', 'St. Thomas', 'Thorndale', 'Dorchester'],
   regionShort: 'London, ON & area',
   languages: ['English', 'Hindi', 'Punjabi'],
+  languageCodes: ['EN', 'HI', 'PA'],
+  experience: { drivingYears: 20, teachingYears: 3 },
 
   licences: {
     bde: 'L4H7', // MTO BDE Course Provider Licence

@@ -22,6 +22,11 @@
   --border: #EADFCB;
   --accent-text: #8A5F00;
   --header: rgb(255 255 255 / 0.91); /* sticky header, translucent over blur */
+  --fg-soft: #2E2A24; /* body copy a step softer than headings */
+  --glow: #E6A81740; /* gold button glow */
+  --hero-bg: linear-gradient(180deg, #FFF3D9, #FFFBF2 60%, #FFFFFF);
+  --grad-text: linear-gradient(90deg, #B27D00, #9A6B00); /* gold headline accent; #B27D00 (not the spec's #D99A00) keeps 3:1+ on the hero */
+  --road: #22201C;
   color-scheme: light;
 }
 
@@ -33,6 +38,11 @@
   --border: #2E2A22;
   --accent-text: #E6A817;
   --header: rgb(11 11 11 / 0.9);
+  --fg-soft: #E2D9C7;
+  --glow: #E6B33C55;
+  --hero-bg: linear-gradient(180deg, #07070A, #14110B 60%, #1C170D);
+  --grad-text: linear-gradient(90deg, #F4D27A, #E6A817);
+  --road: #050505;
   color-scheme: dark;
 }
 
@@ -44,6 +54,8 @@
   --color-border: var(--border);
   --color-accent-text: var(--accent-text);
   --color-header: var(--header);
+  --color-fg-soft: var(--fg-soft);
+  --color-road: var(--road);
 }
 
 @layer base {
