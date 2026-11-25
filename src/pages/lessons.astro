@@ -1,0 +1,105 @@
+---
+// G & G2 Lessons page: banner → 4 lesson cards → G2 vs full G practice lists → dual-brake car
+// photo → gold CTA band. Copy and layout from docs/mockup/Lessons.dc.html.
+// Cards use the "lessons" wording from packages.json; prices are the same everywhere.
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageBanner from '../components/PageBanner.astro';
+import PackageCard from '../components/PackageCard.astro';
+import TickList from '../components/TickList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import dualBrake from '../assets/images/real/dual-brake.jpg';
+import { getPackage, money, type PackageId } from '../data/packages';
+
+const cardIds: PackageId[] = ['lesson-1', 'lessons-4', 'lessons-10', 'road-test'];
+const cards = cardIds.map(getPackage);
+const lesson = getPackage('lesson-1');
+const tenPack = getPackage('lessons-10');
+const perHour = money(tenPack.price / 10);
+
+const g2Practice = [
+  { title: 'City driving', text: 'intersections, turns and lane changes' },
+  { title: 'Parking', text: 'parallel, reverse and hill parking' },
+  { title: 'Test routes', text: 'practice near London test areas' },
+  { title: 'Mock test', text: 'feedback like a real examiner' },
+];
+const gPractice = [
+  { title: 'Highway driving', text: 'merging and exiting at speed' },
+  { title: 'Advanced manoeuvres', text: 'lane changes in heavy traffic' },
+  { title: 'Hazard awareness', text: 'scanning and planning ahead' },
+  { title: 'Mock G test', text: 'so test day feels familiar' },
+];
+---
+
+<BaseLayout
+  title="G & G2 Lessons"
+  description={`Private G2 and G driving lessons in London, Ontario with pickup from home, school or work. Single lessons ${money(lesson.price)}, or bundle hours and pay ${perHour}/hr.`}
+>
+  <PageBanner
+    crumb="G & G2 Lessons"
+    eyebrow="PRIVATE IN-CAR LESSONS"
+    title="G & G2 driving lessons"
+    intro="One-on-one lessons with pickup from home, school or work. Build real skills for your road test and beyond."
+  />
+
+  <!-- Lesson packs -->
+  <section aria-labelledby="packs-title" class="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-[88px]">
+    <div class="reveal mb-9 max-w-[680px]">
+      <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">LESSON PACKS</p>
+      <h2 id="packs-title" class="mt-2.5 text-[2rem] font-extrabold leading-[1.1] sm:text-[40px]">Pick your lessons</h2>
+      <p class="mt-2.5 text-[17px] leading-relaxed text-fg-muted">Bundle hours and pay just {perHour}/hr.</p>
+    </div>
+    <ul class="grid gap-x-[22px] gap-y-8 pt-3 sm:grid-cols-2 lg:grid-cols-4">
+      {cards.map((pkg) => (
+        <li class="reveal"><PackageCard pkg={pkg} variant="lessons" /></li>
+      ))}
+    </ul>
+    <p class="mt-4 text-[13px] text-fg-muted">Savings vs {money(lesson.price)} single lessons. All prices CAD + HST.</p>
+  </section>
+
+  <!-- What you'll practise -->
+  <section aria-label="What you'll practise" class="border-y border-border bg-section">
+    <div class="mx-auto grid max-w-[1200px] gap-10 px-4 py-16 sm:px-6 sm:py-[88px] lg:grid-cols-2">
+      <div class="reveal rounded-[22px] border border-border bg-surface-raised p-[30px]">
+        <h2 class="mb-3.5 text-[26px] font-extrabold">Going for your G2</h2>
+        <TickList items={g2Practice} class="gap-3" />
+      </div>
+      <div class="reveal rounded-[22px] bg-ink p-[30px] text-[#F5EFE3] dark:bg-black dark:ring-1 dark:ring-border">
+        <h2 class="mb-3.5 text-[26px] font-extrabold text-[#F0C45A]">Going for your full G</h2>
+        <ul class="flex flex-col gap-3 text-[#E2D9C7]">
+          {gPractice.map((item) => (
+            <li class="flex gap-3.5 leading-relaxed">
+              <span class="flex size-7 flex-none items-center justify-center rounded-full bg-[#E6B33C] text-sm font-extrabold text-ink" aria-hidden="true">✓</span>
+              <p><strong class="text-[#F5EFE3]">{item.title}</strong> – {item.text}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- The car -->
+  <section aria-labelledby="car-title" class="mx-auto flex max-w-[1200px] flex-col gap-10 px-4 py-16 sm:px-6 sm:py-[88px] lg:flex-row lg:items-center">
+    <div class="reveal min-w-0 lg:flex-[1_1_420px]">
+      <h2 id="car-title" class="mb-3.5 text-[1.75rem] font-extrabold sm:text-4xl">Learn in our dual-brake Mazda 3</h2>
+      <p class="text-[17px] leading-relaxed text-fg-muted">
+        A modern automatic with an instructor brake, so you can focus on learning while we keep every lesson safe.
+      </p>
+    </div>
+    <div class="reveal relative h-[260px] min-w-0 overflow-hidden rounded-3xl sm:h-[360px] lg:flex-[1_1_460px]">
+      <Image
+        src={dualBrake}
+        alt="Instructor dual brake in the training car"
+        widths={[480, 720, 1080, 1440]}
+        sizes="(min-width: 1024px) 580px, calc(100vw - 32px)"
+        class="absolute inset-0 size-full object-cover"
+      />
+    </div>
+  </section>
+
+  <CtaBand
+    text="Book online in minutes. Pay securely with Stripe."
+    buttonLabel="Buy a package"
+    secondary={{ label: 'Ask a question', href: '/contact' }}
+  />
+</BaseLayout>

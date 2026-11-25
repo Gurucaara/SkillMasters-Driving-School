@@ -2,6 +2,7 @@
   "currency": "CAD",
   "taxNote": "+ 13% HST",
   "validityMonths": 12,
+  "_variants": "Optional per-page wording. A package's variants.<page> fields override name, note, ribbon, featured and includes on that page only. Prices always come from the package itself.",
   "packages": [
     {
       "id": "bde",
@@ -66,7 +67,19 @@
       ],
       "featured": false,
       "listLabel": "10-Hour Lesson Pack",
-      "bundle": true
+      "bundle": true,
+      "variants": {
+        "lessons": {
+          "name": "10-Hour Pack",
+          "ribbon": "BEST VALUE",
+          "featured": true,
+          "includes": [
+            "10 hrs in-car",
+            "Just $45/hr",
+            "Full road test prep"
+          ]
+        }
+      }
     },
     {
       "id": "lessons-4",
@@ -82,7 +95,17 @@
       ],
       "featured": false,
       "listLabel": "4-Hour Lesson Pack",
-      "bundle": true
+      "bundle": true,
+      "variants": {
+        "lessons": {
+          "name": "4-Hour Pack",
+          "includes": [
+            "4 hrs in-car",
+            "Just $45/hr",
+            "Great refresher"
+          ]
+        }
+      }
     },
     {
       "id": "lesson-1",
@@ -96,7 +119,18 @@
       ],
       "featured": false,
       "listLabel": "Single lesson (1 hr)",
-      "bundle": false
+      "bundle": false,
+      "variants": {
+        "lessons": {
+          "name": "Single Lesson",
+          "note": "1 hour, pickup included",
+          "includes": [
+            "G2 or G preparation",
+            "Home, school or work pickup",
+            "Pay as you go"
+          ]
+        }
+      }
     },
     {
       "id": "road-test",
@@ -111,7 +145,18 @@
       ],
       "featured": false,
       "listLabel": "Road test package (car + warm-up)",
-      "bundle": false
+      "bundle": false,
+      "variants": {
+        "lessons": {
+          "name": "Road Test Package",
+          "note": "Car + warm-up on test day",
+          "includes": [
+            "Dual-brake Mazda 3",
+            "Warm-up drive before test",
+            "G2 or G test"
+          ]
+        }
+      }
     }
   ]
 }

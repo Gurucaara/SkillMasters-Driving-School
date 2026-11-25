@@ -2,12 +2,14 @@
 // One package card: ribbon, name, SAVE badge, price, real "bought separately" total, what's
 // included and a Buy button. Used on Home, BDE, Lessons and Pricing (docs/design-spec.md).
 // Strike-through prices are only ever the real bought-separately total from packages.json.
-import { savings, money, checkoutHref, type Package, type PackageId } from '../data/packages';
+import { savings, money, checkoutHref, withVariant, type Package } from '../data/packages';
 
 interface Props {
   pkg: Package;
+  /** Page wording to use from packages.json "variants" (e.g. "lessons"). */
+  variant?: string;
 }
-const { pkg } = Astro.props;
+const pkg = withVariant(Astro.props.pkg, Astro.props.variant);
 const saved = savings(pkg);
 ---
 
@@ -48,7 +50,7 @@ const saved = savings(pkg);
   </ul>
 
   <a
-    href={checkoutHref(pkg.id as PackageId)}
+    href={checkoutHref(pkg.id)}
     aria-label={`Buy now: ${pkg.name}`}
     class:list={[
       'mt-auto rounded-full border-2 py-[13px] text-center font-bold transition',
