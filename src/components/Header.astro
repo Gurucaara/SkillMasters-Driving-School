@@ -1,0 +1,149 @@
+---
+// Site header: gold top bar (scrolls away) + sticky bar with logo, nav, theme toggle, "Book now".
+// Below xl (1280px) the nav collapses into a menu button. Layout follows docs/mockup/Header.dc.html.
+import { Image } from 'astro:assets';
+import ThemeToggle from './ThemeToggle.astro';
+import logo from '../assets/images/real/logo.png';
+import { site, nav, cta } from '../data/site';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path === href || path.startsWith(href + '/');
+---
+
+<a
+  href="#main"
+  class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-3 focus:z-[60] focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:font-semibold focus:text-ink"
+>
+  Skip to content
+</a>
+
+<!-- Gold top bar -->
+<div class="bg-gold text-[13px] font-semibold text-ink sm:text-sm">
+  <div class="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-x-5 gap-y-1.5 px-4 py-2 sm:px-6">
+    <p class="hidden sm:block">{site.topBar}</p>
+    <p class="sm:hidden">BDE Licence #{site.licences.bde}</p>
+    <div class="flex items-center gap-4">
+      <a href={site.phone.href} class="hover:underline">{site.phone.display}</a>
+      <span class="hidden md:inline">{site.regionShort}</span>
+      <a href={site.socials.facebook} aria-label="Facebook" class="flex" rel="noopener" target="_blank">
+        <svg aria-hidden="true" class="size-[18px]" viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v8h4v-8h3l1-4h-4V8z" /></svg>
+      </a>
+      <a href={site.socials.instagram} aria-label="Instagram" class="flex" rel="noopener" target="_blank">
+        <svg aria-hidden="true" class="size-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" /></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<header class="sticky top-0 z-50 border-b border-border bg-header backdrop-blur-md">
+  <div class="mx-auto flex max-w-[1200px] items-center justify-between gap-4 px-4 py-2.5 sm:px-6">
+    <a href="/" class="flex items-center gap-2.5" aria-label={`${site.shortName} home`}>
+      <Image
+        src={logo}
+        alt=""
+        width={50}
+        height={50}
+        densities={[1, 2]}
+        loading="eager"
+        class="size-[50px] rounded-xl bg-[#FBF7EE] object-contain p-1"
+      />
+      <span class="leading-tight">
+        <span class="block font-display text-[17px] font-extrabold tracking-[0.04em]">SKILLMASTERS</span>
+        <span class="block text-[11px] tracking-[0.1em] text-fg-muted">DRIVING SCHOOL LTD.</span>
+      </span>
+    </a>
+
+    <nav aria-label="Main" class="hidden xl:block">
+      <ul class="flex items-center gap-x-[18px] whitespace-nowrap text-sm">
+        {nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              class="block border-b-2 border-transparent py-2 font-medium text-fg transition-colors hover:text-accent-text aria-[current=page]:border-gold aria-[current=page]:font-bold aria-[current=page]:text-accent-text"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <ThemeToggle />
+      <a
+        href={cta.href}
+        class="hidden whitespace-nowrap rounded-full bg-gold px-5 py-3 text-[15px] font-bold text-ink transition hover:-translate-y-px hover:brightness-95 sm:inline-flex"
+      >
+        {cta.label}
+      </a>
+      <button
+        type="button"
+        data-menu-button
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        aria-label="Open menu"
+        class="inline-flex size-11 items-center justify-center rounded-full border border-border bg-surface-raised text-fg xl:hidden"
+      >
+        <svg data-icon-open class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+        <svg data-icon-close class="hidden size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6 6 18" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" hidden class="max-h-[calc(100dvh-72px)] overflow-y-auto border-t border-border bg-surface-raised xl:hidden">
+    <nav aria-label="Mobile" class="mx-auto max-w-[1200px] px-4 py-4 sm:px-6">
+      <ul class="flex flex-col gap-1">
+        {nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              class="block rounded-xl px-3 py-3 font-medium text-fg hover:bg-surface aria-[current=page]:bg-surface aria-[current=page]:font-bold aria-[current=page]:text-accent-text"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a href={cta.href} class="mt-4 flex justify-center rounded-full bg-gold px-5 py-3 font-bold text-ink sm:hidden">
+        {cta.label}
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Mobile menu: toggle, close on link click / Escape, and reset when resized to desktop.
+  const button = document.querySelector<HTMLButtonElement>('[data-menu-button]');
+  const menu = document.getElementById('mobile-menu');
+
+  if (button && menu) {
+    const setOpen = (open: boolean) => {
+      menu.hidden = !open;
+      button.setAttribute('aria-expanded', String(open));
+      button.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      button.querySelector('[data-icon-open]')?.classList.toggle('hidden', open);
+      button.querySelector('[data-icon-close]')?.classList.toggle('hidden', !open);
+    };
+
+    button.addEventListener('click', () => setOpen(menu.hidden));
+    menu.addEventListener('click', (e) => {
+      if ((e.target as Element).closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.hidden) {
+        setOpen(false);
+        button.focus();
+      }
+    });
+    window.matchMedia('(min-width: 1280px)').addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+</script>

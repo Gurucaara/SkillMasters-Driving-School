@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Skillmasters Driving School – Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Montserrat:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+
+body{margin:0}
+.t-light{--bg:#FFFFFF;--bg2:#FBF5EA;--ink:#0B0B0B;--surface:#FFFFFF;--surface2:#F6EEDD;--line:#EADFCB;--text:#141414;--text2:#2E2A24;--muted:#5A5348;--accent:#E6A817;--accent-text:#8A5F00;--on-accent:#0B0B0B;--glow:#E6A81740;--good:#0B7A45;--hero:linear-gradient(180deg,#FFF3D9,#FFFBF2 60%,#FFFFFF);--city:#EADFCB;--win:#FFFFFF00;--road:#22201C;--gradtext:linear-gradient(90deg,#D99A00,#9A6B00);--header:#FFFFFFE8}
+.t-dark{--bg:#0B0B0B;--bg2:#141210;--ink:#000000;--surface:#17150F;--surface2:#1F1C15;--line:#2E291F;--text:#F5EFE3;--text2:#E2D9C7;--muted:#B8AE9C;--accent:#E6B33C;--accent-text:#F0C45A;--on-accent:#0B0B0B;--glow:#E6B33C55;--good:#4ADE80;--hero:linear-gradient(180deg,#07070A,#14110B 60%,#1C170D);--city:#1E1A12;--win:#F4D27AB3;--road:#050505;--gradtext:linear-gradient(90deg,#F4D27A,#E6A817);--header:#0B0B0BE8}
+h1,h2,h3{font-family:Montserrat,Inter,sans-serif;letter-spacing:-0.01em}
+a{color:#8A5F00}a:hover{color:#5C3F00}
+.grad{background:var(--gradtext);-webkit-background-clip:text;background-clip:text;color:transparent}
+.road{background:repeating-linear-gradient(90deg,#F4D27A 0 60px,transparent 60px 120px);animation:road 1.2s linear infinite}
+@keyframes road{to{background-position:-120px 0}}
+.cruise svg{animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-3px)}}
+.marquee{display:flex;gap:20px;width:max-content;animation:slide 45s linear infinite}
+.marquee.rev{animation-direction:reverse;animation-duration:60s}
+.marquee:hover{animation-play-state:paused}
+@keyframes slide{to{transform:translateX(calc(-50% - 10px))}}
+.fade{-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+details summary::-webkit-details-marker{display:none}
+.lift{transition:transform .25s ease,box-shadow .25s ease}.lift:hover{transform:translateY(-6px);box-shadow:0 18px 40px #00000026}
+@supports (animation-timeline: view()){.reveal{animation:rise linear both;animation-timeline:view();animation-range:entry 0% cover 22%}}
+@keyframes rise{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+.mbar{display:none}@media (max-width:720px){.mbar{display:flex}footer{padding-bottom:84px}}
+.opt{transition:border-color .2s,transform .2s}.opt:hover{border-color:var(--accent)!important;transform:translateY(-2px)}
+@media (prefers-reduced-motion:reduce){.road,.cruise svg,.marquee,.reveal{animation:none}.lift:hover{transform:none}}
+.mbar{display:none}@media (max-width:720px){.mbar{display:flex}.wa{display:none!important}}
+.navlink:hover{color:var(--accent-text)!important}
+</style>
+</helmet>
+<div class="{{themeClass}}" style="width:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif">
+
+<dc-import name="Header" active="home" is-dark="{{isDark}}" on-toggle="{{toggle}}" hint-size="100%,118px"></dc-import>
+
+<section style="position:relative;overflow:hidden;background:var(--hero)">
+<div style="position:relative;max-width:1200px;margin:0 auto;padding:64px 24px 72px;display:flex;flex-wrap:wrap;gap:48px;align-items:center">
+<div style="flex:1 1 520px;min-width:0">
+<div style="font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--accent-text)">LONDON, ONTARIO &amp; SURROUNDING AREAS</div>
+<h1 style="font-size:60px;line-height:1.05;margin:16px 0 18px">Learn to drive with confidence. <span class="grad">Get road-ready with Skillmasters.</span></h1>
+<p style="font-size:19px;line-height:1.6;color:var(--text2);margin:0 0 30px;max-width:540px">Personalized, patient lessons and an MTO-approved Beginner Driver Education (BDE) course, with pickup across London, St. Thomas, Thorndale and Dorchester.</p>
+<div style="display:flex;flex-wrap:wrap;gap:14px">
+<a href="Checkout.dc.html" style="background:var(--accent);color:var(--on-accent);padding:17px 28px;border-radius:999px;font-weight:700;text-decoration:none;box-shadow:0 8px 28px var(--glow)">Book a lesson →</a>
+<a href="#finder" style="border:2px solid var(--text);color:var(--text);padding:15px 26px;border-radius:999px;font-weight:700;text-decoration:none">Find my package</a>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:28px;margin-top:36px">
+<div><div style="font-family:Montserrat,sans-serif;font-weight:800;font-size:26px">20 yrs</div><div style="font-size:13px;color:var(--muted)">driving experience</div></div>
+<div><div style="font-family:Montserrat,sans-serif;font-weight:800;font-size:26px">EN · HI · PA</div><div style="font-size:13px;color:var(--muted)">languages taught</div></div>
+<div><div style="font-family:Montserrat,sans-serif;font-weight:800;font-size:26px">7 days</div><div style="font-size:13px;color:var(--muted)">a week</div></div>
+</div>
+</div>
+<div style="flex:1 1 520px;min-width:0;position:relative">
+<div style="position:relative;border-radius:28px;overflow:hidden;aspect-ratio:1/1;max-height:560px;box-shadow:0 30px 70px #00000040;border:3px solid var(--accent)">
+<img src="/_blob/90f22a171a6640a8a15cc111ed633033" alt="The Skillmasters Mazda 3 training car with its lion roof sign" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%">
+</div>
+<div style="position:absolute;left:-22px;bottom:-22px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 16px 40px #00000026"><span style="width:40px;height:40px;border-radius:50%;background:var(--accent);color:#0B0B0B;display:flex;align-items:center;justify-content:center;font-weight:800">✓</span><span><strong style="display:block">Dual-brake safety</strong><span style="font-size:13px;color:var(--muted)">Every lesson, every student</span></span></div>
+<div style="position:absolute;right:-14px;top:-18px;background:var(--ink);color:#F0C45A;border-radius:999px;padding:10px 16px;font-weight:800;font-size:14px;box-shadow:0 12px 30px #00000033">MTO Licence #L4H7</div>
+</div>
+</div>
+<div style="position:absolute;left:0;right:0;bottom:0;height:16px;background:var(--road)"></div>
+<div class="road" style="position:absolute;left:0;right:0;bottom:5px;height:5px"></div>
+</section>
+
+<section style="background:var(--ink);color:#F5EFE3">
+<div style="max-width:1200px;margin:0 auto;padding:22px 24px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px 24px;font-size:15px;font-weight:500">
+<span><span style="color:#E6B33C">◆</span> MTO-approved BDE course</span><span><span style="color:#E6B33C">◆</span> Licensed &amp; commercially insured</span><span><span style="color:#E6B33C">◆</span> Dual-brake Mazda 3</span><span><span style="color:#E6B33C">◆</span> Home, school &amp; work pickup</span>
+</div>
+</section>
+
+<section style="max-width:1200px;margin:0 auto;padding:88px 24px">
+<div class="reveal" style="text-align:center;max-width:640px;margin:0 auto 40px">
+<h2 style="font-size:40px;margin:0 0 12px">Who we serve</h2>
+<p style="font-size:17px;color:var(--muted);margin:0">Wherever you are in your driving journey, there's a program built for you.</p>
+</div>
+<div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px">
+<sc-for list="{{serve}}" as="s" hint-placeholder-count="4">
+<a href="#finder" class="lift" style="position:relative;display:block;height:300px;border-radius:20px;overflow:hidden;background:#2A2418;text-decoration:none;color:#FFFFFF">
+<img src="{{s.img}}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"><span style="position:absolute;top:12px;right:12px;background:#0B0B0BB3;color:#FFFFFF;font-size:10px;font-weight:700;letter-spacing:.1em;padding:3px 7px;border-radius:6px">SAMPLE</span>
+<div style="position:absolute;left:0;right:0;bottom:0;padding:20px;background:linear-gradient(0deg,#000000E6,#00000000)">
+<div style="font-family:Montserrat,sans-serif;font-weight:800;font-size:20px">{{s.title}}</div>
+<div style="font-size:14px;color:#E2D9C7;margin:6px 0 10px;line-height:1.5">{{s.text}}</div>
+<div style="font-size:14px;font-weight:700;color:#F0C45A">View programs →</div>
+</div>
+</a>
+</sc-for>
+</div>
+</section>
+
+<section id="finder" style="max-width:1200px;margin:0 auto;padding:0 24px 88px">
+<div class="reveal" style="background:var(--ink);color:#F5EFE3;border-radius:28px;padding:44px;display:flex;flex-wrap:wrap;gap:40px;position:relative;overflow:hidden">
+<img src="/_blob/7a73d9ea0051e6766381e6da7801cf5e" alt="" aria-hidden="true" style="position:absolute;right:-60px;bottom:-80px;width:340px;opacity:.07;filter:grayscale(1) invert(1)">
+<div style="flex:1 1 300px;min-width:0;position:relative">
+<div style="font-size:13px;font-weight:700;letter-spacing:.14em;color:#F0C45A">30-SECOND PACKAGE FINDER</div>
+<h2 style="font-size:38px;line-height:1.1;margin:12px 0 14px">Not sure where to start?</h2>
+<p style="margin:0 0 24px;color:#C9BFAE;line-height:1.6">Answer 3 quick questions and we'll point you to the package that fits.</p>
+<div style="height:8px;background:#2E291F;border-radius:999px;overflow:hidden"><div style="height:100%;width:{{pct}};background:#E6B33C;border-radius:999px;transition:width .3s"></div></div>
+<div style="font-size:13px;color:#C9BFAE;margin-top:10px">{{progressLabel}}</div>
+</div>
+<div style="flex:1 1 520px;min-width:0;position:relative">
+<sc-if value="{{asking}}" hint-placeholder-val="{{ true }}">
+<h3 style="margin:0 0 18px;font-size:24px">{{qTitle}}</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
+<sc-for list="{{qOpts}}" as="o" hint-placeholder-count="3">
+<button type="button" class="opt" onClick="{{o.pick}}" style="text-align:left;min-height:92px;padding:18px;border-radius:16px;border:2px solid #3A3426;background:#17150F;color:#F5EFE3;cursor:pointer;font:inherit"><span style="display:block;font-weight:800;font-size:18px;font-family:Montserrat,sans-serif">{{o.label}}</span><span style="display:block;font-size:13px;color:#C9BFAE;margin-top:4px">{{o.sub}}</span></button>
+</sc-for>
+</div>
+<sc-if value="{{canBack}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{back}}" style="margin-top:16px;background:none;border:0;color:#F0C45A;font:inherit;font-weight:600;cursor:pointer;min-height:44px">← Back</button></sc-if>
+</sc-if>
+<sc-if value="{{done}}" hint-placeholder-val="{{ false }}">
+<div style="background:#17150F;border:2px solid #E6B33C;border-radius:20px;padding:28px">
+<div style="font-size:13px;font-weight:700;letter-spacing:.12em;color:#F0C45A">YOUR BEST MATCH</div>
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;margin:10px 0 8px"><h3 style="margin:0;font-size:28px">{{rec.name}}</h3><span style="font-family:Montserrat,sans-serif;font-size:32px;font-weight:800;color:#F0C45A">{{rec.price}} <span style="font-size:14px;color:#C9BFAE;font-weight:500">+ HST</span></span></div>
+<p style="margin:0 0 6px;color:#E2D9C7;line-height:1.6">{{rec.why}}</p>
+<sc-if value="{{rec.extra}}" hint-placeholder-val="{{ false }}"><p style="margin:0;color:#F0C45A;font-weight:600">{{rec.extra}}</p></sc-if>
+<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:22px"><a href="Checkout.dc.html" style="background:#E6B33C;color:#0B0B0B;padding:14px 24px;border-radius:999px;font-weight:700;text-decoration:none">Book this package →</a><button type="button" onClick="{{restart}}" style="background:none;border:1px solid #3A3426;color:#F5EFE3;padding:13px 22px;border-radius:999px;font:inherit;font-weight:600;cursor:pointer">Start over</button></div>
+</div>
+</sc-if>
+</div>
+</div>
+</section>
+
+<section id="packages" style="background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+<div style="max-width:1200px;margin:0 auto;padding:88px 24px">
+<div class="reveal" style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:36px">
+<div><div style="font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--accent-text)">PACKAGES &amp; OFFERS</div><h2 style="font-size:40px;margin:10px 0 0">Bundle up and save</h2></div>
+<p style="margin:0;color:var(--muted);max-width:420px">Every package costs less than buying the same lessons and services one by one.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px;align-items:stretch">
+<sc-for list="{{packs}}" as="k" hint-placeholder-count="3">
+<div class="lift reveal" style="position:relative;background:var(--surface);border:{{k.border}};border-radius:22px;padding:28px;display:flex;flex-direction:column;gap:14px;box-shadow:{{k.shadow}}">
+<sc-if value="{{k.ribbon}}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:-13px;left:28px;background:var(--ink);color:#F0C45A;font-size:12px;font-weight:800;letter-spacing:.08em;padding:5px 12px;border-radius:999px">{{k.ribbon}}</div></sc-if>
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><h3 style="margin:0;font-size:21px">{{k.name}}</h3><sc-if value="{{k.save}}" hint-placeholder-val="{{ true }}"><span style="flex:none;background:var(--good);color:#FFFFFF;font-size:12px;font-weight:800;padding:5px 10px;border-radius:999px">SAVE {{k.save}}</span></sc-if></div>
+<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><span style="font-family:Montserrat,sans-serif;font-size:44px;font-weight:800">{{k.price}}</span><sc-if value="{{k.was}}" hint-placeholder-val="{{ true }}"><span style="font-size:20px;color:var(--muted);text-decoration:line-through">{{k.was}}</span></sc-if><span style="font-size:14px;color:var(--muted)">+ HST</span></div>
+<sc-if value="{{k.was}}" hint-placeholder-val="{{ true }}"><div style="font-size:13px;color:var(--muted)">{{k.wasNote}}</div></sc-if>
+<ul style="margin:0;padding-left:18px;line-height:1.9;color:var(--text2)"><sc-for list="{{k.items}}" as="it" hint-placeholder-count="3"><li>{{it}}</li></sc-for></ul>
+<a href="Checkout.dc.html" style="margin-top:auto;text-align:center;background:{{k.btnBg}};color:{{k.btnColor}};border:2px solid var(--text);padding:13px;border-radius:999px;font-weight:700;text-decoration:none">Buy now</a>
+</div>
+</sc-for>
+</div>
+<div style="margin-top:36px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:8px 24px">
+<div style="display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--line)"><span>Single lesson (1 hr)</span><strong>$50</strong></div>
+<div style="display:flex;justify-content:space-between;padding:16px 0"><span>Road test package (car + warm-up)</span><strong>$150</strong></div>
+</div>
+<p style="font-size:13px;color:var(--muted);margin:16px 0 0">Savings are compared with buying each item separately at our regular prices ($599 BDE, $50/hr lessons, $150 road test package). All prices in CAD + HST. <a href="Pricing.dc.html" style="color:var(--accent-text);font-weight:700">See full pricing →</a></p>
+</div>
+</section>
+
+<section id="why" style="max-width:1200px;margin:0 auto;padding:88px 24px;display:flex;flex-wrap:wrap;gap:48px;align-items:center">
+<div class="reveal" style="flex:1 1 460px;min-width:0">
+<h2 style="font-size:40px;margin:0 0 12px">Why Skillmasters?</h2>
+<p style="font-size:17px;color:var(--muted);line-height:1.6;margin:0 0 26px">We focus on each student's needs, building confidence, patience and real-world skills, not just passing a test.</p>
+<div style="display:flex;flex-direction:column;gap:16px">
+<sc-for list="{{why}}" as="w" hint-placeholder-count="5">
+<div style="display:flex;gap:14px"><span style="flex:none;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px">✓</span><div><strong>{{w.t}}</strong><span style="color:var(--muted)"> – {{w.d}}</span></div></div>
+</sc-for>
+</div>
+</div>
+<div class="reveal" style="flex:1 1 420px;min-width:0;height:380px;border-radius:24px;overflow:hidden;position:relative"><img src="/_blob/86355c0f02d94b4a2151605152455c11" alt="Instructor dual brake on the passenger side of the training car" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
+</section>
+
+<section style="border-top:1px solid var(--line);background:var(--bg2);overflow:hidden">
+<div style="max-width:1200px;margin:0 auto;padding:88px 24px 32px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end;justify-content:space-between">
+<div class="reveal" style="flex:1 1 520px;min-width:0"><div style="font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--accent-text)">REAL STUDENTS · REAL PASSES</div><h2 style="font-size:44px;line-height:1.1;margin:10px 0 10px">The <span class="grad">pass wall</span></h2><p style="font-size:17px;color:var(--muted);margin:0;max-width:560px">Our students on test day, next to the car they learned in.</p></div>
+<a href="Reviews.dc.html" style="display:flex;align-items:center;gap:14px;border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:14px 20px;text-decoration:none;color:var(--text)"><span style="font-family:Montserrat,sans-serif;font-size:32px;font-weight:800">5.0</span><span><span style="color:#E39B00;letter-spacing:2px">★★★★★</span><br><span style="font-size:13px;color:var(--muted)">48 Google reviews (sample) →</span></span></a>
+</div>
+<div class="fade" style="padding:12px 0">
+<div class="marquee">
+<sc-for list="{{passes}}" as="p" hint-placeholder-count="8">
+<figure style="margin:0;width:260px;height:340px;flex:none;border-radius:22px;overflow:hidden;position:relative;background:{{p.bg}};color:#FFFFFF">
+<img src="{{p.img}}" alt="Skillmasters student after passing their road test, next to the training car" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+<div style="position:absolute;top:14px;left:14px;background:#E6B33C;color:#0B0B0B;font-size:12px;font-weight:800;padding:5px 10px;border-radius:999px">✓ {{p.badge}}</div>
+<figcaption style="position:absolute;left:0;right:0;bottom:0;padding:18px;background:linear-gradient(0deg,#000000E6,#00000000)"><div style="font-weight:700">{{p.name}}</div><div style="font-size:13px;color:#E2D9C7">{{p.area}}</div></figcaption>
+</figure>
+</sc-for>
+</div>
+</div>
+<div class="fade" style="padding:12px 0 88px">
+<div class="marquee rev">
+<sc-for list="{{reviews}}" as="r" hint-placeholder-count="8">
+<blockquote style="margin:0;width:360px;flex:none;box-sizing:border-box;border:1px solid var(--line);background:var(--surface);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;justify-content:space-between"><span style="color:#E39B00;letter-spacing:3px">★★★★★</span><span style="font-size:12px;color:var(--muted)">Google review · <strong style="color:var(--accent-text)">SAMPLE</strong></span></div>
+<p style="margin:0;color:var(--text2);line-height:1.6;font-size:15px">“{{r.quote}}”</p>
+<div style="font-weight:700;font-size:15px">{{r.name}} <span style="font-weight:400;color:var(--muted);font-size:13px">· {{r.badge}}</span></div>
+</blockquote>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="faq" style="max-width:860px;margin:0 auto;padding:88px 24px">
+<h2 class="reveal" style="font-size:40px;margin:0 0 28px;text-align:center">Questions, answered</h2>
+<sc-for list="{{faqs}}" as="f" hint-placeholder-count="5">
+<details style="border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:18px 22px;margin-bottom:12px"><summary style="font-weight:700;font-size:17px;cursor:pointer;list-style:none">{{f.q}}</summary><p style="color:var(--muted);line-height:1.6;margin:12px 0 0">{{f.a}}</p></details>
+</sc-for>
+</section>
+
+<section style="background:var(--accent);color:#0B0B0B">
+<div style="max-width:1200px;margin:0 auto;padding:56px 24px;display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between">
+<div class="reveal"><h2 style="font-size:36px;margin:0 0 8px">Ready to hit the road?</h2><p style="margin:0;font-size:17px">Book your first lesson today. Flexible scheduling, 7 days a week.</p></div>
+<a href="Checkout.dc.html" style="background:#0B0B0B;color:#F0C45A;padding:17px 28px;border-radius:999px;font-weight:700;text-decoration:none">Book a lesson →</a>
+</div>
+</section>
+
+<section style="max-width:1200px;margin:0 auto;padding:88px 24px">
+<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:32px"><div class="reveal"><div style="font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--accent-text)">LEARN BEFORE YOU DRIVE</div><h2 style="font-size:40px;margin:10px 0 0">Free guides &amp; practice</h2></div><a href="Blog.dc.html" style="font-weight:700;color:var(--accent-text)">All articles →</a></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px">
+<a href="G1Test.dc.html" class="lift reveal" style="background:var(--ink);color:#F5EFE3;border-radius:22px;padding:28px;text-decoration:none;display:flex;flex-direction:column;gap:12px;min-height:220px"><span style="font-size:12px;font-weight:800;letter-spacing:.12em;color:#F0C45A">INTERACTIVE</span><strong style="font-family:Montserrat,sans-serif;font-size:24px;line-height:1.2">Free G1 practice test</strong><span style="color:#C9BFAE;line-height:1.6">6 real-style questions on Ontario road rules and signs. See your score instantly.</span><span style="margin-top:auto;color:#F0C45A;font-weight:700">Start the test →</span></a>
+<a href="Blog.dc.html" class="lift reveal" style="background:var(--surface);border:1px solid var(--line);color:var(--text);border-radius:22px;padding:28px;text-decoration:none;display:flex;flex-direction:column;gap:12px"><span style="font-size:12px;font-weight:800;letter-spacing:.12em;color:var(--accent-text)">GUIDE</span><strong style="font-family:Montserrat,sans-serif;font-size:21px;line-height:1.25">How to get your G1 in Ontario: step by step</strong><span style="color:var(--muted);line-height:1.6">Age, eye test, knowledge test and what to bring.</span><span style="margin-top:auto;color:var(--accent-text);font-weight:700">Read →</span></a>
+<a href="Blog.dc.html" class="lift reveal" style="background:var(--surface);border:1px solid var(--line);color:var(--text);border-radius:22px;padding:28px;text-decoration:none;display:flex;flex-direction:column;gap:12px"><span style="font-size:12px;font-weight:800;letter-spacing:.12em;color:var(--accent-text)">CHECKLIST</span><strong style="font-family:Montserrat,sans-serif;font-size:21px;line-height:1.25">G2 road test checklist for London, ON</strong><span style="color:var(--muted);line-height:1.6">What examiners look for and the mistakes to avoid.</span><span style="margin-top:auto;color:var(--accent-text);font-weight:700">Read →</span></a>
+</div>
+</section>
+<dc-import name="Footer" hint-size="100%,420px"></dc-import>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":1280,"height":6400}}'>
+class Component extends DCLogic {
+renderVals() {
+const theme = (this.state && this.state.theme) || this.props.theme || 'light';
+const isDark = theme === 'dark';
+const hot = { border: '2px solid var(--accent)', shadow: '0 12px 40px var(--glow)', btnBg: 'var(--accent)', btnColor: 'var(--on-accent)' };
+const std = { border: '1px solid var(--line)', shadow: 'none', btnBg: 'transparent', btnColor: 'var(--text)' };
+const packs = [
+  { ...std, name: 'BDE Course', price: '$599', was: '', save: '', wasNote: '', ribbon: '', items: ['20 hrs online learning', '10 hrs home-link', '10 hrs in-car training'] },
+  { ...hot, name: 'BDE + Road Test', price: '$699', was: '$749', save: '$50', wasNote: 'BDE $599 + road test package $150', ribbon: 'MOST POPULAR', items: ['Full BDE course', 'Car for your road test', 'Warm-up before the test'] },
+  { ...std, name: 'BDE Ultimate', price: '$769', was: '$849', save: '$80', wasNote: 'BDE $599 + 2 hrs $100 + road test $150', ribbon: 'BEST VALUE', items: ['Full BDE course', '+2 hr practice lesson', 'Car for your road test'] },
+  { ...std, name: '10-Hour Lesson Pack', price: '$450', was: '$500', save: '$50', wasNote: '10 × $50 single lessons', ribbon: '', items: ['10 hrs in-car lessons', 'Just $45/hr', 'Road test prep'] },
+  { ...std, name: '4-Hour Lesson Pack', price: '$180', was: '$200', save: '$20', wasNote: '4 × $50 single lessons', ribbon: '', items: ['4 hrs in-car lessons', 'Just $45/hr', 'Great refresher'] }
+];
+const st = this.state || {};
+const step = st.step || 0;
+const qs = [
+  { title: 'Which licence do you have now?', opts: [{ label: 'G1', sub: 'Learner licence', val: 'G1' }, { label: 'G2', sub: 'Going for my full G', val: 'G2' }] },
+  { title: 'How much driving have you done?', opts: [{ label: 'First time', sub: 'Brand new behind the wheel', val: 'new' }, { label: 'Some practice', sub: 'Comfortable on most roads', val: 'some' }, { label: 'Refresher', sub: 'Getting back on the road', val: 'refresh' }] },
+  { title: 'Do you need our car for your road test?', opts: [{ label: 'Yes, please', sub: 'Use the dual-brake Mazda', val: 'yes' }, { label: 'No', sub: "I'll bring my own", val: 'no' }] }
+];
+let rec = { name: '', price: '', why: '', extra: '' };
+if (step >= 3) {
+  if (st.a0 === 'G1') {
+    if (st.a2 === 'yes') rec = st.a1 === 'new'
+      ? { name: 'BDE Ultimate', price: '$769', why: 'The full BDE course plus 2 extra practice hours and our car on test day. Ideal when you are starting from zero.', extra: 'You save $80 vs buying separately.' }
+      : { name: 'BDE + Road Test', price: '$699', why: 'The full BDE course plus our car and a warm-up on test day.', extra: 'You save $50 vs buying separately.' };
+    else rec = { name: 'BDE Course', price: '$599', why: '20 hrs online, 10 hrs home-link and 10 hrs of private in-car training to build real skills.', extra: '' };
+  } else {
+    rec = st.a1 === 'some'
+      ? { name: '4-Hour Lesson Pack', price: '$180', why: 'Polish highway driving, parking and test routes before your G test.', extra: '' }
+      : { name: '10-Hour Lesson Pack', price: '$450', why: 'Enough time to rebuild confidence and get fully test-ready at $45/hr.', extra: '' };
+    if (st.a2 === 'yes') rec.extra = '+ Road test package ($150): our car and a warm-up on test day.';
+  }
+}
+const pimgs = ['/_blob/5236edb53e1a5ce8369d5a8767fbded7', '/_blob/92a8876beffef980c15b0d46259b49f7', '/_blob/a09173c6fef52b8f0a2dc7eb927a4a0c', '/_blob/5236edb53e1a5ce8369d5a8767fbded7', '/_blob/92a8876beffef980c15b0d46259b49f7', '/_blob/a09173c6fef52b8f0a2dc7eb927a4a0c'];
+const pnames = ['Skillmasters grad', 'Skillmasters grad', 'Skillmasters grad', 'Skillmasters grad', 'Skillmasters grad', 'Skillmasters grad'];
+const rnames = ['Simran K.', 'Jacob T.', 'Emily R.', 'Daniel O.', 'Aisha M.', 'Harpreet S.'];
+const quotes = [
+  'I was so nervous before my first lesson, but Rahul was patient the whole way. Passed my G2 on the first try!',
+  'Moved to Canada last year and the lessons in Punjabi made everything click. Super clear about Ontario rules.',
+  'The BDE course was worth it. Pickup from school was so convenient and the car felt really safe.',
+  'Booked the road test package. The warm-up drive before the test calmed me down completely. Passed!',
+  'Hadn’t driven in years. Two refresher lessons and I was confident on the highway again.',
+  'Great value with the 10-hour pack. Every lesson had a plan, and he pointed out exactly what examiners look for.'
+];
+const tints = ['#2A2418', '#1F1A10', '#33291A', '#241F16'];
+const areas = ['London', 'St. Thomas', 'Thorndale', 'Dorchester'];
+const p = [0, 1, 2, 3, 4, 5].map((i) => ({ name: pnames[i], area: areas[i % 4], badge: i % 3 === 2 ? 'Passed G' : 'Passed G2', bg: tints[i % 4], img: pimgs[i] }));
+const r = [0, 1, 2, 3, 4, 5].map((i) => ({ name: rnames[(i + 2) % 6], badge: i % 2 ? 'BDE student' : 'Passed G2', quote: quotes[i] }));
+return {
+  themeClass: isDark ? 't-dark' : 't-light', isDark, isLight: !isDark,
+  toggleLabel: isDark ? 'Switch to light theme' : 'Switch to dark theme',
+  toggle: () => this.setState({ theme: isDark ? 'light' : 'dark' }),
+  packs, passes: p.concat(p), reviews: r.concat(r),
+  asking: step < 3, done: step >= 3, canBack: step > 0 && step < 3,
+  pct: Math.round((Math.min(step, 3) / 3) * 100) + '%',
+  progressLabel: step < 3 ? 'Question ' + (step + 1) + ' of 3' : 'Done! Here is your match',
+  qTitle: step < 3 ? qs[step].title : '',
+  qOpts: step < 3 ? qs[step].opts.map((o) => ({ ...o, pick: () => this.setState({ ['a' + step]: o.val, step: step + 1 }) })) : [],
+  back: () => this.setState({ step: Math.max(0, step - 1) }),
+  restart: () => this.setState({ step: 0, a0: null, a1: null, a2: null }),
+  rec,
+  serve: [
+    { title: 'Teens & New Drivers', text: 'Start right with our MTO-approved BDE course.', photo: '', img: '/_blob/5236edb53e1a5ce8369d5a8767fbded7' },
+    { title: 'Newcomers to Canada', text: 'Learn Ontario rules, in English, Hindi or Punjabi.', photo: '', img: '/_blob/92a8876beffef980c15b0d46259b49f7' },
+    { title: 'Adults', text: 'Never too late. Calm, judgment-free lessons.', photo: '', img: '/_blob/a09173c6fef52b8f0a2dc7eb927a4a0c' },
+    { title: 'Refresher Drivers', text: 'Back on the road with confidence.', photo: '', img: '/_blob/289c9c706cfedabd5a605e5283c391b3' }
+  ],
+  why: [
+    { t: 'MTO-approved BDE', d: 'a recognized Beginner Driver Education course' },
+    { t: 'Flexible scheduling', d: 'lessons 7 days a week' },
+    { t: 'Personalized teaching', d: 'patient, one-on-one, at your pace' },
+    { t: 'Three languages', d: 'English, Hindi and Punjabi' },
+    { t: 'Pickup included', d: 'home, school or work across London & area' }
+  ],
+  faqs: [
+    { q: 'Do I need a G1 before lessons?', a: 'Yes. A valid G1 is required before in-car lessons, and students must be 16 or older.' },
+    { q: 'What does the BDE course include?', a: '20 hours of online learning, 10 hours of home-link and 10 hours of private in-car training.' },
+    { q: 'Do you pick up and drop off?', a: 'Yes, from home, school or work in London, St. Thomas, Thorndale and Dorchester.' },
+    { q: 'What if I need to cancel?', a: 'Please give at least 24 hours notice to reschedule. Late cancellations and no-shows are charged $50. Cancel within 15 days of registering for a 50% refund.' },
+    { q: 'Do you teach nervous drivers?', a: 'Absolutely. Our patient, supportive approach helps every student build confidence.' }
+  ]
+};
+}
+}
+</script>
+</body>
+</html>

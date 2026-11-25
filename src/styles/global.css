@@ -1,1 +1,68 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Brand palette (fixed values) */
+@theme {
+  --font-sans: "Inter Variable", system-ui, sans-serif;
+  --font-display: "Montserrat", "Inter Variable", sans-serif;
+  --color-gold: #E6A817;
+  --color-gold-text: #8A5F00;
+  --color-ink: #0B0B0B;
+  --color-cream: #FBF5EA;
+  --color-line: #EADFCB;
+  --color-muted: #5A5348;
+}
+
+/* Semantic tokens that flip with the theme: use bg-surface, text-fg, border-border, etc. */
+:root {
+  --surface: #FBF5EA;
+  --surface-raised: #FFFFFF;
+  --fg: #0B0B0B;
+  --fg-muted: #5A5348;
+  --border: #EADFCB;
+  --accent-text: #8A5F00;
+  --header: rgb(255 255 255 / 0.91); /* sticky header, translucent over blur */
+  color-scheme: light;
+}
+
+.dark {
+  --surface: #0B0B0B;
+  --surface-raised: #17150F;
+  --fg: #FBF5EA;
+  --fg-muted: #B8AE9C;
+  --border: #2E2A22;
+  --accent-text: #E6A817;
+  --header: rgb(11 11 11 / 0.9);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-border: var(--border);
+  --color-accent-text: var(--accent-text);
+  --color-header: var(--header);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    @apply bg-surface text-fg font-sans antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display text-balance;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

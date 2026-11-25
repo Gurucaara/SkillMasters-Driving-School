@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Policies – Skillmasters</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Montserrat:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+
+body{margin:0}
+.t-light{--bg:#FFFFFF;--bg2:#FBF5EA;--ink:#0B0B0B;--surface:#FFFFFF;--surface2:#F6EEDD;--line:#EADFCB;--text:#141414;--text2:#2E2A24;--muted:#5A5348;--accent:#E6A817;--accent-text:#8A5F00;--on-accent:#0B0B0B;--glow:#E6A81740;--good:#0B7A45;--hero:linear-gradient(180deg,#FFF3D9,#FFFBF2 60%,#FFFFFF);--city:#EADFCB;--win:#FFFFFF00;--road:#22201C;--gradtext:linear-gradient(90deg,#D99A00,#9A6B00);--header:#FFFFFFE8}
+.t-dark{--bg:#0B0B0B;--bg2:#141210;--ink:#000000;--surface:#17150F;--surface2:#1F1C15;--line:#2E291F;--text:#F5EFE3;--text2:#E2D9C7;--muted:#B8AE9C;--accent:#E6B33C;--accent-text:#F0C45A;--on-accent:#0B0B0B;--glow:#E6B33C55;--good:#4ADE80;--hero:linear-gradient(180deg,#07070A,#14110B 60%,#1C170D);--city:#1E1A12;--win:#F4D27AB3;--road:#050505;--gradtext:linear-gradient(90deg,#F4D27A,#E6A817);--header:#0B0B0BE8}
+h1,h2,h3{font-family:Montserrat,Inter,sans-serif;letter-spacing:-0.01em}
+a{color:#8A5F00}a:hover{color:#5C3F00}
+.grad{background:var(--gradtext);-webkit-background-clip:text;background-clip:text;color:transparent}
+.road{background:repeating-linear-gradient(90deg,#F4D27A 0 60px,transparent 60px 120px);animation:road 1.2s linear infinite}
+@keyframes road{to{background-position:-120px 0}}
+.cruise svg{animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-3px)}}
+.marquee{display:flex;gap:20px;width:max-content;animation:slide 45s linear infinite}
+.marquee.rev{animation-direction:reverse;animation-duration:60s}
+.marquee:hover{animation-play-state:paused}
+@keyframes slide{to{transform:translateX(calc(-50% - 10px))}}
+.fade{-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+details summary::-webkit-details-marker{display:none}
+.lift{transition:transform .25s ease,box-shadow .25s ease}.lift:hover{transform:translateY(-6px);box-shadow:0 18px 40px #00000026}
+@supports (animation-timeline: view()){.reveal{animation:rise linear both;animation-timeline:view();animation-range:entry 0% cover 22%}}
+@keyframes rise{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+.mbar{display:none}@media (max-width:720px){.mbar{display:flex}footer{padding-bottom:84px}}
+.opt{transition:border-color .2s,transform .2s}.opt:hover{border-color:var(--accent)!important;transform:translateY(-2px)}
+@media (prefers-reduced-motion:reduce){.road,.cruise svg,.marquee,.reveal{animation:none}.lift:hover{transform:none}}
+.mbar{display:none}@media (max-width:720px){.mbar{display:flex}.wa{display:none!important}}
+.navlink:hover{color:var(--accent-text)!important}
+</style>
+</helmet>
+<div class="{{themeClass}}" style="width:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif">
+<dc-import name="Header" active="contact" is-dark="{{isDark}}" on-toggle="{{toggle}}" hint-size="100%,118px"></dc-import>
+<section style="background:#0B0B0B;color:#F5EFE3;position:relative;overflow:hidden">
+<img src="/_blob/7a73d9ea0051e6766381e6da7801cf5e" alt="" aria-hidden="true" style="position:absolute;right:-40px;top:-40px;width:360px;opacity:.06;filter:grayscale(1) invert(1)">
+<div style="position:relative;max-width:1200px;margin:0 auto;padding:64px 24px 72px">
+<div style="font-size:14px;color:#C9BFAE"><a href="Main.dc.html" style="color:#C9BFAE">Home</a> <span style="color:#E6B33C">→</span> Legal</div>
+<div style="font-size:13px;font-weight:700;letter-spacing:.14em;color:#F0C45A;margin-top:28px">POLICIES</div>
+<h1 style="font-size:54px;line-height:1.05;margin:12px 0 14px;max-width:820px">Privacy, terms &amp; refunds</h1>
+<p style="font-size:18px;line-height:1.6;color:#E2D9C7;margin:0;max-width:640px">Plain-language policies so you know exactly how we work.</p>
+
+</div>
+</section><section style="background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><div style="max-width:1200px;margin:0 auto;padding:88px 24px"><div class="reveal" style="max-width:860px;margin:0 auto">
+<div role="tablist" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+<button type="button" onClick="{{tPriv.pick}}" style="padding:12px 20px;border-radius:999px;border:1px solid var(--line);background:{{tPriv.bg}};color:{{tPriv.color}};font:inherit;font-weight:700;cursor:pointer">{{tPriv.label}}</button>
+<button type="button" onClick="{{tTerms.pick}}" style="padding:12px 20px;border-radius:999px;border:1px solid var(--line);background:{{tTerms.bg}};color:{{tTerms.color}};font:inherit;font-weight:700;cursor:pointer">{{tTerms.label}}</button>
+<button type="button" onClick="{{tRefund.pick}}" style="padding:12px 20px;border-radius:999px;border:1px solid var(--line);background:{{tRefund.bg}};color:{{tRefund.color}};font:inherit;font-weight:700;cursor:pointer">{{tRefund.label}}</button>
+</div>
+<div style="background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:12px 32px 32px">
+<div style="margin-top:20px;background:#FFF4D6;color:#5C3F00;border-radius:12px;padding:12px 16px;font-size:14px">Draft template for the design phase. Rahul should review it, and ideally have a lawyer check it, before launch.</div>
+<sc-if value="{{isPriv}}" hint-placeholder-val="{{ true }}"><h3 style="font-size:20px;margin:28px 0 8px">Who we are</h3><div style="color:var(--text2);line-height:1.75">Skillmasters Driving School Ltd. ("we"), MTO BDE Course Provider Licence #L4H7, provides driver education in London, Ontario and nearby areas. Questions about privacy: info@skillmastersdrivingschool.ca.</div><h3 style="font-size:20px;margin:28px 0 8px">What we collect</h3><div style="color:var(--text2);line-height:1.75">Your name, email, phone number, pickup area, licence stage, and the lessons you book. For BDE students, MTO reporting requires your driver’s licence number, date of birth and licence expiry date. We collect these through a secure form after payment, never by email or text.</div><h3 style="font-size:20px;margin:28px 0 8px">Payments</h3><div style="color:var(--text2);line-height:1.75">Payments are processed by Stripe. We never see or store your full card number. Stripe’s own privacy policy applies to payment data.</div><h3 style="font-size:20px;margin:28px 0 8px">Why we use it</h3><div style="color:var(--text2);line-height:1.75">To schedule lessons, contact you, send receipts and reminders, report BDE completion to the MTO, and meet legal and tax obligations. We do not sell your information.</div><h3 style="font-size:20px;margin:28px 0 8px">How long we keep it</h3><div style="color:var(--text2);line-height:1.75">We keep records for at least 6 years, as required for tax and MTO reporting, then delete them securely.</div><h3 style="font-size:20px;margin:28px 0 8px">Your rights</h3><div style="color:var(--text2);line-height:1.75">You can ask to see, correct, or delete your personal information (where the law allows) by emailing us. We follow Canada’s privacy law (PIPEDA).</div><h3 style="font-size:20px;margin:28px 0 8px">Analytics</h3><div style="color:var(--text2);line-height:1.75">We use privacy-friendly analytics with no advertising cookies.</div></sc-if>
+<sc-if value="{{isTerms}}" hint-placeholder-val="{{ false }}"><h3 style="font-size:20px;margin:28px 0 8px">Eligibility</h3><div style="color:var(--text2);line-height:1.75">In-car lessons require a valid Ontario G1 or G2 licence. Students must be 16 or older.</div><h3 style="font-size:20px;margin:28px 0 8px">Bookings</h3><div style="color:var(--text2);line-height:1.75">Lessons are confirmed once paid in full.</div><h3 style="font-size:20px;margin:28px 0 8px">Safety</h3><div style="color:var(--text2);line-height:1.75">Your instructor may end or reschedule a lesson for safety reasons, including severe weather or if a student appears impaired.</div><h3 style="font-size:20px;margin:28px 0 8px">Package validity</h3><div style="color:var(--text2);line-height:1.75">Packages are valid for 12 months from purchase.</div><h3 style="font-size:20px;margin:28px 0 8px">Prices</h3><div style="color:var(--text2);line-height:1.75">All prices are in CAD and subject to 13% HST. Prices may change, but paid packages keep their price.</div></sc-if>
+<sc-if value="{{isRefund}}" hint-placeholder-val="{{ false }}"><h3 style="font-size:20px;margin:28px 0 8px">Rescheduling</h3><div style="color:var(--text2);line-height:1.75">Please give at least 24 hours’ notice to cancel or reschedule a lesson, by text, call, WhatsApp or email.</div><h3 style="font-size:20px;margin:28px 0 8px">Late cancellations &amp; no-shows</h3><div style="color:var(--text2);line-height:1.75">Cancellations with less than 24 hours’ notice, or missed lessons, are charged a $50 fee.</div><h3 style="font-size:20px;margin:28px 0 8px">Refunds</h3><div style="color:var(--text2);line-height:1.75">If you cancel within 15 days of registering, you receive a 50% refund. After 15 days, payments are non-refundable.</div></sc-if>
+<p style="color:var(--muted);font-size:14px;margin:28px 0 0">Last updated: [date] · Questions: info@skillmastersdrivingschool.ca</p>
+</div></div></div></section>
+<dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme": {"editor": "enum", "options": ["light", "dark"], "default": "light"}, "$preview": {"width": 1280, "height": 2300}}'>
+class Component extends DCLogic {
+renderVals() {
+const theme = (this.state && this.state.theme) || this.props.theme || 'light';
+const isDark = theme === 'dark';
+const base = { themeClass: isDark ? 't-dark' : 't-light', isDark, toggle: () => this.setState({ theme: isDark ? 'light' : 'dark' }) };
+const st = this.state || {};
+const tab = st.tab || 'privacy';
+const t = (v, label) => ({ label, bg: tab === v ? 'var(--ink)' : 'var(--surface)', color: tab === v ? '#F0C45A' : 'var(--text)', pick: () => this.setState({ tab: v }) });
+return { ...base, tPriv: t('privacy', 'Privacy Policy'), tTerms: t('terms', 'Terms of Service'), tRefund: t('refund', 'Refund & Cancellation'),
+  isPriv: tab === 'privacy', isTerms: tab === 'terms', isRefund: tab === 'refund' };
+}
+}
+</script>
+</body>
+</html>

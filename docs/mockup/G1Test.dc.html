@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>G1 Practice Test – Skillmasters</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Montserrat:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+
+body{margin:0}
+.t-light{--bg:#FFFFFF;--bg2:#FBF5EA;--ink:#0B0B0B;--surface:#FFFFFF;--surface2:#F6EEDD;--line:#EADFCB;--text:#141414;--text2:#2E2A24;--muted:#5A5348;--accent:#E6A817;--accent-text:#8A5F00;--on-accent:#0B0B0B;--glow:#E6A81740;--good:#0B7A45;--hero:linear-gradient(180deg,#FFF3D9,#FFFBF2 60%,#FFFFFF);--city:#EADFCB;--win:#FFFFFF00;--road:#22201C;--gradtext:linear-gradient(90deg,#D99A00,#9A6B00);--header:#FFFFFFE8}
+.t-dark{--bg:#0B0B0B;--bg2:#141210;--ink:#000000;--surface:#17150F;--surface2:#1F1C15;--line:#2E291F;--text:#F5EFE3;--text2:#E2D9C7;--muted:#B8AE9C;--accent:#E6B33C;--accent-text:#F0C45A;--on-accent:#0B0B0B;--glow:#E6B33C55;--good:#4ADE80;--hero:linear-gradient(180deg,#07070A,#14110B 60%,#1C170D);--city:#1E1A12;--win:#F4D27AB3;--road:#050505;--gradtext:linear-gradient(90deg,#F4D27A,#E6A817);--header:#0B0B0BE8}
+h1,h2,h3{font-family:Montserrat,Inter,sans-serif;letter-spacing:-0.01em}
+a{color:#8A5F00}a:hover{color:#5C3F00}
+.grad{background:var(--gradtext);-webkit-background-clip:text;background-clip:text;color:transparent}
+.road{background:repeating-linear-gradient(90deg,#F4D27A 0 60px,transparent 60px 120px);animation:road 1.2s linear infinite}
+@keyframes road{to{background-position:-120px 0}}
+.cruise svg{animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-3px)}}
+.marquee{display:flex;gap:20px;width:max-content;animation:slide 45s linear infinite}
+.marquee.rev{animation-direction:reverse;animation-duration:60s}
+.marquee:hover{animation-play-state:paused}
+@keyframes slide{to{transform:translateX(calc(-50% - 10px))}}
+.fade{-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+details summary::-webkit-details-marker{display:none}
+.lift{transition:transform .25s ease,box-shadow .25s ease}.lift:hover{transform:translateY(-6px);box-shadow:0 18px 40px #00000026}
+@supports (animation-timeline: view()){.reveal{animation:rise linear both;animation-timeline:view();animation-range:entry 0% cover 22%}}
+@keyframes rise{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+.mbar{display:none}@media (max-width:720px){.mbar{display:flex}footer{padding-bottom:84px}}
+.opt{transition:border-color .2s,transform .2s}.opt:hover{border-color:var(--accent)!important;transform:translateY(-2px)}
+@media (prefers-reduced-motion:reduce){.road,.cruise svg,.marquee,.reveal{animation:none}.lift:hover{transform:none}}
+.mbar{display:none}@media (max-width:720px){.mbar{display:flex}.wa{display:none!important}}
+.navlink:hover{color:var(--accent-text)!important}
+</style>
+</helmet>
+<div class="{{themeClass}}" style="width:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif">
+<dc-import name="Header" active="blog" is-dark="{{isDark}}" on-toggle="{{toggle}}" hint-size="100%,118px"></dc-import>
+<section style="background:#0B0B0B;color:#F5EFE3;position:relative;overflow:hidden">
+<img src="/_blob/7a73d9ea0051e6766381e6da7801cf5e" alt="" aria-hidden="true" style="position:absolute;right:-40px;top:-40px;width:360px;opacity:.06;filter:grayscale(1) invert(1)">
+<div style="position:relative;max-width:1200px;margin:0 auto;padding:64px 24px 72px">
+<div style="font-size:14px;color:#C9BFAE"><a href="Main.dc.html" style="color:#C9BFAE">Home</a> <span style="color:#E6B33C">→</span> G1 Practice Test</div>
+<div style="font-size:13px;font-weight:700;letter-spacing:.14em;color:#F0C45A;margin-top:28px">FREE · NO SIGN-UP</div>
+<h1 style="font-size:54px;line-height:1.05;margin:12px 0 14px;max-width:820px">G1 practice test</h1>
+<p style="font-size:18px;line-height:1.6;color:#E2D9C7;margin:0;max-width:640px">Six quick questions on Ontario road rules and signs. See how ready you are.</p>
+
+</div>
+</section><section style="background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><div style="max-width:1200px;margin:0 auto;padding:88px 24px"><div class="reveal" style="max-width:760px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:26px;padding:36px;box-shadow:0 20px 50px #00000014">
+<sc-if value="{{asking}}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin-bottom:10px"><span>{{num}}</span><span>Ontario G1</span></div>
+<div style="height:8px;background:var(--surface2);border-radius:999px;overflow:hidden;margin-bottom:28px"><div style="height:100%;width:{{pct}};background:var(--accent);transition:width .3s"></div></div>
+<sc-if value="{{isStop}}" hint-placeholder-val="{{ true }}"><svg role="img" aria-label="Red octagon sign with the word STOP" width="120" height="120" viewBox="0 0 100 100" style="display:block;margin:0 auto 18px"><polygon points="30,2 70,2 98,30 98,70 70,98 30,98 2,70 2,30" fill="#C81E1E" stroke="#FFFFFF" stroke-width="4"/><text x="50" y="60" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="800" font-size="26" fill="#FFFFFF">STOP</text></svg></sc-if>
+<sc-if value="{{isYield}}" hint-placeholder-val="{{ false }}"><svg role="img" aria-label="Upside-down triangle sign with a red border" width="130" height="116" viewBox="0 0 120 106" style="display:block;margin:0 auto 18px"><polygon points="4,4 116,4 60,102" fill="#FFFFFF" stroke="#C81E1E" stroke-width="10" stroke-linejoin="round"/></svg></sc-if>
+<h2 style="font-size:26px;line-height:1.3;margin:0 0 20px;text-align:center">{{qText}}</h2>
+<div style="display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{opts}}" as="o" hint-placeholder-count="4"><button type="button" onClick="{{o.pick}}" class="opt" style="text-align:left;min-height:54px;padding:14px 18px;border-radius:14px;border:{{o.border}};background:{{o.bg}};color:var(--text);font:inherit;font-size:16px;cursor:pointer">{{o.label}}</button></sc-for>
+</div>
+<sc-if value="{{answered}}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:20px;padding:16px 18px;border-radius:14px;background:var(--bg2);line-height:1.6"><sc-if value="{{correct}}" hint-placeholder-val="{{ true }}"><strong style="color:var(--good)">Correct! </strong></sc-if><sc-if value="{{wrong}}" hint-placeholder-val="{{ false }}"><strong style="color:#C81E1E">Not quite. </strong></sc-if>{{why}}</div>
+<button type="button" onClick="{{next}}" style="margin-top:18px;background:var(--accent);color:#0B0B0B;border:0;padding:15px 26px;border-radius:999px;font:inherit;font-weight:700;cursor:pointer">{{nextLabel}}</button>
+</sc-if>
+</sc-if>
+<sc-if value="{{done}}" hint-placeholder-val="{{ false }}">
+<div style="text-align:center"><div style="font-size:13px;font-weight:800;letter-spacing:.14em;color:var(--accent-text)">YOUR SCORE</div><div style="font-family:Montserrat,sans-serif;font-size:72px;font-weight:800;margin:8px 0">{{scoreText}}</div><p style="font-size:18px;color:var(--text2);margin:0 0 24px">{{verdict}}</p>
+<div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center"><a href="BDE.dc.html" style="background:var(--accent);color:#0B0B0B;padding:15px 26px;border-radius:999px;font-weight:700;text-decoration:none">Explore BDE →</a><button type="button" onClick="{{restart}}" style="background:none;border:2px solid var(--text);color:var(--text);padding:13px 24px;border-radius:999px;font:inherit;font-weight:700;cursor:pointer">Retake test</button></div></div>
+</sc-if>
+</div>
+<p style="text-align:center;font-size:13px;color:var(--muted);margin:20px 0 0">Practice only. Study the official MTO Driver’s Handbook for your real test.</p></div></section>
+<dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme": {"editor": "enum", "options": ["light", "dark"], "default": "light"}, "$preview": {"width": 1280, "height": 1900}}'>
+class Component extends DCLogic {
+renderVals() {
+const theme = (this.state && this.state.theme) || this.props.theme || 'light';
+const isDark = theme === 'dark';
+const base = { themeClass: isDark ? 't-dark' : 't-light', isDark, toggle: () => this.setState({ theme: isDark ? 'light' : 'dark' }) };
+const st = this.state || {};
+const i = st.i || 0;
+const picked = st.picked ?? null;
+const score = st.score || 0;
+const Q = [
+  { q: 'What must you do at this sign?', sign: 'stop', opts: ['Slow down and continue if clear', 'Come to a complete stop, then go when safe', 'Stop only if other cars are coming', 'Honk and proceed'], a: 1, why: 'A red octagon is a STOP sign. Always come to a complete stop at the line.' },
+  { q: 'What does this sign mean?', sign: 'yield', opts: ['Speed up to merge', 'Stop for 3 seconds', 'Let traffic with the right-of-way go first', 'No entry'], a: 2, why: 'The upside-down triangle is a YIELD sign: slow down or stop and let others go first.' },
+  { q: 'As a G1 driver, your blood alcohol level must be:', sign: '', opts: ['Under 0.08', 'Under 0.05', 'Zero', 'Under 0.02'], a: 2, why: 'G1 and G2 drivers must have a blood alcohol level of zero.' },
+  { q: 'A school bus ahead has red lights flashing on a road with no median. You must:', sign: '', opts: ['Pass slowly on the left', 'Stop, whether you are behind it or coming toward it', 'Stop only if behind it', 'Honk to warn children'], a: 1, why: 'On roads without a median, traffic in both directions must stop.' },
+  { q: 'Unless signs say otherwise, the speed limit in Ontario cities and towns is:', sign: '', opts: ['40 km/h', '50 km/h', '60 km/h', '70 km/h'], a: 1, why: 'The default limit in cities, towns and villages is 50 km/h.' },
+  { q: 'A G1 driver must drive with a fully licensed driver who has at least:', sign: '', opts: ['1 year of experience', '2 years of experience', '4 years of experience', '10 years of experience'], a: 2, why: 'Your accompanying driver needs at least 4 years of driving experience.' }
+];
+const done = i >= Q.length;
+const cur = done ? Q[0] : Q[i];
+const answered = picked !== null;
+const opts = cur.opts.map((label, k) => {
+  let border = '2px solid var(--line)', bg = 'var(--surface)', mark = '';
+  if (answered && k === cur.a) { border = '2px solid #0B7A45'; bg = '#0B7A4514'; mark = '✓ '; }
+  else if (answered && k === picked) { border = '2px solid #C81E1E'; bg = '#C81E1E14'; mark = '✗ '; }
+  return { label: mark + label, border, bg, pick: () => { if (!answered) this.setState({ picked: k, score: score + (k === cur.a ? 1 : 0) }); } };
+});
+const pass = score >= 5;
+return { ...base, done, asking: !done, answered, qText: cur.q, isStop: !done && cur.sign === 'stop', isYield: !done && cur.sign === 'yield', opts,
+  why: cur.why, correct: answered && picked === cur.a, wrong: answered && picked !== cur.a,
+  num: 'Question ' + (i + 1) + ' of ' + Q.length, pct: Math.round(((done ? Q.length : i) / Q.length) * 100) + '%',
+  nextLabel: i === Q.length - 1 ? 'See my score' : 'Next question →',
+  next: () => this.setState({ i: i + 1, picked: null }),
+  restart: () => this.setState({ i: 0, picked: null, score: 0 }),
+  scoreText: score + ' / ' + Q.length, verdict: pass ? 'Great job! You know your basics.' : 'Keep practising. Our BDE course covers all of this.', };
+}
+}
+</script>
+</body>
+</html>

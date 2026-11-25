@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pricing – Skillmasters</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Montserrat:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+
+body{margin:0}
+.t-light{--bg:#FFFFFF;--bg2:#FBF5EA;--ink:#0B0B0B;--surface:#FFFFFF;--surface2:#F6EEDD;--line:#EADFCB;--text:#141414;--text2:#2E2A24;--muted:#5A5348;--accent:#E6A817;--accent-text:#8A5F00;--on-accent:#0B0B0B;--glow:#E6A81740;--good:#0B7A45;--hero:linear-gradient(180deg,#FFF3D9,#FFFBF2 60%,#FFFFFF);--city:#EADFCB;--win:#FFFFFF00;--road:#22201C;--gradtext:linear-gradient(90deg,#D99A00,#9A6B00);--header:#FFFFFFE8}
+.t-dark{--bg:#0B0B0B;--bg2:#141210;--ink:#000000;--surface:#17150F;--surface2:#1F1C15;--line:#2E291F;--text:#F5EFE3;--text2:#E2D9C7;--muted:#B8AE9C;--accent:#E6B33C;--accent-text:#F0C45A;--on-accent:#0B0B0B;--glow:#E6B33C55;--good:#4ADE80;--hero:linear-gradient(180deg,#07070A,#14110B 60%,#1C170D);--city:#1E1A12;--win:#F4D27AB3;--road:#050505;--gradtext:linear-gradient(90deg,#F4D27A,#E6A817);--header:#0B0B0BE8}
+h1,h2,h3{font-family:Montserrat,Inter,sans-serif;letter-spacing:-0.01em}
+a{color:#8A5F00}a:hover{color:#5C3F00}
+.grad{background:var(--gradtext);-webkit-background-clip:text;background-clip:text;color:transparent}
+.road{background:repeating-linear-gradient(90deg,#F4D27A 0 60px,transparent 60px 120px);animation:road 1.2s linear infinite}
+@keyframes road{to{background-position:-120px 0}}
+.cruise svg{animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-3px)}}
+.marquee{display:flex;gap:20px;width:max-content;animation:slide 45s linear infinite}
+.marquee.rev{animation-direction:reverse;animation-duration:60s}
+.marquee:hover{animation-play-state:paused}
+@keyframes slide{to{transform:translateX(calc(-50% - 10px))}}
+.fade{-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+details summary::-webkit-details-marker{display:none}
+.lift{transition:transform .25s ease,box-shadow .25s ease}.lift:hover{transform:translateY(-6px);box-shadow:0 18px 40px #00000026}
+@supports (animation-timeline: view()){.reveal{animation:rise linear both;animation-timeline:view();animation-range:entry 0% cover 22%}}
+@keyframes rise{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+.mbar{display:none}@media (max-width:720px){.mbar{display:flex}footer{padding-bottom:84px}}
+.opt{transition:border-color .2s,transform .2s}.opt:hover{border-color:var(--accent)!important;transform:translateY(-2px)}
+@media (prefers-reduced-motion:reduce){.road,.cruise svg,.marquee,.reveal{animation:none}.lift:hover{transform:none}}
+.mbar{display:none}@media (max-width:720px){.mbar{display:flex}.wa{display:none!important}}
+.navlink:hover{color:var(--accent-text)!important}
+</style>
+</helmet>
+<div class="{{themeClass}}" style="width:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif">
+<dc-import name="Header" active="pricing" is-dark="{{isDark}}" on-toggle="{{toggle}}" hint-size="100%,118px"></dc-import>
+<section style="background:#0B0B0B;color:#F5EFE3;position:relative;overflow:hidden">
+<img src="/_blob/7a73d9ea0051e6766381e6da7801cf5e" alt="" aria-hidden="true" style="position:absolute;right:-40px;top:-40px;width:360px;opacity:.06;filter:grayscale(1) invert(1)">
+<div style="position:relative;max-width:1200px;margin:0 auto;padding:64px 24px 72px">
+<div style="font-size:14px;color:#C9BFAE"><a href="Main.dc.html" style="color:#C9BFAE">Home</a> <span style="color:#E6B33C">→</span> Pricing</div>
+<div style="font-size:13px;font-weight:700;letter-spacing:.14em;color:#F0C45A;margin-top:28px">TRANSPARENT PRICING</div>
+<h1 style="font-size:54px;line-height:1.05;margin:12px 0 14px;max-width:820px">Simple prices. Real savings.</h1>
+<p style="font-size:18px;line-height:1.6;color:#E2D9C7;margin:0;max-width:640px">No hidden fees. Every bundle costs less than buying the same things separately. All prices in CAD + HST.</p>
+
+</div>
+</section><section style="max-width:1200px;margin:0 auto;padding:88px 24px"><div class="reveal" style="margin:0 0 36px;max-width:680px"><div style="font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--accent-text)">BDE PROGRAMS</div><h2 style="font-size:40px;line-height:1.1;margin:10px 0 0">BDE packages</h2></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px;align-items:stretch"><div class="lift reveal" style="position:relative;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:28px;display:flex;flex-direction:column;gap:14px;box-shadow:none">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><h3 style="margin:0;font-size:21px">BDE Course</h3></div>
+<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><span style="font-family:Montserrat,sans-serif;font-size:42px;font-weight:800">$599</span><span style="font-size:14px;color:var(--muted)">+ HST</span></div>
+<ul style="margin:0;padding-left:18px;line-height:1.9;color:var(--text2)"><li>20 hrs online learning</li><li>10 hrs home-link</li><li>10 hrs private in-car training</li><li>MTO-reported completion</li></ul>
+<a href="Checkout.dc.html" style="margin-top:auto;text-align:center;background:transparent;color:var(--text);border:2px solid var(--text);padding:13px;border-radius:999px;font-weight:700;text-decoration:none">Buy now</a>
+</div>
+<div class="lift reveal" style="position:relative;background:var(--surface);border:2px solid var(--accent);border-radius:22px;padding:28px;display:flex;flex-direction:column;gap:14px;box-shadow:0 12px 40px var(--glow)"><div style="position:absolute;top:-13px;left:28px;background:var(--ink);color:#F0C45A;font-size:12px;font-weight:800;letter-spacing:.08em;padding:5px 12px;border-radius:999px">MOST POPULAR</div>
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><h3 style="margin:0;font-size:21px">BDE + Road Test</h3><span style="flex:none;background:var(--good);color:#FFFFFF;font-size:12px;font-weight:800;padding:5px 10px;border-radius:999px">SAVE $50</span></div>
+<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><span style="font-family:Montserrat,sans-serif;font-size:42px;font-weight:800">$699</span><span style="font-size:20px;color:var(--muted);text-decoration:line-through">$749</span><span style="font-size:14px;color:var(--muted)">+ HST</span></div><div style="font-size:13px;color:var(--muted)">BDE $599 + road test package $150</div>
+<ul style="margin:0;padding-left:18px;line-height:1.9;color:var(--text2)"><li>Full BDE course</li><li>Our car for your road test</li><li>Warm-up before the test</li></ul>
+<a href="Checkout.dc.html" style="margin-top:auto;text-align:center;background:var(--accent);color:var(--on-accent);border:2px solid var(--text);padding:13px;border-radius:999px;font-weight:700;text-decoration:none">Buy now</a>
+</div>
+<div class="lift reveal" style="position:relative;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:28px;display:flex;flex-direction:column;gap:14px;box-shadow:none"><div style="position:absolute;top:-13px;left:28px;background:var(--ink);color:#F0C45A;font-size:12px;font-weight:800;letter-spacing:.08em;padding:5px 12px;border-radius:999px">BEST VALUE</div>
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><h3 style="margin:0;font-size:21px">BDE Ultimate</h3><span style="flex:none;background:var(--good);color:#FFFFFF;font-size:12px;font-weight:800;padding:5px 10px;border-radius:999px">SAVE $80</span></div>
+<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><span style="font-family:Montserrat,sans-serif;font-size:42px;font-weight:800">$769</span><span style="font-size:20px;color:var(--muted);text-decoration:line-through">$849</span><span style="font-size:14px;color:var(--muted)">+ HST</span></div><div style="font-size:13px;color:var(--muted)">BDE $599 + 2 hrs $100 + road test $150</div>
+<ul style="margin:0;padding-left:18px;line-height:1.9;color:var(--text2)"><li>Full BDE course</li><li>+2 hr practice lesson</li><li>Our car for your road test</li></ul>
+<a href="Checkout.dc.html" style="margin-top:auto;text-align:center;background:transparent;color:var(--text);border:2px solid var(--text);padding:13px;border-radius:999px;font-weight:700;text-decoration:none">Buy now</a>
+</div></div></section><section style="background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><div style="max-width:1200px;margin:0 auto;padding:88px 24px"><div class="reveal" style="margin:0 0 36px;max-width:680px"><div style="font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--accent-text)">COMPARE</div><h2 style="font-size:40px;line-height:1.1;margin:10px 0 0">Which BDE package is right for you?</h2></div><div class="reveal" style="overflow-x:auto;border:1px solid var(--line);border-radius:20px;background:var(--surface)"><table style="width:100%;min-width:640px;border-collapse:collapse;text-align:center;font-size:15px">
+<thead><tr><th style="padding:18px;text-align:left">What you get</th><th style="padding:18px">BDE Course<br><span style="font-family:Montserrat,sans-serif;font-size:22px">$599</span></th><th style="padding:18px;background:var(--surface2)">BDE + Road Test<br><span style="font-family:Montserrat,sans-serif;font-size:22px">$699</span></th><th style="padding:18px">BDE Ultimate<br><span style="font-family:Montserrat,sans-serif;font-size:22px">$769</span></th></tr></thead>
+<tbody><tr><td style="padding:16px;border-top:1px solid var(--line);text-align:left">20 hrs online learning</td><td style="padding:16px;border-top:1px solid var(--line)"><span style="color:var(--good);font-weight:800">✓</span></td><td style="padding:16px;border-top:1px solid var(--line);background:var(--surface2)"><span style="color:var(--good);font-weight:800">✓</span></td><td style="padding:16px;border-top:1px solid var(--line)"><span style="color:var(--good);font-weight:800">✓</span></td></tr><tr><td style="padding:16px;border-top:1px solid var(--line);text-align:left">10 hrs home-link</td><td style="padding:16px;border-top:1px solid var(--line)"><span style="color:var(--good);font-weight:800">✓</span></td><td style="padding:16px;border-top:1px solid var(--line);background:var(--surface2)"><span style="color:var(--good);font-weight:800">✓</span></td><td style="padding:16px;border-top:1px solid var(--line)"><span style="color:var(--good);font-weight:800">✓</span></td></tr><tr><td style="padding:16px;border-top:1px solid var(--line);text-align:left">10 hrs in-car training</td><td style="padding:16px;border-top:1px solid var(--line)"><span style="color:var(--good);font-weight:800">✓</span></td><td style="padding:16px;border-top:1px solid var(--line);background:var(--surface2)"><span style="color:var(--good);font-weight:800">✓</span></td><td style="padding:16px;border-top:1px solid var(--line)"><span style="color:var(--good);font-weight:800">✓</span></td></tr><tr><td style="padding:16px;border-top:1px solid var(--line);text-align:left">Extra 2 hr practice lesson</td><td style="padding:16px;border-top:1px solid var(--line)"><span style="color:var(--muted)">—</span></td><td style="padding:16px;border-top:1px solid var(--line);background:var(--surface2)"><span style="color:var(--muted)">—</span></td><td style="padding:16px;border-top:1px solid var(--line)"><span style="color:var(--good);font-weight:800">✓</span></td></tr><tr><td style="padding:16px;border-top:1px solid var(--line);text-align:left">Car for your road test + warm-up</td><td style="padding:16px;border-top:1px solid var(--line)"><span style="color:var(--muted)">—</span></td><td style="padding:16px;border-top:1px solid var(--line);background:var(--surface2)"><span style="color:var(--good);font-weight:800">✓</span></td><td style="padding:16px;border-top:1px solid var(--line)"><span style="color:var(--good);font-weight:800">✓</span></td></tr><tr><td style="padding:16px;border-top:1px solid var(--line);text-align:left">Savings vs separately</td><td style="padding:16px;border-top:1px solid var(--line)"><span style="color:var(--muted)">—</span></td><td style="padding:16px;border-top:1px solid var(--line);background:var(--surface2)">$50</td><td style="padding:16px;border-top:1px solid var(--line)">$80</td></tr></tbody></table></div></div></section><section style="max-width:1200px;margin:0 auto;padding:88px 24px"><div class="reveal" style="margin:0 0 36px;max-width:680px"><div style="font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--accent-text)">LESSONS &amp; ROAD TEST</div><h2 style="font-size:40px;line-height:1.1;margin:10px 0 0">In-car lessons</h2></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px;align-items:stretch"><div class="lift reveal" style="position:relative;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:28px;display:flex;flex-direction:column;gap:14px;box-shadow:none">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><h3 style="margin:0;font-size:21px">Single Lesson</h3></div>
+<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><span style="font-family:Montserrat,sans-serif;font-size:42px;font-weight:800">$50</span><span style="font-size:14px;color:var(--muted)">+ HST</span></div><div style="font-size:13px;color:var(--muted)">1 hour, pickup included</div>
+<ul style="margin:0;padding-left:18px;line-height:1.9;color:var(--text2)"><li>G2 or G preparation</li><li>Home, school or work pickup</li><li>Pay as you go</li></ul>
+<a href="Checkout.dc.html" style="margin-top:auto;text-align:center;background:transparent;color:var(--text);border:2px solid var(--text);padding:13px;border-radius:999px;font-weight:700;text-decoration:none">Buy now</a>
+</div>
+<div class="lift reveal" style="position:relative;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:28px;display:flex;flex-direction:column;gap:14px;box-shadow:none">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><h3 style="margin:0;font-size:21px">4-Hour Pack</h3><span style="flex:none;background:var(--good);color:#FFFFFF;font-size:12px;font-weight:800;padding:5px 10px;border-radius:999px">SAVE $20</span></div>
+<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><span style="font-family:Montserrat,sans-serif;font-size:42px;font-weight:800">$180</span><span style="font-size:20px;color:var(--muted);text-decoration:line-through">$200</span><span style="font-size:14px;color:var(--muted)">+ HST</span></div><div style="font-size:13px;color:var(--muted)">4 × $50 single lessons</div>
+<ul style="margin:0;padding-left:18px;line-height:1.9;color:var(--text2)"><li>4 hrs in-car</li><li>Just $45/hr</li><li>Great refresher</li></ul>
+<a href="Checkout.dc.html" style="margin-top:auto;text-align:center;background:transparent;color:var(--text);border:2px solid var(--text);padding:13px;border-radius:999px;font-weight:700;text-decoration:none">Buy now</a>
+</div>
+<div class="lift reveal" style="position:relative;background:var(--surface);border:2px solid var(--accent);border-radius:22px;padding:28px;display:flex;flex-direction:column;gap:14px;box-shadow:0 12px 40px var(--glow)"><div style="position:absolute;top:-13px;left:28px;background:var(--ink);color:#F0C45A;font-size:12px;font-weight:800;letter-spacing:.08em;padding:5px 12px;border-radius:999px">BEST VALUE</div>
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><h3 style="margin:0;font-size:21px">10-Hour Pack</h3><span style="flex:none;background:var(--good);color:#FFFFFF;font-size:12px;font-weight:800;padding:5px 10px;border-radius:999px">SAVE $50</span></div>
+<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><span style="font-family:Montserrat,sans-serif;font-size:42px;font-weight:800">$450</span><span style="font-size:20px;color:var(--muted);text-decoration:line-through">$500</span><span style="font-size:14px;color:var(--muted)">+ HST</span></div><div style="font-size:13px;color:var(--muted)">10 × $50 single lessons</div>
+<ul style="margin:0;padding-left:18px;line-height:1.9;color:var(--text2)"><li>10 hrs in-car</li><li>Just $45/hr</li><li>Full road test prep</li></ul>
+<a href="Checkout.dc.html" style="margin-top:auto;text-align:center;background:var(--accent);color:var(--on-accent);border:2px solid var(--text);padding:13px;border-radius:999px;font-weight:700;text-decoration:none">Buy now</a>
+</div>
+<div class="lift reveal" style="position:relative;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:28px;display:flex;flex-direction:column;gap:14px;box-shadow:none">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><h3 style="margin:0;font-size:21px">Road Test Package</h3></div>
+<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><span style="font-family:Montserrat,sans-serif;font-size:42px;font-weight:800">$150</span><span style="font-size:14px;color:var(--muted)">+ HST</span></div><div style="font-size:13px;color:var(--muted)">Car + warm-up on test day</div>
+<ul style="margin:0;padding-left:18px;line-height:1.9;color:var(--text2)"><li>Dual-brake Mazda 3</li><li>Warm-up drive before test</li><li>G2 or G test</li></ul>
+<a href="Checkout.dc.html" style="margin-top:auto;text-align:center;background:transparent;color:var(--text);border:2px solid var(--text);padding:13px;border-radius:999px;font-weight:700;text-decoration:none">Buy now</a>
+</div></div></section><section style="background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><div style="max-width:1200px;margin:0 auto;padding:88px 24px"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px">
+<div class="reveal" style="background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px"><h3 style="margin:0 0 10px">Pay online, securely</h3><p style="margin:0;color:var(--muted);line-height:1.6">Visa, Mastercard, Amex, Apple Pay and Google Pay through Stripe. We never see or store your card number.</p></div>
+<div class="reveal" style="background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px"><h3 style="margin:0 0 10px">Simple payment</h3><p style="margin:0;color:var(--muted);line-height:1.6">Pay in full when you book. Packages stay valid for 12 months from purchase.</p></div>
+<div class="reveal" style="background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px"><h3 style="margin:0 0 10px">Cancellations</h3><p style="margin:0;color:var(--muted);line-height:1.6">Please give at least 24 hours notice to reschedule. Late cancellations and no-shows are charged $50. Cancel within 15 days of registering for a 50% refund.</p></div>
+</div></div></section><section style="background:var(--accent);color:#0B0B0B">
+<div style="max-width:1200px;margin:0 auto;padding:56px 24px;display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between">
+<div class="reveal"><h2 style="font-size:34px;margin:0 0 8px">Ready to hit the road?</h2><p style="margin:0;font-size:17px">Book online in minutes. Pay securely with Stripe.</p></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px"><a href="Checkout.dc.html" style="background:#0B0B0B;color:#F0C45A;padding:16px 26px;border-radius:999px;font-weight:700;text-decoration:none">Buy a package →</a><a href="Contact.dc.html" style="border:2px solid #0B0B0B;color:#0B0B0B;padding:14px 24px;border-radius:999px;font-weight:700;text-decoration:none">Ask a question</a></div>
+</div>
+</section>
+<dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme": {"editor": "enum", "options": ["light", "dark"], "default": "light"}, "$preview": {"width": 1280, "height": 3900}}'>
+class Component extends DCLogic {
+renderVals() {
+const theme = (this.state && this.state.theme) || this.props.theme || 'light';
+const isDark = theme === 'dark';
+const base = { themeClass: isDark ? 't-dark' : 't-light', isDark, toggle: () => this.setState({ theme: isDark ? 'light' : 'dark' }) };
+return base;
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+---
+// Black footer: logo + blurb + socials, useful links, areas, contact + licence line, legal row.
+// Always dark in both themes. Layout follows docs/mockup/Footer.dc.html.
+import { Image } from 'astro:assets';
+import logo from '../assets/images/real/logo.png';
+import { site, footerLinks, legalLinks } from '../data/site';
+
+const year = new Date().getFullYear();
+const heading = 'text-xs font-bold tracking-[0.1em] text-[#F0C45A]';
+const link = 'text-[#C9BFAE] underline-offset-4 hover:text-[#F0C45A] hover:underline';
+---
+
+<footer class="bg-ink text-sm text-[#C9BFAE]">
+  <div class="mx-auto flex max-w-[1200px] flex-wrap justify-between gap-10 px-4 pb-7 pt-14 sm:px-6">
+    <div class="max-w-[340px] flex-[1_1_280px]">
+      <Image
+        src={logo}
+        alt="Skillmasters Driving School lion logo"
+        width={64}
+        height={64}
+        densities={[1, 2]}
+        class="size-16 rounded-[14px] bg-[#FBF7EE] object-contain p-[5px]"
+      />
+      <p class="my-3.5 leading-relaxed">{site.name} {site.description}</p>
+      <div class="flex gap-2.5">
+        <a href={site.socials.facebook} aria-label="Facebook" rel="noopener" target="_blank" class="flex size-11 items-center justify-center rounded-full border border-[#3A3426] text-[#F0C45A] hover:border-[#F0C45A]">
+          <svg aria-hidden="true" class="size-[18px]" viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v8h4v-8h3l1-4h-4V8z" /></svg>
+        </a>
+        <a href={site.socials.instagram} aria-label="Instagram" rel="noopener" target="_blank" class="flex size-11 items-center justify-center rounded-full border border-[#3A3426] text-[#F0C45A] hover:border-[#F0C45A]">
+          <svg aria-hidden="true" class="size-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" /></svg>
+        </a>
+      </div>
+    </div>
+
+    <nav aria-labelledby="footer-links">
+      <h2 id="footer-links" class={heading}>USEFUL LINKS</h2>
+      <ul class="mt-2.5 flex flex-col gap-2.5">
+        {footerLinks.map((item) => <li><a href={item.href} class={link}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div>
+      <h2 class={heading}>AREAS WE SERVE</h2>
+      <ul class="mt-2.5 flex flex-col gap-2.5">
+        {site.areas.map((area) => <li>{area}</li>)}
+      </ul>
+    </div>
+
+    <div>
+      <h2 class={heading}>CONTACT</h2>
+      <ul class="mt-2.5 flex flex-col gap-2.5">
+        <li><a href={site.phone.href} class={link}>{site.phone.display}</a></li>
+        <li><a href={`mailto:${site.email}`} class={`${link} break-all`}>{site.email}</a></li>
+        <li>{site.hours}</li>
+        <li>MTO BDE Course Provider Licence #{site.licences.bde}</li>
+        <li>Driving Instructor Licence #{site.licences.instructor}</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mx-auto flex max-w-[1200px] flex-wrap justify-between gap-3 border-t border-[#2E291F] px-4 pb-8 pt-[18px] text-[13px] sm:px-6">
+    <p>&copy; {year} {site.name}</p>
+    <ul class="flex flex-wrap gap-x-[18px] gap-y-2">
+      {legalLinks.map((item) => <li><a href={item.href} class={link}>{item.label}</a></li>)}
+    </ul>
+  </div>
+</footer>
