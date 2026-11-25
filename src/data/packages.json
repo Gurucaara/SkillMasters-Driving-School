@@ -1,0 +1,70 @@
+{
+  "currency": "CAD",
+  "taxNote": "+ 13% HST",
+  "validityMonths": 12,
+  "packages": [
+    {
+      "id": "bde",
+      "name": "BDE Course",
+      "price": 599,
+      "separately": null,
+      "separatelyNote": "",
+      "ribbon": "",
+      "includes": ["20 hrs online learning", "10 hrs home-link", "10 hrs in-car training"]
+    },
+    {
+      "id": "bde-road-test",
+      "name": "BDE + Road Test",
+      "price": 699,
+      "separately": 749,
+      "separatelyNote": "BDE $599 + road test package $150",
+      "ribbon": "MOST POPULAR",
+      "includes": ["Full BDE course", "Car for your road test", "Warm-up before the test"]
+    },
+    {
+      "id": "bde-ultimate",
+      "name": "BDE Ultimate",
+      "price": 769,
+      "separately": 849,
+      "separatelyNote": "BDE $599 + 2 hrs $100 + road test $150",
+      "ribbon": "BEST VALUE",
+      "includes": ["Full BDE course", "+2 hr practice lesson", "Car for your road test"]
+    },
+    {
+      "id": "lessons-10",
+      "name": "10-Hour Lesson Pack",
+      "price": 450,
+      "separately": 500,
+      "separatelyNote": "10 × $50 single lessons",
+      "ribbon": "",
+      "includes": ["10 hrs in-car lessons", "Just $45/hr", "Road test prep"]
+    },
+    {
+      "id": "lessons-4",
+      "name": "4-Hour Lesson Pack",
+      "price": 180,
+      "separately": 200,
+      "separatelyNote": "4 × $50 single lessons",
+      "ribbon": "",
+      "includes": ["4 hrs in-car lessons", "Just $45/hr", "Great refresher"]
+    },
+    {
+      "id": "lesson-1",
+      "name": "Single lesson",
+      "price": 50,
+      "separately": null,
+      "separatelyNote": "",
+      "ribbon": "",
+      "includes": ["1 hr in-car lesson"]
+    },
+    {
+      "id": "road-test",
+      "name": "Road Test Package",
+      "price": 150,
+      "separately": null,
+      "separatelyNote": "",
+      "ribbon": "",
+      "includes": ["Car for your road test", "Warm-up before the test"]
+    }
+  ]
+}

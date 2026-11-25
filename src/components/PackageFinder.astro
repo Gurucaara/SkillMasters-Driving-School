@@ -1,0 +1,229 @@
+---
+// 30-second package finder: 3 tap questions → one recommended package.
+// Copy, questions and rules follow docs/mockup/Main.dc.html (#finder).
+//
+// How it works: every question and every possible result is rendered here at build time, with
+// prices and savings read from packages.json. The small script below only shows/hides panels,
+// so no price ever lives in client-side JS.
+import { Image } from 'astro:assets';
+import logo from '../assets/images/real/logo.png';
+import { getPackage, savings, money, checkoutHref, taxNote, type PackageId } from '../data/packages';
+
+const questions = [
+  {
+    title: 'Which licence do you have now?',
+    options: [
+      { label: 'G1', sub: 'Learner licence', value: 'G1' },
+      { label: 'G2', sub: 'Going for my full G', value: 'G2' },
+    ],
+  },
+  {
+    title: 'How much driving have you done?',
+    options: [
+      { label: 'First time', sub: 'Brand new behind the wheel', value: 'new' },
+      { label: 'Some practice', sub: 'Comfortable on most roads', value: 'some' },
+      { label: 'Refresher', sub: 'Getting back on the road', value: 'refresh' },
+    ],
+  },
+  {
+    title: 'Do you need our car for your road test?',
+    options: [
+      { label: 'Yes, please', sub: 'Use the dual-brake Mazda', value: 'yes' },
+      { label: 'No', sub: "I'll bring my own", value: 'no' },
+    ],
+  },
+];
+
+// Why each package is recommended. The matching rules are in the script at the bottom.
+const reasons: Record<string, string> = {
+  'bde-ultimate':
+    'The full BDE course plus 2 extra practice hours and our car on test day. Ideal when you are starting from zero.',
+  'bde-road-test': 'The full BDE course plus our car and a warm-up on test day.',
+  bde: '20 hrs online, 10 hrs home-link and 10 hrs of private in-car training to build real skills.',
+  'lessons-4': 'Polish highway driving, parking and test routes before your G test.',
+  'lessons-10': 'Enough time to rebuild confidence and get fully test-ready at $45/hr.',
+};
+
+const results = (Object.keys(reasons) as PackageId[]).map((id) => {
+  const pkg = getPackage(id);
+  const saved = savings(pkg);
+  return {
+    id,
+    name: pkg.name,
+    price: money(pkg.price),
+    why: reasons[id],
+    saving: saved ? `You save ${money(saved)} vs buying separately.` : '',
+    isLessonPack: id.startsWith('lessons-'),
+  };
+});
+
+const roadTest = getPackage('road-test');
+const roadTestExtra = `+ ${roadTest.name} (${money(roadTest.price)}): our car and a warm-up on test day.`;
+
+const optionClass =
+  'opt min-h-[92px] rounded-2xl border-2 border-[#3A3426] bg-[#17150F] p-[18px] text-left text-[#F5EFE3] transition hover:-translate-y-0.5 hover:border-[#E6B33C] focus-visible:border-[#E6B33C]';
+---
+
+<section id="finder" aria-labelledby="finder-title" class="mx-auto max-w-[1200px] scroll-mt-24 px-4 pb-16 sm:px-6 sm:pb-[88px]">
+  <div
+    data-finder
+    class="reveal relative flex flex-col gap-10 overflow-hidden rounded-[28px] bg-ink p-6 text-[#F5EFE3] sm:p-11 lg:flex-row dark:bg-black"
+  >
+    <Image
+      src={logo}
+      alt=""
+      aria-hidden="true"
+      width={340}
+      class="pointer-events-none absolute -bottom-20 -right-[60px] w-[340px] opacity-[0.07] grayscale invert"
+    />
+
+    <!-- Intro + progress -->
+    <div class="relative min-w-0 lg:flex-[1_1_300px]">
+      <p class="text-[13px] font-bold tracking-[0.14em] text-[#F0C45A]">30-SECOND PACKAGE FINDER</p>
+      <h2 id="finder-title" class="mb-3.5 mt-3 text-[2rem] font-extrabold leading-[1.1] sm:text-[38px]">
+        Not sure where to start?
+      </h2>
+      <p class="mb-6 leading-relaxed text-[#C9BFAE]">
+        Answer 3 quick questions and we'll point you to the package that fits.
+      </p>
+      <div
+        role="progressbar"
+        aria-label="Package finder progress"
+        aria-valuemin="0"
+        aria-valuemax="3"
+        aria-valuenow="0"
+        data-progress
+        class="h-2 overflow-hidden rounded-full bg-[#2E291F]"
+      >
+        <div data-progress-fill class="h-full w-0 rounded-full bg-[#E6B33C] transition-[width] duration-300"></div>
+      </div>
+      <p data-progress-label aria-live="polite" class="mt-2.5 text-[13px] text-[#C9BFAE]">Question 1 of 3</p>
+    </div>
+
+    <!-- Questions and results -->
+    <div class="relative min-w-0 lg:flex-[1_1_520px]">
+      {questions.map((q, i) => (
+        <fieldset data-step={i} hidden={i > 0}>
+          <legend class="contents">
+            <h3 tabindex="-1" class="mb-[18px] text-2xl font-extrabold outline-none">{q.title}</h3>
+          </legend>
+          <div class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3">
+            {q.options.map((o) => (
+              <button type="button" data-answer={o.value} class={optionClass}>
+                <span class="block font-display text-lg font-extrabold">{o.label}</span>
+                <span class="mt-1 block text-[13px] text-[#C9BFAE]">{o.sub}</span>
+              </button>
+            ))}
+          </div>
+          {i > 0 && (
+            <button type="button" data-back class="mt-4 min-h-11 font-semibold text-[#F0C45A] hover:underline">
+              <span aria-hidden="true">←</span> Back
+            </button>
+          )}
+        </fieldset>
+      ))}
+
+      {results.map((r) => (
+        <div data-result={r.id} hidden class="rounded-[20px] border-2 border-[#E6B33C] bg-[#17150F] p-6 sm:p-7">
+          <p class="text-[13px] font-bold tracking-[0.12em] text-[#F0C45A]">YOUR BEST MATCH</p>
+          <div class="mb-2 mt-2.5 flex flex-wrap items-baseline justify-between gap-2">
+            <h3 tabindex="-1" class="text-[28px] font-extrabold outline-none">{r.name}</h3>
+            <p class="font-display text-[32px] font-extrabold text-[#F0C45A]">
+              {r.price} <span class="font-sans text-sm font-medium text-[#C9BFAE]">{taxNote}</span>
+            </p>
+          </div>
+          <p class="mb-1.5 leading-relaxed text-[#E2D9C7]">{r.why}</p>
+          {r.saving && <p class="font-semibold text-[#F0C45A]">{r.saving}</p>}
+          {r.isLessonPack && <p data-road-extra hidden class="font-semibold text-[#F0C45A]">{roadTestExtra}</p>}
+          <div class="mt-[22px] flex flex-wrap gap-3">
+            <a
+              href={checkoutHref(r.id)}
+              class="rounded-full bg-[#E6B33C] px-6 py-3.5 font-bold text-ink transition hover:-translate-y-0.5 hover:brightness-95"
+            >
+              Book this package <span aria-hidden="true">→</span>
+            </a>
+            <button
+              type="button"
+              data-restart
+              class="rounded-full border border-[#3A3426] px-[22px] py-[13px] font-semibold text-[#F5EFE3] hover:border-[#E6B33C]"
+            >
+              Start over
+            </button>
+          </div>
+        </div>
+      ))}
+
+      <noscript>
+        <p class="mt-4 text-[#C9BFAE]">
+          The finder needs JavaScript. You can compare every package on our
+          <a href="/pricing" class="font-semibold text-[#F0C45A] underline">pricing page</a>.
+        </p>
+      </noscript>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Shows one question at a time, then the matching result. Answers: [licence, experience, car].
+  document.querySelectorAll<HTMLElement>('[data-finder]').forEach((root) => {
+    const steps = [...root.querySelectorAll<HTMLElement>('[data-step]')];
+    const results = [...root.querySelectorAll<HTMLElement>('[data-result]')];
+    const bar = root.querySelector<HTMLElement>('[data-progress]')!;
+    const fill = root.querySelector<HTMLElement>('[data-progress-fill]')!;
+    const label = root.querySelector<HTMLElement>('[data-progress-label]')!;
+    const total = steps.length;
+    let answers: string[] = [];
+
+    // Same rules as the mockup.
+    function match([licence, experience, car]: string[]): string {
+      if (licence === 'G1') {
+        if (car === 'yes') return experience === 'new' ? 'bde-ultimate' : 'bde-road-test';
+        return 'bde';
+      }
+      return experience === 'some' ? 'lessons-4' : 'lessons-10';
+    }
+
+    function render(moveFocus: boolean) {
+      const step = answers.length;
+      const done = step >= total;
+      const resultId = done ? match(answers) : '';
+      let shown: HTMLElement | undefined;
+
+      steps.forEach((el, i) => {
+        el.hidden = done || i !== step;
+        if (!el.hidden) shown = el;
+      });
+      results.forEach((el) => {
+        el.hidden = el.dataset.result !== resultId;
+        if (!el.hidden) {
+          shown = el;
+          el.querySelector<HTMLElement>('[data-road-extra]')?.toggleAttribute('hidden', answers[2] !== 'yes');
+        }
+      });
+
+      fill.style.width = `${Math.round((Math.min(step, total) / total) * 100)}%`;
+      bar.setAttribute('aria-valuenow', String(Math.min(step, total)));
+      label.textContent = done ? 'Done! Here is your match' : `Question ${step + 1} of ${total}`;
+
+      // Move focus to the new heading so keyboard and screen-reader users follow along.
+      if (moveFocus) shown?.querySelector<HTMLElement>('h3')?.focus();
+    }
+
+    root.addEventListener('click', (e) => {
+      const target = e.target as Element;
+      const answer = target.closest<HTMLElement>('[data-answer]');
+      if (answer) {
+        answers.push(answer.dataset.answer!);
+        render(true);
+      } else if (target.closest('[data-back]')) {
+        answers.pop();
+        render(true);
+      } else if (target.closest('[data-restart]')) {
+        answers = [];
+        render(true);
+      }
+    });
+
+    render(false);
+  });
+</script>
