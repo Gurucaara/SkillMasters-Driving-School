@@ -1,0 +1,151 @@
+---
+// Pricing page: banner → BDE cards → BDE comparison table → lesson cards → payment / validity /
+// cancellation info cards → gold CTA band. Copy and layout from docs/mockup/Pricing.dc.html.
+// Every price, saving and the validity period come from packages.json.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageBanner from '../components/PageBanner.astro';
+import PackageCard from '../components/PackageCard.astro';
+import CtaBand from '../components/CtaBand.astro';
+import data from '../data/packages.json';
+import { getPackage, savings, money, type PackageId } from '../data/packages';
+
+const bdeIds: PackageId[] = ['bde', 'bde-road-test', 'bde-ultimate'];
+const lessonIds: PackageId[] = ['lesson-1', 'lessons-4', 'lessons-10', 'road-test'];
+const bdeCards = bdeIds.map(getPackage);
+const lessonCards = lessonIds.map(getPackage);
+
+// Comparison rows: which BDE package includes what (columns in bdeIds order).
+const compareRows: { label: string; has: boolean[] }[] = [
+  { label: '20 hrs online learning', has: [true, true, true] },
+  { label: '10 hrs home-link', has: [true, true, true] },
+  { label: '10 hrs in-car training', has: [true, true, true] },
+  { label: 'Extra 2 hr practice lesson', has: [false, false, true] },
+  { label: 'Car for your road test + warm-up', has: [false, true, true] },
+];
+const highlight = (i: number) => bdeCards[i].featured;
+
+const roadTest = getPackage('road-test');
+const lateFee = 50; // late-cancellation / no-show fee (CLAUDE.md, refund rules)
+const infoCards = [
+  {
+    title: 'Pay online, securely',
+    text: 'Visa, Mastercard, Amex, Apple Pay and Google Pay through Stripe. We never see or store your card number.',
+  },
+  {
+    title: 'Simple payment',
+    text: `Pay in full when you book. Packages stay valid for ${data.validityMonths} months from purchase.`,
+  },
+  {
+    title: 'Cancellations',
+    text: `Please give at least 24 hours notice to reschedule. Late cancellations and no-shows are charged ${money(lateFee)}. Cancel within 15 days of registering for a 50% refund; after that, packages are non-refundable.`,
+  },
+];
+
+const eyebrow = 'text-[13px] font-bold tracking-[0.14em] text-accent-text';
+const h2 = 'mt-2.5 text-[2rem] font-extrabold leading-[1.1] sm:text-[40px]';
+---
+
+<BaseLayout
+  title="Pricing"
+  description={`Driving lesson and BDE prices in London, Ontario: BDE from ${money(bdeCards[0].price)}, lessons ${money(lessonCards[0].price)}/hr, road test package ${money(roadTest.price)}. Bundles save up to ${money(Math.max(...bdeCards.map(savings)))}. CAD + HST.`}
+>
+  <PageBanner
+    crumb="Pricing"
+    eyebrow="TRANSPARENT PRICING"
+    title="Simple prices. Real savings."
+    intro="No hidden fees. Every bundle costs less than buying the same things separately. All prices in CAD + HST."
+  />
+
+  <!-- BDE packages -->
+  <section aria-labelledby="bde-title" class="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-[88px]">
+    <div class="reveal mb-9">
+      <p class={eyebrow}>BDE PROGRAMS</p>
+      <h2 id="bde-title" class={h2}>BDE packages</h2>
+    </div>
+    <ul class="grid gap-x-[22px] gap-y-8 pt-3 md:grid-cols-3">
+      {bdeCards.map((pkg) => <li class="reveal"><PackageCard pkg={pkg} /></li>)}
+    </ul>
+  </section>
+
+  <!-- Comparison table -->
+  <section aria-labelledby="compare-title" class="border-y border-border bg-section">
+    <div class="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-[88px]">
+      <div class="reveal mb-9 max-w-[680px]">
+        <p class={eyebrow}>COMPARE</p>
+        <h2 id="compare-title" class={h2}>Which BDE package is right for you?</h2>
+      </div>
+      <!-- Scrolls sideways on narrow phones instead of squashing the columns -->
+      <p class="mb-3 text-sm text-fg-muted sm:hidden" aria-hidden="true">Swipe to compare all three →</p>
+      <div class="reveal overflow-x-auto rounded-[20px] border border-border bg-surface-raised" tabindex="0" role="region" aria-labelledby="compare-title">
+        <table class="w-full min-w-[640px] border-collapse text-center text-[15px]">
+          <caption class="sr-only">What each BDE package includes, with prices and savings</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="p-[18px] text-left">What you get</th>
+              {bdeCards.map((pkg, i) => (
+                <th scope="col" class:list={['p-[18px]', highlight(i) && 'bg-gold/10']}>
+                  {pkg.name}<br /><span class="font-display text-[22px] font-extrabold">{money(pkg.price)}</span>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {compareRows.map((row) => (
+              <tr>
+                <th scope="row" class="border-t border-border p-4 text-left font-normal">{row.label}</th>
+                {row.has.map((yes, i) => (
+                  <td class:list={['border-t border-border p-4', highlight(i) && 'bg-gold/10']}>
+                    {yes ? (
+                      <span class="font-extrabold text-good"><span aria-hidden="true">✓</span><span class="sr-only">Included</span></span>
+                    ) : (
+                      <span class="text-fg-muted"><span aria-hidden="true">—</span><span class="sr-only">Not included</span></span>
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))}
+            <tr>
+              <th scope="row" class="border-t border-border p-4 text-left font-normal">Savings vs separately</th>
+              {bdeCards.map((pkg, i) => (
+                <td class:list={['border-t border-border p-4 font-bold', highlight(i) && 'bg-gold/10']}>
+                  {savings(pkg) ? money(savings(pkg)) : (
+                    <span class="font-normal text-fg-muted"><span aria-hidden="true">—</span><span class="sr-only">None</span></span>
+                  )}
+                </td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lessons & road test -->
+  <section aria-labelledby="lessons-title" class="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-[88px]">
+    <div class="reveal mb-9">
+      <p class={eyebrow}>LESSONS &amp; ROAD TEST</p>
+      <h2 id="lessons-title" class={h2}>In-car lessons</h2>
+    </div>
+    <ul class="grid gap-x-[22px] gap-y-8 pt-3 sm:grid-cols-2 lg:grid-cols-4">
+      {lessonCards.map((pkg) => <li class="reveal"><PackageCard pkg={pkg} variant="lessons" /></li>)}
+    </ul>
+  </section>
+
+  <!-- Payment, validity, cancellations -->
+  <section aria-label="Payment and cancellation" class="border-y border-border bg-section">
+    <div class="mx-auto grid max-w-[1200px] gap-5 px-4 py-16 sm:px-6 sm:py-[88px] md:grid-cols-3">
+      {infoCards.map((card) => (
+        <div class="reveal rounded-[20px] border border-border bg-surface-raised p-[26px]">
+          <h3 class="mb-2.5 text-lg font-extrabold">{card.title}</h3>
+          <p class="leading-relaxed text-fg-muted">{card.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <CtaBand
+    text="Book online in minutes. Pay securely with Stripe."
+    buttonLabel="Buy a package"
+    secondary={{ label: 'Ask a question', href: '/contact' }}
+  />
+</BaseLayout>
