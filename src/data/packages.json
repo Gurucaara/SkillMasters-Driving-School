@@ -10,7 +10,14 @@
       "separately": null,
       "separatelyNote": "",
       "ribbon": "",
-      "includes": ["20 hrs online learning", "10 hrs home-link", "10 hrs in-car training"]
+      "includes": [
+        "20 hrs online learning",
+        "10 hrs home-link",
+        "10 hrs in-car training"
+      ],
+      "featured": false,
+      "listLabel": "BDE Course",
+      "bundle": true
     },
     {
       "id": "bde-road-test",
@@ -19,7 +26,14 @@
       "separately": 749,
       "separatelyNote": "BDE $599 + road test package $150",
       "ribbon": "MOST POPULAR",
-      "includes": ["Full BDE course", "Car for your road test", "Warm-up before the test"]
+      "includes": [
+        "Full BDE course",
+        "Car for your road test",
+        "Warm-up before the test"
+      ],
+      "featured": true,
+      "listLabel": "BDE + Road Test",
+      "bundle": true
     },
     {
       "id": "bde-ultimate",
@@ -28,7 +42,14 @@
       "separately": 849,
       "separatelyNote": "BDE $599 + 2 hrs $100 + road test $150",
       "ribbon": "BEST VALUE",
-      "includes": ["Full BDE course", "+2 hr practice lesson", "Car for your road test"]
+      "includes": [
+        "Full BDE course",
+        "+2 hr practice lesson",
+        "Car for your road test"
+      ],
+      "featured": false,
+      "listLabel": "BDE Ultimate",
+      "bundle": true
     },
     {
       "id": "lessons-10",
@@ -37,7 +58,14 @@
       "separately": 500,
       "separatelyNote": "10 × $50 single lessons",
       "ribbon": "",
-      "includes": ["10 hrs in-car lessons", "Just $45/hr", "Road test prep"]
+      "includes": [
+        "10 hrs in-car lessons",
+        "Just $45/hr",
+        "Road test prep"
+      ],
+      "featured": false,
+      "listLabel": "10-Hour Lesson Pack",
+      "bundle": true
     },
     {
       "id": "lessons-4",
@@ -46,7 +74,14 @@
       "separately": 200,
       "separatelyNote": "4 × $50 single lessons",
       "ribbon": "",
-      "includes": ["4 hrs in-car lessons", "Just $45/hr", "Great refresher"]
+      "includes": [
+        "4 hrs in-car lessons",
+        "Just $45/hr",
+        "Great refresher"
+      ],
+      "featured": false,
+      "listLabel": "4-Hour Lesson Pack",
+      "bundle": true
     },
     {
       "id": "lesson-1",
@@ -55,7 +90,12 @@
       "separately": null,
       "separatelyNote": "",
       "ribbon": "",
-      "includes": ["1 hr in-car lesson"]
+      "includes": [
+        "1 hr in-car lesson"
+      ],
+      "featured": false,
+      "listLabel": "Single lesson (1 hr)",
+      "bundle": false
     },
     {
       "id": "road-test",
@@ -64,7 +104,13 @@
       "separately": null,
       "separatelyNote": "",
       "ribbon": "",
-      "includes": ["Car for your road test", "Warm-up before the test"]
+      "includes": [
+        "Car for your road test",
+        "Warm-up before the test"
+      ],
+      "featured": false,
+      "listLabel": "Road test package (car + warm-up)",
+      "bundle": false
     }
   ]
 }

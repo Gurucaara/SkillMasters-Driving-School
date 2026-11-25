@@ -1,0 +1,58 @@
+---
+// Home "Bundle up and save": the 5 bundle cards, then single lesson + road test rows and a note
+// explaining how savings are calculated. Everything comes from packages.json.
+// Layout and copy from docs/mockup/Main.dc.html (#packages).
+import PackageCard from './PackageCard.astro';
+import { packages, getPackage, money } from '../data/packages';
+
+// Cards keep the order of packages.json: BDE, the BDE bundles, then lesson packs.
+const cards = packages.filter((p) => p.bundle);
+const singles = packages.filter((p) => !p.bundle);
+
+const bde = getPackage('bde');
+const lesson = getPackage('lesson-1');
+const roadTest = getPackage('road-test');
+---
+
+<section id="packages" aria-labelledby="packages-title" class="scroll-mt-24 border-y border-border bg-section">
+  <div class="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-[88px]">
+    <div class="reveal mb-9 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">PACKAGES &amp; OFFERS</p>
+        <h2 id="packages-title" class="mt-2.5 text-[2rem] font-extrabold tracking-[-0.01em] sm:text-[40px]">
+          Bundle up and save
+        </h2>
+      </div>
+      <p class="max-w-[420px] text-fg-muted">
+        Every package costs less than buying the same lessons and services one by one.
+      </p>
+    </div>
+
+    <!-- Desktop: 3 BDE cards on row 1, 2 lesson packs on row 2 (6-column grid, spans 2 / 3).
+         pt-3 leaves room for the ribbons that sit above the cards. -->
+    <ul class="grid gap-x-[22px] gap-y-8 pt-3 sm:grid-cols-2 lg:grid-cols-6">
+      {cards.map((pkg) => (
+        <li class:list={['reveal', pkg.id.startsWith('bde') ? 'lg:col-span-2' : 'lg:col-span-3']}>
+          <PackageCard pkg={pkg} />
+        </li>
+      ))}
+    </ul>
+
+    <ul class="mt-9 rounded-[20px] border border-border bg-surface-raised px-6 py-2">
+      {singles.map((pkg, i) => (
+        <li class:list={['flex justify-between gap-4 py-4', i < singles.length - 1 && 'border-b border-border']}>
+          <span>{pkg.listLabel}</span>
+          <strong>{money(pkg.price)}</strong>
+        </li>
+      ))}
+    </ul>
+
+    <p class="mt-4 text-[13px] text-fg-muted">
+      Savings are compared with buying each item separately at our regular prices ({money(bde.price)} BDE,
+      {money(lesson.price)}/hr lessons, {money(roadTest.price)} road test package). All prices in CAD + HST.
+      <a href="/pricing" class="whitespace-nowrap font-bold text-accent-text hover:underline">
+        See full pricing <span aria-hidden="true">→</span>
+      </a>
+    </p>
+  </div>
+</section>

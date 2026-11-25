@@ -1,0 +1,62 @@
+---
+// One package card: ribbon, name, SAVE badge, price, real "bought separately" total, what's
+// included and a Buy button. Used on Home, BDE, Lessons and Pricing (docs/design-spec.md).
+// Strike-through prices are only ever the real bought-separately total from packages.json.
+import { savings, money, checkoutHref, type Package, type PackageId } from '../data/packages';
+
+interface Props {
+  pkg: Package;
+}
+const { pkg } = Astro.props;
+const saved = savings(pkg);
+---
+
+<article
+  class:list={[
+    'lift relative flex h-full flex-col gap-3.5 rounded-[22px] bg-surface-raised p-7',
+    pkg.featured ? 'border-2 border-gold shadow-[0_12px_40px_var(--glow)]' : 'border border-border',
+  ]}
+>
+  {pkg.ribbon && (
+    <p class="absolute -top-[13px] left-7 rounded-full bg-ink px-3 py-[5px] text-xs font-extrabold tracking-[0.08em] text-[#F0C45A] dark:bg-black">
+      {pkg.ribbon}
+    </p>
+  )}
+
+  <div class="flex items-start justify-between gap-2.5">
+    <h3 class="text-[21px] font-extrabold">{pkg.name}</h3>
+    {saved > 0 && (
+      <p class="flex-none rounded-full bg-good px-2.5 py-[5px] text-xs font-extrabold text-on-good">
+        SAVE {money(saved)}
+      </p>
+    )}
+  </div>
+
+  <p class="flex flex-wrap items-baseline gap-x-3">
+    <span class="font-display text-[44px] font-extrabold leading-none">{money(pkg.price)}</span>
+    {pkg.separately && (
+      <s class="text-xl text-fg-muted">
+        <span class="sr-only">Bought separately: </span>{money(pkg.separately)}
+      </s>
+    )}
+    <span class="text-sm text-fg-muted">+ HST</span>
+  </p>
+  {pkg.separatelyNote && <p class="-mt-1 text-[13px] text-fg-muted">{pkg.separatelyNote}</p>}
+
+  <ul class="list-disc pl-[18px] leading-[1.9] text-fg-soft marker:text-gold">
+    {pkg.includes.map((item) => <li>{item}</li>)}
+  </ul>
+
+  <a
+    href={checkoutHref(pkg.id as PackageId)}
+    aria-label={`Buy now: ${pkg.name}`}
+    class:list={[
+      'mt-auto rounded-full border-2 py-[13px] text-center font-bold transition',
+      pkg.featured
+        ? 'border-gold bg-gold text-ink hover:brightness-95'
+        : 'border-fg text-fg hover:bg-fg hover:text-surface-raised',
+    ]}
+  >
+    Buy now
+  </a>
+</article>
