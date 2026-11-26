@@ -99,5 +99,16 @@ const jsonLdBlocks = (Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : []).m
     </main>
     <Footer />
     <MobileBar />
+
+    <script>
+      // Offline support (public/sw.js). Only in production builds, so `npm run dev` isn't cached.
+      if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {
+            /* the site works fine without it */
+          });
+        });
+      }
+    </script>
   </body>
 </html>

@@ -13,3 +13,7 @@
 
 /manifest.webmanifest
   Content-Type: application/manifest+json
+
+# Always check for a new service worker so updates reach visitors quickly.
+/sw.js
+  Cache-Control: no-cache
