@@ -1,6 +1,8 @@
 {
   "currency": "CAD",
   "taxNote": "+ 13% HST",
+  "hstRate": 0.13,
+  "_hstRate": "Ontario HST charged at checkout (page and server both read this). Set to 0 if the business is not registered for GST/HST.",
   "validityMonths": 12,
   "_variants": "Optional per-page wording. A package's variants.<page> fields override name, note, ribbon, featured and includes on that page only. Prices always come from the package itself.",
   "packages": [

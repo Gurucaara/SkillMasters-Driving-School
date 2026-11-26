@@ -8,3 +8,9 @@ TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
 # Log the email instead of sending it (local testing only; never set this on Cloudflare).
 EMAIL_DRY_RUN=true
 # RESEND_API_KEY=re_...   (only needed to send real emails locally)
+
+# Stripe TEST mode keys (Stripe dashboard → Developers → API keys, with "Test mode" on).
+# Never put a live key (sk_live_…) here.
+# STRIPE_SECRET_KEY=sk_test_...
+# Webhook signing secret: from `stripe listen` locally, or the test webhook endpoint in the dashboard.
+# STRIPE_WEBHOOK_SECRET=whsec_...

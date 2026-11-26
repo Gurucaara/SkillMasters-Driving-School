@@ -5,6 +5,7 @@
 // Never trust the browser: every field is re-checked here (lengths, allowed choices, phone
 // digits), whatever the form's own `required` / `pattern` said.
 import { site } from '../data/site';
+import { escapeHtml } from './email';
 
 /** Topic chips on the contact page (kept in sync with src/pages/contact.astro). */
 export const TOPICS = ['BDE program', 'G2 lessons', 'G lessons', 'Road test car', 'Pricing', 'Something else'] as const;
@@ -75,8 +76,6 @@ export function validateContact(input: Record<string, unknown>): ValidationResul
   };
 }
 
-const escapeHtml = (s: string) =>
-  s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
 /** The email Rahul receives. Plain text plus a simple HTML version (all values escaped). */
 export function buildContactEmail(m: ContactMessage) {

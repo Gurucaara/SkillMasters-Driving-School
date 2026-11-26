@@ -13,8 +13,9 @@
 //   (CLAUDE.md, "Rules: honesty and privacy").
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageBanner from '../../components/PageBanner.astro';
-import { packages, savings, money, cad, hst, withVariant } from '../../data/packages';
+import { packages, savings, money, cad, hst, withVariant, HST_RATE, hstLabel } from '../../data/packages';
 import data from '../../data/packages.json';
+import { PREFERRED_TIMES, LICENCE_STAGES } from '../../lib/checkout';
 import { site } from '../../data/site';
 
 // Order on the page: BDE packages, then lessons and road test (lesson wording).
@@ -33,7 +34,12 @@ const options = packages.map((p) => {
   };
 });
 const steps = ['Package', 'Your details', 'Review & pay', 'Schedule'];
-const prefTimes = ['Morning', 'Afternoon', 'Evening', 'Weekend'];
+// Same lists the server accepts (src/lib/checkout.ts).
+const prefTimes = PREFERRED_TIMES;
+const licenceStages = LICENCE_STAGES;
+// Cloudflare Turnstile public site key (build variable). Without it the widget is left out and the
+// server answers "not configured", so Pay shows the contact fallback.
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
 const today = new Date().toISOString().slice(0, 10);
 
 const field =
@@ -59,6 +65,10 @@ const btnGhost = 'min-h-11 rounded-full px-4 font-semibold text-accent-text hove
 
   <section class="border-b border-border bg-section">
     <div class="mx-auto max-w-[1200px] px-4 py-12 sm:px-6 sm:py-16">
+      <p data-cancelled hidden class="mb-6 rounded-xl border border-gold bg-surface-raised px-4 py-3">
+        <strong>Payment cancelled.</strong> Nothing was charged. Your package is still selected below whenever you’re ready.
+      </p>
+
       <!-- Step chips -->
       <ol class="mb-8 flex flex-wrap gap-2" aria-label="Checkout steps">
         {steps.map((s, i) => (
@@ -100,7 +110,7 @@ const btnGhost = 'min-h-11 rounded-full px-4 font-semibold text-accent-text hove
               ))}
             </div>
             <p class="mt-4 text-sm text-fg-muted">
-              Prices + 13% HST. Pay in full today. Packages are valid for {data.validityMonths} months.
+              {HST_RATE > 0 && `Prices + ${hstLabel.replace(/HST \((.*)\)/, '$1 HST')}. `}Pay in full today. Packages are valid for {data.validityMonths} months.
             </p>
             <div class="mt-6 flex justify-end">
               <button type="button" data-go="1" class={btnPrimary}>Continue <span aria-hidden="true">→</span></button>
@@ -125,7 +135,7 @@ const btnGhost = 'min-h-11 rounded-full px-4 font-semibold text-accent-text hove
               </label>
               <label class={labelCls}>Licence stage <Fragment set:html={req} />
                 <select class={field} name="licenceStage" required>
-                  <option>G1</option><option>G2</option>
+                  {licenceStages.map((l) => <option>{l}</option>)}
                 </select>
               </label>
               <label class={labelCls}>Pickup area <Fragment set:html={req} />
@@ -162,6 +172,13 @@ const btnGhost = 'min-h-11 rounded-full px-4 font-semibold text-accent-text hove
               <input type="checkbox" name="agree" value="yes" required class="mt-1 size-5 flex-none accent-[#E6A817]" />
               <span>I agree to the <a href="/legal#terms" class="font-semibold text-accent-text underline">Terms</a> and the <a href="/legal#refunds" class="font-semibold text-accent-text underline">Refund &amp; Cancellation Policy</a>.</span>
             </label>
+            {turnstileSiteKey && (
+              <>
+                <!-- Drawn when step 3 opens (explicit mode): Turnstile can't run inside a hidden step. -->
+                <div class="mt-5" data-turnstile data-sitekey={turnstileSiteKey}></div>
+                <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+              </>
+            )}
             <button type="submit" data-pay class:list={[btnPrimary, 'mt-6 w-full sm:w-auto']}>
               Pay <span data-pay-amount></span> securely with Stripe
             </button>
@@ -179,7 +196,7 @@ const btnGhost = 'min-h-11 rounded-full px-4 font-semibold text-accent-text hove
           <p data-sum-name class="mt-3 font-display text-xl font-extrabold">{options[0].name}</p>
           <dl class="mt-5 space-y-2.5 text-[15px]">
             <div class="flex justify-between"><dt class="text-[#C9BFAE]">Subtotal</dt><dd data-sum-sub>{options[0].sub}</dd></div>
-            <div class="flex justify-between"><dt class="text-[#C9BFAE]">HST (13%)</dt><dd data-sum-hst>{options[0].hst}</dd></div>
+            {HST_RATE > 0 && <div class="flex justify-between"><dt class="text-[#C9BFAE]">{hstLabel}</dt><dd data-sum-hst>{options[0].hst}</dd></div>}
             <div class="flex justify-between border-t border-[#3A3426] pt-3 text-lg font-extrabold"><dt>Total due today</dt><dd data-sum-total class="text-[#F0C45A]">{options[0].total}</dd></div>
           </dl>
           <p class="mt-5 flex items-center gap-2 text-sm text-[#C9BFAE]">
@@ -263,9 +280,25 @@ const btnGhost = 'min-h-11 rounded-full px-4 font-semibold text-accent-text hove
       const r = selected();
       $('[data-sum-name]').textContent = r.dataset.name!;
       $('[data-sum-sub]').textContent = r.dataset.sub!;
-      $('[data-sum-hst]').textContent = r.dataset.hst!;
+      const hstCell = document.querySelector<HTMLElement>('[data-sum-hst]');
+      if (hstCell) hstCell.textContent = r.dataset.hst!;
       $('[data-sum-total]').textContent = r.dataset.total!;
       $('[data-pay-amount]').textContent = r.dataset.total!;
+    }
+
+    // Turnstile (explicit mode): draw the widget once, when the Review & pay step is visible.
+    type Turnstile = { render(el: HTMLElement, opts: Record<string, string>): string; reset(): void };
+    const turnstileBox = form.querySelector<HTMLElement>('[data-turnstile]');
+    let turnstileDrawn = false;
+    function renderTurnstile(tries = 0) {
+      if (!turnstileBox || turnstileDrawn) return;
+      const ts = (window as unknown as { turnstile?: Turnstile }).turnstile;
+      if (!ts) {
+        if (tries < 50) setTimeout(() => renderTurnstile(tries + 1), 200); // script still loading
+        return;
+      }
+      ts.render(turnstileBox, { sitekey: turnstileBox.dataset.sitekey!, theme: 'light', size: 'flexible' });
+      turnstileDrawn = true;
     }
 
     function validPanel(i: number) {
@@ -286,6 +319,7 @@ const btnGhost = 'min-h-11 rounded-full px-4 font-semibold text-accent-text hove
         $('[data-review-details]').textContent = `${f.get('firstName')} ${f.get('lastName')} · ${f.get('email')} · ${f.get('area')}`;
       }
       status.innerHTML = '';
+      if (i === 2) renderTurnstile();
       if (focus) panels[i].querySelector<HTMLElement>('h2')?.focus();
     }
 
@@ -306,6 +340,10 @@ const btnGhost = 'min-h-11 rounded-full px-4 font-semibold text-accent-text hove
       e.preventDefault();
       if (![0, 1, 2].every(validPanel)) return;
       payBtn.disabled = true;
+      const errorBox = (html: string) =>
+        `<div class="rounded-xl border border-[#C81E1E] bg-[#C81E1E]/10 px-4 py-3">${html}</div>`;
+      const contactLine = `call or text <a class="font-semibold underline" href="${site.phone.href}">${site.phone.display}</a>, <a class="font-semibold underline" href="${site.whatsapp}">WhatsApp us</a> or email <a class="font-semibold underline" href="mailto:${site.email}">${site.email}</a>`;
+      let leaving = false;
       try {
         const body = Object.fromEntries(new FormData(form));
         const res = await fetch(form.action, {
@@ -313,17 +351,48 @@ const btnGhost = 'min-h-11 rounded-full px-4 font-semibold text-accent-text hove
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
         });
-        const json = res.ok ? await res.json() : null;
-        if (!json?.url) throw new Error('no checkout url');
-        location.href = json.url; // Stripe's hosted checkout page
+        const result = (await res.json().catch(() => ({}))) as { url?: string; fields?: Record<string, string> };
+        if (res.ok && result.url) {
+          leaving = true;
+          status.innerHTML = '<p class="text-fg-muted">Taking you to Stripe’s secure payment page…</p>';
+          location.href = result.url; // Stripe's hosted checkout page
+          return;
+        }
+        if (res.status === 400 && result.fields) {
+          // The server's own messages (fixed text), inserted as text
+          status.innerHTML = errorBox('<strong>Please check:</strong><ul class="mt-1 list-disc pl-5" data-errors></ul>');
+          const list = status.querySelector('[data-errors]')!;
+          for (const message of Object.values(result.fields)) {
+            const li = document.createElement('li');
+            li.textContent = message;
+            list.append(li);
+          }
+        } else if (res.status === 403) {
+          status.innerHTML = errorBox('<strong>We couldn’t confirm you’re a person.</strong> Please complete the check above and try again.');
+        } else if (res.status === 429) {
+          status.innerHTML = errorBox('<strong>Too many attempts in a short time.</strong> Please wait a minute and try again.');
+        } else {
+          throw new Error(String(res.status));
+        }
       } catch {
-        status.innerHTML = `<div class="rounded-xl border border-[#C81E1E] bg-[#C81E1E]/10 px-4 py-3"><strong>Online payment isn't available right now.</strong> Your card has not been charged. To book, call or text <a class="font-semibold underline" href="${site.phone.href}">${site.phone.display}</a>, <a class="font-semibold underline" href="${site.whatsapp}">WhatsApp us</a> or email <a class="font-semibold underline" href="mailto:${site.email}">${site.email}</a>.</div>`;
-        status.focus();
-        payBtn.disabled = false;
+        status.innerHTML = errorBox(`<strong>Online payment isn't available right now.</strong> Your card has not been charged. To book, ${contactLine}.`);
+      } finally {
+        if (!leaving) {
+          // A Turnstile token works once; get a fresh one for the next try.
+          (window as unknown as { turnstile?: { reset(): void } }).turnstile?.reset();
+          status.focus();
+          payBtn.disabled = false;
+        }
       }
     });
 
     updateSummary();
     show(0, false);
+
+    // Back from Stripe without paying (Stripe's cancel link adds ?cancelled=1)
+    if (new URLSearchParams(location.search).get('cancelled') === '1') {
+      const note = document.querySelector<HTMLElement>('[data-cancelled]');
+      if (note) note.hidden = false;
+    }
   }
 </script>

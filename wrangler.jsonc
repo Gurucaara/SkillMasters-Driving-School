@@ -12,7 +12,8 @@
 		"enabled": true
 	},
 	// Contact form settings (not secret). Secrets are set with `npx wrangler secret put <NAME>`:
-	// TURNSTILE_SECRET_KEY, RESEND_API_KEY. See .dev.vars.example for local testing.
+	// TURNSTILE_SECRET_KEY, RESEND_API_KEY, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET.
+	// See .dev.vars.example for local testing.
 	"vars": {
 		"CONTACT_TO": "info@skillmastersdrivingschool.ca",
 		"CONTACT_FROM": "Skillmasters Website <website@skillmastersdrivingschool.ca>"
@@ -23,6 +24,12 @@
 			"name": "CONTACT_RATE_LIMITER",
 			"namespace_id": "1001",
 			"simple": { "limit": 5, "period": 60 }
+		},
+		// At most 10 checkout attempts per minute from one visitor (src/pages/api/checkout.ts).
+		{
+			"name": "CHECKOUT_RATE_LIMITER",
+			"namespace_id": "1002",
+			"simple": { "limit": 10, "period": 60 }
 		}
 	]
 }

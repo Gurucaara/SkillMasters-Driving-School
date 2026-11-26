@@ -99,7 +99,7 @@ src/components/    Header, Footer, MobileBar, ThemeToggle, PageBanner, CtaBand, 
                    Hero, TrustStrip, WhoWeServe, PackageFinder, Packages, PackageCard,
                    WhySkillmasters, PassWall, FAQ, BlogTeaser, BlogCard
 src/layouts/       BaseLayout.astro (head, SEO tags, JSON-LD, theme script, SW registration)
-src/pages/         one file per route; src/pages/api/contact.ts (checkout, stripe-webhook to come)
+src/pages/         one file per route; src/pages/api/: contact, checkout, checkout-status, stripe-webhook
 src/content/blog/  blog articles (Markdown); file name = URL slug
 src/content/legal/ privacy.md, terms.md, refunds.md (shown as tabs on /legal)
 src/content.config.ts  fields allowed in blog and legal files
@@ -112,6 +112,10 @@ src/data/          site.ts        contact details, areas, licences, nav, trust p
                    schema.ts      JSON-LD (DrivingSchool, breadcrumbs, articles)
 src/lib/           page-path.ts   a page's clean URL path (see "How the site works")
                    contact.ts     contact form validation + email text
+                   checkout.ts    order validation, amounts, Stripe session params
+                   stripe.ts      Stripe API calls + webhook signature check
+                   server-env.ts  settings/secrets, JSON, rate limit, Turnstile
+                   email.ts       sending email to the school (Resend)
 src/styles/        global.css     theme tokens (light/dark), .reveal/.lift/.grad, .prose
 public/            _headers, robots.txt, manifest.webmanifest, icons, og-image.png,
                    sw.js, offline.html
@@ -153,8 +157,15 @@ Anything Rahul may change (prices, reviews, FAQ, contact info, quiz) must come f
   shows phone/WhatsApp/email. Local testing: copy `.dev.vars.example` → `.dev.vars` and
   `.env.example` → `.env` (Cloudflare's public test keys; `EMAIL_DRY_RUN=true` logs instead of sending,
   see `npx astro preview logs`).
-- **Checkout** posts to `/api/checkout`, which doesn't exist yet: Pay shows the contact details and
-  says no card was charged.
+- **Checkout** → `src/pages/api/checkout.ts` (validation + Stripe params in `src/lib/checkout.ts`):
+  rate limit → field checks → Turnstile → Stripe Checkout Session (hosted page, `src/lib/stripe.ts`,
+  no SDK). Amounts come only from `packages.json`; HST is one setting, `hstRate` (0 = not charged).
+  `src/pages/api/stripe-webhook.ts` verifies Stripe's signature and emails the paid order to the
+  school; `src/pages/api/checkout-status.ts` lets `/checkout/success` confirm a payment (returns only
+  paid/package/amount). Secrets: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`. Webhook in Stripe:
+  `https://<site>/api/stripe-webhook`, events `checkout.session.completed` +
+  `checkout.session.async_payment_succeeded`. Shared server helpers: `src/lib/server-env.ts`
+  (settings, JSON, rate limit, Turnstile) and `src/lib/email.ts` (Resend).
 
 ## Status (Nov 2026)
 
@@ -166,7 +177,10 @@ Before launch:
 - Rahul's accounts: Stripe (7 packages), Resend (domain verified), Turnstile, Cal.com
 - Contact form: set `TURNSTILE_SECRET_KEY` + `RESEND_API_KEY` secrets and the
   `PUBLIC_TURNSTILE_SITE_KEY` build variable once Rahul's accounts exist, then send a real test
-- Build `/api/checkout`, Stripe webhook, verified success page, Cal.com embed
+- Checkout: set `STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET`, create the webhook in Stripe, test a
+  payment in test mode, then switch to live keys
+- Confirm GST/HST registration (`hstRate` in `packages.json`; also the "+ HST" labels across pages)
+- Cal.com embed on `/checkout/success`
 - Point skillmastersdrivingschool.ca at Cloudflare; Zoho email DNS (SPF, DKIM, DMARC)
 - Rahul reviews the 6 blog drafts and the legal policies (marked Draft)
 - Replace the Refresher SAMPLE photo; confirm G2/G and town for the pass-wall photos

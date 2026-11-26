@@ -1,8 +1,9 @@
 ---
-// Where Stripe sends people back after paying (step 4 · Schedule).
-// Until the Stripe webhook confirms orders and Cal.com is connected, this page does not claim
-// a specific payment or show made-up time slots: it thanks the student and explains what
-// happens next, with direct contact options. noindex: nobody should land here from search.
+// Where Stripe sends people back after paying (step 4 · Schedule): /checkout/success?session_id=cs_…
+// The script asks /api/checkout-status whether that session is really paid, and only then shows
+// "Payment received" with the package and amount. Without a session id, or if Stripe says it isn't
+// paid, the page stays neutral and never claims a payment. No made-up time slots: the Cal.com
+// scheduler goes in the marked spot once Rahul's account exists. noindex.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageBanner from '../../components/PageBanner.astro';
 import { site } from '../../data/site';
@@ -15,10 +16,10 @@ import { site } from '../../data/site';
     <div class="mx-auto max-w-[760px] px-4 py-12 sm:px-6 sm:py-16">
       <div class="rounded-[24px] border border-border bg-surface-raised p-6 sm:p-9">
         <div class="flex items-start gap-4">
-          <span class="flex size-12 flex-none items-center justify-center rounded-full bg-good text-xl font-extrabold text-on-good" aria-hidden="true">✓</span>
-          <div>
-            <h2 class="text-2xl font-extrabold">Your order is in</h2>
-            <p class="mt-1 text-fg-muted">Stripe emails your receipt. Keep it for your records.</p>
+          <span data-paid-icon hidden class="flex size-12 flex-none items-center justify-center rounded-full bg-good text-xl font-extrabold text-on-good" aria-hidden="true">✓</span>
+          <div role="status" aria-live="polite">
+            <h2 data-paid-title class="text-2xl font-extrabold">Thanks for booking with us</h2>
+            <p data-paid-text class="mt-1 text-fg-muted">If you’ve just paid, Stripe emails your receipt. Keep it for your records.</p>
           </div>
         </div>
 
@@ -47,3 +48,28 @@ import { site } from '../../data/site';
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  // Confirm the payment with Stripe (through our server) before saying it went through.
+  const id = new URLSearchParams(location.search).get('session_id');
+  const title = document.querySelector<HTMLElement>('[data-paid-title]');
+  const text = document.querySelector<HTMLElement>('[data-paid-text]');
+  const icon = document.querySelector<HTMLElement>('[data-paid-icon]');
+  if (id && title && text && icon) {
+    fetch(`/api/checkout-status?session_id=${encodeURIComponent(id)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((s: { paid?: boolean; status?: string; packageName?: string | null; total?: string | null } | null) => {
+        if (s?.paid) {
+          title.textContent = `Payment received: ${s.total ?? ''}`.trim();
+          text.textContent = `${s.packageName ?? 'Your package'} · Stripe has emailed your receipt. Keep it for your records.`;
+          icon.hidden = false;
+        } else if (s && s.status === 'unpaid') {
+          title.textContent = 'Your payment is still processing';
+          text.textContent = 'Some payment methods take a little longer. You’ll get an email from Stripe once it goes through.';
+        }
+      })
+      .catch(() => {
+        /* keep the neutral message */
+      });
+  }
+</script>

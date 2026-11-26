@@ -66,8 +66,13 @@ export function money(amount: number): string {
   return `$${amount.toLocaleString('en-CA')}`;
 }
 
-/** Ontario HST rate (13%). */
-export const HST_RATE = 0.13;
+/** HST rate charged at checkout, from packages.json (0.13, or 0 if not registered for GST/HST). */
+export const HST_RATE: number = data.hstRate;
+/** e.g. "HST (13%)". */
+export const hstLabel = `HST (${Math.round(HST_RATE * 100)}%)`;
+
+/** A price in cents, as Stripe expects. */
+export const toCents = (amount: number) => Math.round(amount * 100);
 
 /** HST on a price, rounded to the cent. */
 export function hst(amount: number): number {
