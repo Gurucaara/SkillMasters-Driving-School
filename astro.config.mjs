@@ -9,14 +9,18 @@ import { readdirSync, readFileSync } from 'node:fs';
 const sampleBlogPaths = readdirSync('./src/content/blog')
   .filter((f) => f.endsWith('.md'))
   .filter((f) => /^sample:\s*true\s*$/m.test(readFileSync(`./src/content/blog/${f}`, 'utf8')))
-  .map((f) => `/blog/${f.replace(/\.md$/, '')}/`);
+  .map((f) => `/blog/${f.replace(/\.md$/, '')}`);
 
 // Other noindex pages (checkout flow) also stay out of the sitemap.
-const noindexPaths = [...sampleBlogPaths, '/checkout/', '/checkout/success/'];
+const noindexPaths = [...sampleBlogPaths, '/checkout', '/checkout/success'];
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://skillmastersdrivingschool.ca',
+  // Pages are built as about.html (not about/index.html), so Cloudflare serves them at /about,
+  // matching every link on the site with no redirect. Keep internal links without a trailing slash.
+  build: { format: 'file' },
+  trailingSlash: 'never',
   vite: {
     plugins: [tailwindcss()],
   },
@@ -27,7 +31,9 @@ export default defineConfig({
       filter: (page) => !noindexPaths.includes(new URL(page).pathname),
     }),
   ],
-  adapter: cloudflare(),
+  // 'compile': images are optimised once at build time with sharp (honours quality={…}) and
+  // served as static files. The site is fully static, so no on-demand image service is needed.
+  adapter: cloudflare({ imageService: 'compile' }),
   // Content Security Policy. Astro hashes every inline <script>/<style> it outputs and adds a
   // <meta> CSP to each page, so no 'unsafe-inline' is needed for scripts. Inline style="…"
   // attributes (e.g. the About map pins) are allowed. Rules that only work as an HTTP header

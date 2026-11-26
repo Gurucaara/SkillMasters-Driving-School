@@ -82,7 +82,7 @@ export function breadcrumbSchema(trail: { name: string; path: string }[]) {
       '@type': 'ListItem',
       position: i + 1,
       name: item.name,
-      item: abs(item.path.endsWith('/') ? item.path : `${item.path}/`),
+      item: abs(item.path.length > 1 ? item.path.replace(/\/$/, '') : item.path),
     })),
   };
 }

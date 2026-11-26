@@ -34,7 +34,7 @@ const dateLabel = pubDate.toLocaleDateString('en-CA', { year: 'numeric', month: 
   description={description}
   noindex={sample}
   ogType="article"
-  jsonLd={sample ? undefined : articleSchema({ title, description, path: `/blog/${post.id}/`, published: pubDate })}
+  jsonLd={sample ? undefined : articleSchema({ title, description, path: `/blog/${post.id}`, published: pubDate })}
 >
   <PageBanner crumb={title} parent={{ label: 'Blog', href: '/blog' }} eyebrow={kicker} title={title} intro={description}>
     <p class="mt-5 text-sm text-[#C9BFAE]">

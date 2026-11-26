@@ -213,7 +213,7 @@ const labelCls = 'block text-sm font-semibold';
   <!-- Socials -->
   <section aria-labelledby="follow-title" class="border-y border-border bg-section">
     <div class="mx-auto grid max-w-[1200px] items-center gap-10 px-4 py-16 sm:px-6 sm:py-[88px] lg:grid-cols-2">
-      <div class="reveal">
+      <div class="reveal min-w-0">
         <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">FOLLOW THE JOURNEY</p>
         <h2 id="follow-title" class="mb-3 mt-2.5 text-[2rem] font-extrabold leading-[1.1] sm:text-[38px]">See new drivers pass, every week</h2>
         <p class="mb-6 text-[17px] text-fg-muted">Test-day photos, quick driving tips and road-test advice for London drivers.</p>
@@ -242,12 +242,12 @@ const labelCls = 'block text-sm font-semibold';
           ))}
         </ul>
       </div>
-      <div class="reveal">
+      <div class="reveal min-w-0">
         <ul class="grid grid-cols-2 gap-3">
           {photos.map((p) => (
             <li>
               <a href={site.socials.instagram} rel="noopener" target="_blank" class="lift block overflow-hidden rounded-2xl" aria-label={`${p.alt} (opens Instagram)`}>
-                <Image src={p.src} alt="" widths={[280, 560]} sizes="(min-width: 1024px) 280px, 45vw" class="aspect-square w-full object-cover object-[50%_30%]" />
+                <Image src={p.src} alt="" quality={70} widths={[280, 560]} sizes="(min-width: 1024px) 280px, 45vw" class="aspect-square w-full object-cover object-[50%_30%]" />
               </a>
             </li>
           ))}

@@ -5,8 +5,9 @@ import { Image } from 'astro:assets';
 import ThemeToggle from './ThemeToggle.astro';
 import logo from '../assets/images/real/logo.png';
 import { site, nav, cta } from '../data/site';
+import { pagePath } from '../lib/page-path';
 
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const path = pagePath(Astro.url);
 const isActive = (href: string) =>
   href === '/' ? path === '/' : path === href || path.startsWith(href + '/');
 ---
@@ -38,7 +39,7 @@ const isActive = (href: string) =>
 
 <header class="sticky top-0 z-50 border-b border-border bg-header backdrop-blur-md">
   <div class="mx-auto flex max-w-[1200px] items-center justify-between gap-4 px-4 py-2.5 sm:px-6">
-    <a href="/" class="flex items-center gap-2.5" aria-label={`${site.shortName} home`}>
+    <a href="/" class="flex items-center gap-2.5">
       <Image
         src={logo}
         alt=""

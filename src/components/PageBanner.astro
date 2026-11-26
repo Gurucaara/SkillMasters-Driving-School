@@ -4,6 +4,7 @@
 import { Image } from 'astro:assets';
 import logo from '../assets/images/real/logo.png';
 import { breadcrumbSchema } from '../data/schema';
+import { pagePath } from '../lib/page-path';
 
 interface Props {
   /** Current page name for the breadcrumb, e.g. "About". */
@@ -18,7 +19,7 @@ const { crumb, parent, eyebrow, title, intro } = Astro.props;
 
 // Same trail as the visible breadcrumb, as structured data for search results.
 const breadcrumbJson = JSON.stringify(
-  breadcrumbSchema([...(parent ? [{ name: parent.label, path: parent.href }] : []), { name: crumb, path: Astro.url.pathname }])
+  breadcrumbSchema([...(parent ? [{ name: parent.label, path: parent.href }] : []), { name: crumb, path: pagePath(Astro.url) }])
 ).replace(/</g, '\\u003c');
 ---
 
