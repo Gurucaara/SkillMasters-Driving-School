@@ -17,13 +17,19 @@ import carFront from '../assets/images/real/car-front.jpg';
 import { site, cta } from '../data/site';
 import { getPackage, money } from '../data/packages';
 import reviews from '../data/reviews.json';
+import { TOPICS, CONTACT_METHODS } from '../lib/contact';
 
 const bde = getPackage('bde');
 const perHour = money(getPackage('lessons-10').price / 10);
 const googleUrl = reviews.rating.googleReviewUrl;
 
-const topics = ['BDE program', 'G2 lessons', 'G lessons', 'Road test car', 'Pricing', 'Something else'];
-const contactMethods = ['WhatsApp', 'Text', 'Phone call', 'Email'];
+// Same lists the server accepts (src/lib/contact.ts), so the form and the check can't drift apart.
+const topics = TOPICS;
+const contactMethods = CONTACT_METHODS;
+
+// Cloudflare Turnstile public site key (set PUBLIC_TURNSTILE_SITE_KEY when building). Without it the
+// widget is left out; the server then answers "not configured" and the page shows the fallback.
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
 
 const icon = {
   phone: 'M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2',
@@ -168,6 +174,14 @@ const labelCls = 'block text-sm font-semibold';
       <div class="hidden" aria-hidden="true">
         <label>Leave this empty <input type="text" name="company" tabindex="-1" autocomplete="off" /></label>
       </div>
+
+      {turnstileSiteKey && (
+        <>
+          <!-- Spam protection: Turnstile adds a hidden "cf-turnstile-response" field to the form. -->
+          <div class="cf-turnstile mt-5" data-sitekey={turnstileSiteKey} data-theme="light" data-size="flexible"></div>
+          <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+        </>
+      )}
 
       <button
         type="submit"
@@ -333,12 +347,31 @@ const labelCls = 'block text-sm font-semibold';
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(Object.fromEntries(new FormData(form))),
         });
-        if (!res.ok) throw new Error(String(res.status));
-        form.reset();
-        status.innerHTML = box('ok', '<strong>Thanks! Your message is on its way.</strong> We’ll get back to you soon, the way you prefer.');
+        const result = (await res.json().catch(() => ({}))) as { error?: string; fields?: Record<string, string> };
+        if (res.ok) {
+          form.reset();
+          status.innerHTML = box('ok', '<strong>Thanks! Your message is on its way.</strong> We’ll get back to you soon, the way you prefer.');
+        } else if (res.status === 400 && result.fields) {
+          // The server's own field messages (fixed text, inserted as text, never as HTML)
+          status.innerHTML = box('error', '<strong>Please check:</strong><ul class="mt-1 list-disc pl-5" data-errors></ul>');
+          const list = status.querySelector('[data-errors]')!;
+          for (const message of Object.values(result.fields)) {
+            const li = document.createElement('li');
+            li.textContent = message;
+            list.append(li);
+          }
+        } else if (res.status === 403) {
+          status.innerHTML = box('error', '<strong>We couldn’t confirm you’re a person.</strong> Please complete the check above and send again.');
+        } else if (res.status === 429) {
+          status.innerHTML = box('error', `<strong>Too many messages in a short time.</strong> Please wait a minute and try again, or ${fallback.charAt(0).toLowerCase() + fallback.slice(1)}`);
+        } else {
+          throw new Error(String(res.status));
+        }
       } catch {
         status.innerHTML = box('error', `<strong>Sorry, your message couldn’t be sent.</strong> ${fallback}`);
       } finally {
+        // A Turnstile token works once; get a fresh one for the next try.
+        (window as unknown as { turnstile?: { reset(): void } }).turnstile?.reset();
         submit.disabled = false;
         status.focus();
       }

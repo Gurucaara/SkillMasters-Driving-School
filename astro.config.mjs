@@ -47,13 +47,13 @@ export default defineConfig({
         "font-src 'self'",
         "connect-src 'self'",
         "manifest-src 'self'",
-        "frame-src 'none'",
+        "frame-src https://challenges.cloudflare.com", // Turnstile (contact form)
         "object-src 'none'",
         "base-uri 'self'",
         "form-action 'self'",
         'upgrade-insecure-requests',
       ],
-      scriptDirective: { resources: ["'self'"] },
+      scriptDirective: { resources: ["'self'", 'https://challenges.cloudflare.com'] }, // + Turnstile
       styleDirective: {
         resources: ["'self'", { resource: "'unsafe-inline'", kind: 'attribute' }],
       },

@@ -99,7 +99,7 @@ src/components/    Header, Footer, MobileBar, ThemeToggle, PageBanner, CtaBand, 
                    Hero, TrustStrip, WhoWeServe, PackageFinder, Packages, PackageCard,
                    WhySkillmasters, PassWall, FAQ, BlogTeaser, BlogCard
 src/layouts/       BaseLayout.astro (head, SEO tags, JSON-LD, theme script, SW registration)
-src/pages/         one file per route; src/pages/api/ will hold contact, checkout, stripe-webhook
+src/pages/         one file per route; src/pages/api/contact.ts (checkout, stripe-webhook to come)
 src/content/blog/  blog articles (Markdown); file name = URL slug
 src/content/legal/ privacy.md, terms.md, refunds.md (shown as tabs on /legal)
 src/content.config.ts  fields allowed in blog and legal files
@@ -111,6 +111,7 @@ src/data/          site.ts        contact details, areas, licences, nav, trust p
                    g1-quiz.json   G1 practice test questions
                    schema.ts      JSON-LD (DrivingSchool, breadcrumbs, articles)
 src/lib/           page-path.ts   a page's clean URL path (see "How the site works")
+                   contact.ts     contact form validation + email text
 src/styles/        global.css     theme tokens (light/dark), .reveal/.lift/.grad, .prose
 public/            _headers, robots.txt, manifest.webmanifest, icons, og-image.png,
                    sw.js, offline.html
@@ -144,9 +145,16 @@ Anything Rahul may change (prices, reviews, FAQ, contact info, quiz) must come f
   the owner, staff, family or the site builder.
 - **Service worker** (`public/sw.js`): network-first pages with offline copies, cache-first
   `/_astro/*`, offline page at `/offline`. Bump `VERSION` in the file to reset every visitor's cache.
-- **Forms.** Contact posts JSON to `/api/contact` and checkout to `/api/checkout`. Neither endpoint
-  exists yet, so both show the phone/WhatsApp/email instead and never pretend a message was sent
-  or a card charged.
+- **Contact form** → `src/pages/api/contact.ts` (validation in `src/lib/contact.ts`): rate limit
+  (5/min per IP, `CONTACT_RATE_LIMITER` in `wrangler.jsonc`) → honeypot → field checks → Turnstile →
+  email via Resend. Settings `CONTACT_TO` / `CONTACT_FROM` in `wrangler.jsonc`; secrets
+  `TURNSTILE_SECRET_KEY`, `RESEND_API_KEY` via `npx wrangler secret put`; the public
+  `PUBLIC_TURNSTILE_SITE_KEY` is a build variable (`.env` locally). Missing secret → 503 and the page
+  shows phone/WhatsApp/email. Local testing: copy `.dev.vars.example` → `.dev.vars` and
+  `.env.example` → `.env` (Cloudflare's public test keys; `EMAIL_DRY_RUN=true` logs instead of sending,
+  see `npx astro preview logs`).
+- **Checkout** posts to `/api/checkout`, which doesn't exist yet: Pay shows the contact details and
+  says no card was charged.
 
 ## Status (Nov 2026)
 
@@ -156,7 +164,9 @@ Performance 95–99 (checkout SEO is low on purpose: noindex).
 
 Before launch:
 - Rahul's accounts: Stripe (7 packages), Resend (domain verified), Turnstile, Cal.com
-- Build `/api/contact`, `/api/checkout`, Stripe webhook, verified success page, Cal.com embed
+- Contact form: set `TURNSTILE_SECRET_KEY` + `RESEND_API_KEY` secrets and the
+  `PUBLIC_TURNSTILE_SITE_KEY` build variable once Rahul's accounts exist, then send a real test
+- Build `/api/checkout`, Stripe webhook, verified success page, Cal.com embed
 - Point skillmastersdrivingschool.ca at Cloudflare; Zoho email DNS (SPF, DKIM, DMARC)
 - Rahul reviews the 6 blog drafts and the legal policies (marked Draft)
 - Replace the Refresher SAMPLE photo; confirm G2/G and town for the pass-wall photos
