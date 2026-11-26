@@ -18,7 +18,7 @@ const blog = defineCollection({
       /** Optional cover photo (src/assets/...). Without one, a designed cover is used. */
       cover: image().optional(),
       coverAlt: z.string().optional(),
-      /** Placeholder article: shows a SAMPLE notice and is hidden from search engines. */
+      /** Not yet reviewed by Rahul: shows a DRAFT notice and is hidden from search engines. */
       sample: z.boolean().default(false),
     }),
 });

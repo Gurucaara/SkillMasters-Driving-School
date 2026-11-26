@@ -1,6 +1,7 @@
 ---
 // One blog article, built from its Markdown file in src/content/blog/.
-// Placeholder articles (sample: true) show a SAMPLE notice and are marked noindex.
+// Unreviewed articles (sample: true) show a DRAFT notice and are marked noindex. Set sample: false
+// in the article's file once Rahul has checked it, and it goes live in search and the sitemap.
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageBanner from '../../components/PageBanner.astro';
@@ -45,7 +46,7 @@ const dateLabel = pubDate.toLocaleDateString('en-CA', { year: 'numeric', month: 
   <article class="mx-auto max-w-[760px] px-4 py-14 sm:px-6 sm:py-[72px]">
     {sample && (
       <p class="mb-8 rounded-2xl border border-gold bg-section px-5 py-4 text-[15px]">
-        <strong class="text-accent-text">SAMPLE</strong> – this article is a placeholder. The full guide will be published before launch.
+        <strong class="text-accent-text">DRAFT</strong> – this guide is waiting for a final check by our instructor. Always confirm the latest rules on ontario.ca and drivetest.ca.
       </p>
     )}
     <div class="prose">

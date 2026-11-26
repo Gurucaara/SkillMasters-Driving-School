@@ -133,6 +133,19 @@
   .prose li::marker { color: var(--color-gold); }
   .prose strong { color: var(--fg); }
   .prose em { color: var(--fg-muted); }
+  /* Checklists ("- [ ] item" in Markdown) */
+  .prose .contains-task-list { list-style: none; padding-left: 0; }
+  /* The checkbox sits in the left gutter so the item's text (bold, links) flows normally. */
+  .prose .task-list-item { position: relative; padding-left: 1.85rem; }
+  .prose .task-list-item input { position: absolute; left: 0; top: 0.4em; margin: 0; width: 1.05rem; height: 1.05rem; accent-color: var(--color-gold); }
+  /* Call-out boxes ("> text" in Markdown) */
+  .prose blockquote {
+    border-left: 4px solid var(--color-gold);
+    background: var(--section);
+    border-radius: 0 14px 14px 0;
+    padding: 0.9rem 1.2rem;
+  }
+  .prose blockquote > * + * { margin-top: 0.5em; }
 }
 
 /* Slide only (no opacity), so text is always at full contrast while it moves in. */
