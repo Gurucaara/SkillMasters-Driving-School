@@ -179,7 +179,10 @@ Before launch:
   `PUBLIC_TURNSTILE_SITE_KEY` build variable once Rahul's accounts exist, then send a real test
 - Checkout: set `STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET`, create the webhook in Stripe, test a
   payment in test mode, then switch to live keys
-- Confirm GST/HST registration (`hstRate` in `packages.json`; also the "+ HST" labels across pages)
+- HST: Rahul is registering for GST/HST (decided Nov 2026), so prices stay "+ 13% HST" and
+  `hstRate` stays 0.13. HST may only be charged once the registration is in place: if live
+  payments start before his GST/HST number arrives, set `hstRate` to 0 until it does. Once he has
+  the number, add it to Stripe (so it shows on receipts), the order email and the footer.
 - Cal.com embed on `/checkout/success`
 - Point skillmastersdrivingschool.ca at Cloudflare; Zoho email DNS (SPF, DKIM, DMARC)
 - Rahul reviews the 6 blog drafts and the legal policies (marked Draft)
