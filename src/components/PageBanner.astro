@@ -3,6 +3,7 @@
 // lion watermark (docs/design-spec.md, "Other pages"). Layout from docs/mockup/About.dc.html.
 import { Image } from 'astro:assets';
 import logo from '../assets/images/real/logo.png';
+import { breadcrumbSchema } from '../data/schema';
 
 interface Props {
   /** Current page name for the breadcrumb, e.g. "About". */
@@ -14,7 +15,14 @@ interface Props {
   intro?: string;
 }
 const { crumb, parent, eyebrow, title, intro } = Astro.props;
+
+// Same trail as the visible breadcrumb, as structured data for search results.
+const breadcrumbJson = JSON.stringify(
+  breadcrumbSchema([...(parent ? [{ name: parent.label, path: parent.href }] : []), { name: crumb, path: Astro.url.pathname }])
+).replace(/</g, '\\u003c');
 ---
+
+<script type="application/ld+json" is:inline set:html={breadcrumbJson} />
 
 <section class="relative overflow-hidden bg-ink text-[#F5EFE3] dark:bg-black">
   <Image

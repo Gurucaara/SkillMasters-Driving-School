@@ -6,6 +6,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageBanner from '../../components/PageBanner.astro';
 import BlogCard from '../../components/BlogCard.astro';
 import CtaBand from '../../components/CtaBand.astro';
+import { articleSchema } from '../../data/schema';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -28,7 +29,13 @@ const more = (await getCollection('blog'))
 const dateLabel = pubDate.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
-<BaseLayout title={title} description={description} noindex={sample}>
+<BaseLayout
+  title={title}
+  description={description}
+  noindex={sample}
+  ogType="article"
+  jsonLd={sample ? undefined : articleSchema({ title, description, path: `/blog/${post.id}/`, published: pubDate })}
+>
   <PageBanner crumb={title} parent={{ label: 'Blog', href: '/blog' }} eyebrow={kicker} title={title} intro={description}>
     <p class="mt-5 text-sm text-[#C9BFAE]">
       By Rahul, licensed driving instructor · <time datetime={pubDate.toISOString()}>{dateLabel}</time>

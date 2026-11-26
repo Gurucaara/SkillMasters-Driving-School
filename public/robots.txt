@@ -1,0 +1,6 @@
+# Skillmasters Driving School
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://skillmastersdrivingschool.ca/sitemap-index.xml

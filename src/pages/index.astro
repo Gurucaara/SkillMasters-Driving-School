@@ -10,9 +10,12 @@ import PassWall from '../components/PassWall.astro';
 import FAQ from '../components/FAQ.astro';
 import BlogTeaser from '../components/BlogTeaser.astro';
 import CtaBand from '../components/CtaBand.astro';
+import { drivingSchoolSchema, websiteSchema } from '../data/schema';
 ---
 
 <BaseLayout
+  fullTitle="Skillmasters Driving School | Driving Lessons & BDE in London, ON"
+  jsonLd={[drivingSchoolSchema(), websiteSchema()]}
   description="Driving lessons and an MTO-approved BDE course in London, Ontario, with pickup across London, St. Thomas, Thorndale and Dorchester."
 >
   <Hero />

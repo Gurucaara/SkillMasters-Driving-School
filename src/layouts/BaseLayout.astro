@@ -11,17 +11,41 @@ import MobileBar from '../components/MobileBar.astro';
 import { site } from '../data/site';
 
 interface Props {
+  /** Page name; shown as "<title> | Skillmasters Driving School". */
   title?: string;
+  /** Use this exact <title> instead (e.g. the home page). */
+  fullTitle?: string;
   description?: string;
+  /** Social preview image (path in public/ or absolute URL). Defaults to the brand card. */
   image?: string;
+  imageAlt?: string;
   noindex?: boolean;
+  /** Open Graph type: "article" for blog posts. */
+  ogType?: 'website' | 'article';
+  /** Structured data object(s) from src/data/schema.ts, output as JSON-LD. */
+  jsonLd?: object | object[];
 }
 
-const { title, description = site.description, image, noindex = false } = Astro.props;
+const {
+  title,
+  fullTitle,
+  description = site.description,
+  image = '/og-image.png',
+  imageAlt = 'Skillmasters Driving School: MTO-approved BDE and G2 & G lessons in London, Ontario',
+  noindex = false,
+  ogType = 'website',
+  jsonLd,
+} = Astro.props;
 
-const pageTitle = title ? `${title} | ${site.name}` : site.name;
+const brand = 'Skillmasters Driving School';
+const pageTitle = fullTitle ?? (title ? `${title} | ${brand}` : brand);
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImage = image ? new URL(image, Astro.site).href : undefined;
+const ogImage = new URL(image, Astro.site).href;
+const isDefaultImage = image === '/og-image.png';
+// JSON-LD is inserted as raw text, so escape "<" to keep it from closing the <script> early.
+const jsonLdBlocks = (Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : []).map((o) =>
+  JSON.stringify(o).replace(/</g, '\\u003c')
+);
 ---
 
 <!doctype html>
@@ -41,13 +65,19 @@ const ogImage = image ? new URL(image, Astro.site).href : undefined;
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="theme-color" content="#FFFFFF" />
 
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content={site.name} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={brand} />
+    <meta property="og:locale" content="en_CA" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    {ogImage && <meta property="og:image" content={ogImage} />}
-    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+    <meta property="og:image" content={ogImage} />
+    {isDefaultImage && <meta property="og:image:width" content="1200" />}
+    {isDefaultImage && <meta property="og:image:height" content="630" />}
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {jsonLdBlocks.map((json) => <script type="application/ld+json" is:inline set:html={json} />)}
 
     <!-- Light is the default. Apply a saved "dark" choice before first paint to avoid a flash. -->
     <script is:inline>
