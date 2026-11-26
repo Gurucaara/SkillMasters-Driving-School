@@ -17,21 +17,30 @@ https://claude.ai/artifact/JUJeKb3qj5zULdAJ9Lt7Wb
 - `src/assets/images/sample/` – Canva placeholders, filenames end in -SAMPLE. Must show a SAMPLE tag
   and be replaced before launch.
 - Images go through Astro `<Image>` / `getImage` so they are optimised at build time.
+- Where the built site differs from the mockup on purpose (honesty, accessibility, real data),
+  the reason is in a comment at the top of the component or page.
 
 ## Stack
 
 - Astro 7 (static-first, islands only where interactive)
 - Tailwind CSS v4 via `@tailwindcss/vite` (config lives in CSS with `@theme`)
-- `@astrojs/sitemap`, `@astrojs/cloudflare` adapter, deployed on Cloudflare Workers
+- `@astrojs/sitemap`, `@astrojs/cloudflare` adapter (`imageService: 'compile'`), deployed on
+  Cloudflare Workers static assets
 - Fonts self-hosted with Fontsource: Inter Variable (body), Montserrat 700/800 (headings)
-- Later: Stripe Checkout (hosted page), Cal.com embed, Resend for emails, Cloudflare Turnstile
+- Not built yet (need Rahul's accounts): Stripe Checkout (hosted page), Cal.com embed,
+  Resend for emails, Cloudflare Turnstile
 
 ## Commands
 
-- `npm run dev` – local dev server
+- `npm run dev` – local dev server. If a new page shows without some of its styles, restart it
+  (Tailwind doesn't always pick up classes from brand-new files until then).
 - `npm run build` – production build (must pass before every push)
-- `npm run preview` – preview the build
+- `npx astro preview --port 4322` – serve the production build locally, with the real
+  `_headers`, redirects and service worker; `npx astro preview stop` to stop it
+- `node scripts/make-og-image.mjs` – regenerate `public/og-image.png` (social preview card)
+- `npm audit` – before releases
 - Every push to `main` deploys to https://skillmasters-driving-school.pururana24.workers.dev
+  (about a minute)
 
 ## Brand
 
@@ -75,26 +84,83 @@ https://claude.ai/artifact/JUJeKb3qj5zULdAJ9Lt7Wb
 ## Pages (routes)
 
 `/` Home · `/about` · `/bde-program` · `/lessons` · `/pricing` · `/reviews` · `/blog` + `/blog/[slug]`
-· `/g1-practice-test` · `/contact` · `/checkout` · `/checkout/success` · `/legal`
+· `/g1-practice-test` · `/contact` · `/checkout` · `/checkout/success` · `/legal` (tabs `#privacy`,
+`#terms`, `#refunds`) · `/offline` (shown by the service worker)
 
-Home sections in order: header with gold top bar → hero (headline, real car photo, licence badge)
-→ trust strip → who we serve (4 cards) → package finder quiz → packages → why Skillmasters
-→ pass wall (auto-scrolling marquee, pauses on hover) → FAQ → blog teaser → gold CTA band → footer.
-Floating WhatsApp button on desktop; Call / WhatsApp / Book bar fixed at the bottom on phones.
+Home sections in order: header with gold top bar → hero → trust strip → who we serve → package
+finder → packages → why Skillmasters → pass wall → FAQ → blog teaser → gold CTA band → footer.
+Every inner page opens with `PageBanner` and ends with `CtaBand`. Floating WhatsApp button from
+768px up; Call / WhatsApp / Book bar fixed at the bottom on phones (`MobileBar`).
 
 ## Project structure
 
 ```
-src/components/   Header, Footer, ThemeToggle, PackageCard, PackageFinder, PassWall, FAQ, MobileBar
-src/layouts/      BaseLayout.astro (head, SEO, theme script, skip link)
-src/pages/        routes above; src/pages/api/ for server endpoints (checkout, stripe-webhook, contact)
-src/content/blog/ Markdown articles
-src/data/         packages.json, reviews.json, faq.json, site.json (contact info, licence numbers)
-public/           icons, manifest.webmanifest, _headers
+src/components/    Header, Footer, MobileBar, ThemeToggle, PageBanner, CtaBand, TickList,
+                   Hero, TrustStrip, WhoWeServe, PackageFinder, Packages, PackageCard,
+                   WhySkillmasters, PassWall, FAQ, BlogTeaser, BlogCard
+src/layouts/       BaseLayout.astro (head, SEO tags, JSON-LD, theme script, SW registration)
+src/pages/         one file per route; src/pages/api/ will hold contact, checkout, stripe-webhook
+src/content/blog/  blog articles (Markdown); file name = URL slug
+src/content/legal/ privacy.md, terms.md, refunds.md (shown as tabs on /legal)
+src/content.config.ts  fields allowed in blog and legal files
+src/data/          site.ts        contact details, areas, licences, nav, trust points
+                   packages.json  prices, bundles, per-page wording ("variants")
+                   packages.ts    typed helpers: savings, money(), cad(), hst(), checkoutHref()
+                   reviews.json   rating, pass-wall photos, Google reviews, review link
+                   faq.json       FAQ sets per page ("home", "bde")
+                   g1-quiz.json   G1 practice test questions
+                   schema.ts      JSON-LD (DrivingSchool, breadcrumbs, articles)
+src/lib/           page-path.ts   a page's clean URL path (see "How the site works")
+src/styles/        global.css     theme tokens (light/dark), .reveal/.lift/.grad, .prose
+public/            _headers, robots.txt, manifest.webmanifest, icons, og-image.png,
+                   sw.js, offline.html
+scripts/           make-og-image.mjs
 ```
 
-Anything Rahul may change (prices, reviews, FAQ, contact info) must come from `src/data/`,
-never hard-coded in components.
+Anything Rahul may change (prices, reviews, FAQ, contact info, quiz) must come from
+`src/data/` or `src/content/`, never hard-coded in components.
+
+## How the site works (non-obvious parts)
+
+- **Clean URLs.** Pages build as `about.html` (`build.format: 'file'`), which Cloudflare serves at
+  `/about`. Internal links never end in `/`. During the build `Astro.url.pathname` is
+  `/about.html`, so use `pagePath(Astro.url)` from `src/lib/page-path.ts` for canonicals,
+  breadcrumbs and the header's current-page highlight.
+- **Prices** are only ever read from `packages.json` and calculated at build time (cards, finder,
+  comparison table, checkout totals with 13% HST). Client scripts only show/hide panels; the
+  browser never decides a price. A package's `variants.<page>` changes wording on one page only.
+- **Theme.** An inline script in `BaseLayout` applies a saved dark choice before paint and adds
+  the `js` class to `<html>` (used by no-JS fallbacks on the quiz, checkout and legal tabs).
+- **CSP.** The main Content-Security-Policy is generated by Astro (`security.csp` in
+  `astro.config.mjs`) with hashes for every inline script/style; `public/_headers` adds the
+  header-only rules (frame-ancestors, HSTS, etc.). When adding Stripe.js, Turnstile or Cal.com,
+  add their domains in `astro.config.mjs`.
+- **Search visibility.** Pages with `noindex` (checkout pages, blog articles with
+  `sample: true`) are also left out of the sitemap by the filter in `astro.config.mjs`.
+- **Blog drafts.** `sample: true` in an article's front matter shows a DRAFT notice and hides it
+  from search. Set `sample: false` once Rahul has reviewed it.
+- **Reviews.** Real Google reviews live in `reviews.json` (first name + last initial, word for
+  word). Any item with `sample: true` gets a SAMPLE label automatically. Never add reviews from
+  the owner, staff, family or the site builder.
+- **Service worker** (`public/sw.js`): network-first pages with offline copies, cache-first
+  `/_astro/*`, offline page at `/offline`. Bump `VERSION` in the file to reset every visitor's cache.
+- **Forms.** Contact posts JSON to `/api/contact` and checkout to `/api/checkout`. Neither endpoint
+  exists yet, so both show the phone/WhatsApp/email instead and never pretend a message was sent
+  or a card charged.
+
+## Status (Nov 2026)
+
+Built and live: every page above, SEO (JSON-LD, OG image, robots, sitemap), security headers +
+CSP, PWA manifest + service worker. Lighthouse mobile: Accessibility, Best Practices and SEO 100,
+Performance 95–99 (checkout SEO is low on purpose: noindex).
+
+Before launch:
+- Rahul's accounts: Stripe (7 packages), Resend (domain verified), Turnstile, Cal.com
+- Build `/api/contact`, `/api/checkout`, Stripe webhook, verified success page, Cal.com embed
+- Point skillmastersdrivingschool.ca at Cloudflare; Zoho email DNS (SPF, DKIM, DMARC)
+- Rahul reviews the 6 blog drafts and the legal policies (marked Draft)
+- Replace the Refresher SAMPLE photo; confirm G2/G and town for the pass-wall photos
+- Update the Google review count in `reviews.json` if reviews are removed or added
 
 ## Rules: honesty and privacy
 
@@ -113,8 +179,9 @@ never hard-coded in components.
 - Stripe: hosted Checkout only; prices looked up server-side from `packages.json`, never trusted
   from the browser; verify webhook signatures.
 - Forms: server-side validation + Cloudflare Turnstile + basic rate limiting.
-- Security headers in `public/_headers`: CSP, HSTS, X-Content-Type-Options, Referrer-Policy,
-  Permissions-Policy, frame-ancestors 'none'. Target A+ on securityheaders.com.
+- Security headers in `public/_headers` (HSTS, X-Content-Type-Options, Referrer-Policy,
+  Permissions-Policy, frame-ancestors 'none') plus Astro's hashed CSP from `astro.config.mjs`.
+  Target A+ on securityheaders.com.
 - Keep dependencies minimal; run `npm audit` before releases.
 
 ## Rules: quality
