@@ -1,0 +1,42 @@
+---
+// Shown for any address that doesn't exist (old links, typos). Keeps the header, footer and
+// mobile bar so visitors can carry on, and points to the pages people usually want. noindex.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageBanner from '../components/PageBanner.astro';
+import { site, cta } from '../data/site';
+
+const links = [
+  { label: 'Home', href: '/', text: 'Start from the beginning' },
+  { label: 'BDE Program', href: '/bde-program', text: 'MTO-approved Beginner Driver Education' },
+  { label: 'G & G2 Lessons', href: '/lessons', text: 'Private in-car lessons' },
+  { label: 'Pricing', href: '/pricing', text: 'Every package and price' },
+  { label: 'Free G1 practice test', href: '/g1-practice-test', text: 'Six quick questions' },
+  { label: 'Contact', href: '/contact', text: 'Questions? We reply 7 days a week' },
+];
+---
+
+<BaseLayout title="Page not found" description="This page doesn't exist." noindex>
+  <PageBanner
+    crumb="Page not found"
+    eyebrow="404"
+    title="We couldn’t find that page"
+    intro="The link may be old or mistyped. Here are the pages people usually look for."
+  />
+
+  <section class="mx-auto max-w-[1200px] px-4 py-14 sm:px-6 sm:py-16">
+    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {links.map((l) => (
+        <li>
+          <a href={l.href} class="lift flex h-full flex-col gap-1 rounded-[20px] border border-border bg-surface-raised p-6 hover:border-gold">
+            <strong class="font-display text-lg">{l.label} <span aria-hidden="true">→</span></strong>
+            <span class="text-fg-muted">{l.text}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="mt-8 text-fg-muted">
+      Ready to start? <a href={cta.href} class="font-semibold text-accent-text underline">Book online</a>, or call or text{' '}
+      <a href={site.phone.href} class="font-semibold text-accent-text underline">{site.phone.display}</a>.
+    </p>
+  </section>
+</BaseLayout>

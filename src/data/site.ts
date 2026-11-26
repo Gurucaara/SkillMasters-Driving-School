@@ -18,7 +18,6 @@ export const site = {
   email: 'info@skillmastersdrivingschool.ca',
 
   hours: '9 am – 6 pm, 7 days',
-  pickupNote: 'Pickup only, no office',
   areas: ['London', 'St. Thomas', 'Thorndale', 'Dorchester'],
   // Pickup note per area (About page). Keep in the same order as `areas`.
   areaPickup: {

@@ -36,18 +36,16 @@ const { class: className = '' } = Astro.props;
     });
   }
 
-  function setTheme(theme: 'light' | 'dark', persist: boolean) {
+  function setTheme(theme: 'light' | 'dark') {
     root.classList.toggle('dark', theme === 'dark');
-    if (persist) {
-      try { localStorage.setItem('theme', theme); } catch {}
-    }
+    try { localStorage.setItem('theme', theme); } catch {}
     syncLabels();
   }
 
   document.addEventListener('click', (e) => {
     const btn = (e.target as Element | null)?.closest('[data-theme-toggle]');
     if (!btn) return;
-    setTheme(root.classList.contains('dark') ? 'light' : 'dark', true);
+    setTheme(root.classList.contains('dark') ? 'light' : 'dark');
   });
 
   syncLabels();

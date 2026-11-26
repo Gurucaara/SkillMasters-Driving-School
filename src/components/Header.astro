@@ -133,7 +133,7 @@ const isActive = (href: string) =>
       button.querySelector('[data-icon-close]')?.classList.toggle('hidden', !open);
     };
 
-    button.addEventListener('click', () => setOpen(menu.hidden));
+    button.addEventListener('click', () => setOpen(menu.hasAttribute('hidden')));
     menu.addEventListener('click', (e) => {
       if ((e.target as Element).closest('a')) setOpen(false);
     });

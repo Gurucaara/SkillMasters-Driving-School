@@ -24,5 +24,6 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# Cloudflare local dev cache
+# Cloudflare local dev cache (and Worker types if someone runs `wrangler types`)
 .wrangler/
+worker-configuration.d.ts

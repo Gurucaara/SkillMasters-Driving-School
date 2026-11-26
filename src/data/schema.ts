@@ -9,6 +9,10 @@ import { site } from './site';
 import { packages, checkoutHref } from './packages';
 
 const SITE_URL = 'https://skillmastersdrivingschool.ca';
+
+/** Structured data as text for a <script type="application/ld+json">, with "<" escaped so the
+ * content can never close the script tag early. */
+export const jsonLdText = (data: object) => JSON.stringify(data).replace(/</g, '\\u003c');
 const abs = (path: string) => new URL(path, SITE_URL).href;
 const schoolId = abs('/#school');
 

@@ -4,7 +4,10 @@
 //       https://docs.stripe.com/webhooks#verify-manually
 import { serverEnv } from './server-env';
 
-type Params = Record<string, string | number | boolean | undefined | null | Params | Params[]>;
+type ParamValue = string | number | boolean | undefined | null | Params | Params[];
+interface Params {
+  [key: string]: ParamValue;
+}
 
 /** Flatten nested params into Stripe's bracket form encoding. */
 export function encodeParams(params: Params, prefix = '', out = new URLSearchParams()): URLSearchParams {

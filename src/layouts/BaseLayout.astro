@@ -10,6 +10,7 @@ import Footer from '../components/Footer.astro';
 import MobileBar from '../components/MobileBar.astro';
 import { site } from '../data/site';
 import { pagePath } from '../lib/page-path';
+import { jsonLdText } from '../data/schema';
 
 interface Props {
   /** Page name; shown as "<title> | Skillmasters Driving School". */
@@ -43,10 +44,7 @@ const pageTitle = fullTitle ?? (title ? `${title} | ${brand}` : brand);
 const canonical = new URL(pagePath(Astro.url), Astro.site);
 const ogImage = new URL(image, Astro.site).href;
 const isDefaultImage = image === '/og-image.png';
-// JSON-LD is inserted as raw text, so escape "<" to keep it from closing the <script> early.
-const jsonLdBlocks = (Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : []).map((o) =>
-  JSON.stringify(o).replace(/</g, '\\u003c')
-);
+const jsonLdBlocks = (Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : []).map(jsonLdText);
 ---
 
 <!doctype html>

@@ -40,7 +40,7 @@ const mapPins = [
   <!-- Our story -->
   <section aria-labelledby="story-title" class="mx-auto flex max-w-[1200px] flex-col gap-12 px-4 py-16 sm:px-6 sm:py-[88px] lg:flex-row lg:items-center">
     <div class="reveal min-w-0 lg:flex-[1_1_460px]">
-      <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">OUR STORY</p>
+      <p class="eyebrow">OUR STORY</p>
       <h2 id="story-title" class="mb-[18px] mt-2.5 text-[2rem] font-extrabold leading-[1.15] sm:text-[38px]">Why I started Skillmasters</h2>
       <blockquote class="space-y-4 text-[17px] leading-[1.75] text-fg-soft">
         <p>
@@ -68,8 +68,8 @@ const mapPins = [
   <section aria-labelledby="instructor-title" class="border-y border-border bg-section">
     <div class="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-[88px]">
       <div class="reveal mx-auto mb-10 max-w-[680px] text-center">
-        <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">MEET YOUR INSTRUCTOR</p>
-        <h2 id="instructor-title" class="mt-2.5 text-[2rem] font-extrabold leading-[1.1] sm:text-[40px]">Experience you can trust</h2>
+        <p class="eyebrow">MEET YOUR INSTRUCTOR</p>
+        <h2 id="instructor-title" class="mt-2.5 section-title">Experience you can trust</h2>
       </div>
       <dl class="reveal grid gap-[18px] sm:grid-cols-2 lg:grid-cols-4">
         {facts.map((f) => (
@@ -85,7 +85,7 @@ const mapPins = [
   <!-- Areas we serve -->
   <section aria-labelledby="areas-title" class="mx-auto flex max-w-[1200px] flex-col gap-12 px-4 py-16 sm:px-6 sm:py-[88px] lg:flex-row lg:items-center">
     <div class="reveal min-w-0 lg:flex-[1_1_420px]">
-      <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">AREAS WE SERVE</p>
+      <p class="eyebrow">AREAS WE SERVE</p>
       <h2 id="areas-title" class="mb-[18px] mt-2.5 text-[2rem] font-extrabold sm:text-[38px]">Pickup across London &amp; area</h2>
       <TickList items={site.areas.map((area) => ({ title: area, text: site.areaPickup[area] }))} />
     </div>

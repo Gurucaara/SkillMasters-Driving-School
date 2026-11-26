@@ -10,7 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "generate-types": "wrangler types"
+    "check": "astro check"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.4.9",
@@ -21,5 +21,9 @@
     "astro": "^7.4.13",
     "tailwindcss": "^4.3.5",
     "wrangler": "^4.168.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "typescript": "^6.0.3"
   }
 }

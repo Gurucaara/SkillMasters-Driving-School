@@ -12,7 +12,7 @@ const sampleBlogPaths = readdirSync('./src/content/blog')
   .map((f) => `/blog/${f.replace(/\.md$/, '')}`);
 
 // Other noindex pages (checkout flow) also stay out of the sitemap.
-const noindexPaths = [...sampleBlogPaths, '/checkout', '/checkout/success'];
+const noindexPaths = [...sampleBlogPaths, '/checkout', '/checkout/success', '/404'];
 
 // https://astro.build/config
 export default defineConfig({

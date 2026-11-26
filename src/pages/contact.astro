@@ -18,6 +18,7 @@ import { site, cta } from '../data/site';
 import { getPackage, money } from '../data/packages';
 import reviews from '../data/reviews.json';
 import { TOPICS, CONTACT_METHODS } from '../lib/contact';
+import { fieldClass, labelClass } from '../lib/forms';
 
 const bde = getPackage('bde');
 const perHour = money(getPackage('lessons-10').price / 10);
@@ -63,9 +64,8 @@ const photos = [
   { src: carFront, alt: 'The Skillmasters Mazda 3 training car' },
 ];
 
-const field =
-  'mt-1.5 block w-full rounded-xl border border-border bg-surface-raised px-3.5 py-3 text-base text-fg placeholder:text-fg-muted focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/40 [&:user-invalid]:border-[#C81E1E]';
-const labelCls = 'block text-sm font-semibold';
+const field = fieldClass;
+const labelCls = labelClass;
 ---
 
 <BaseLayout
@@ -228,7 +228,7 @@ const labelCls = 'block text-sm font-semibold';
   <section aria-labelledby="follow-title" class="border-y border-border bg-section">
     <div class="mx-auto grid max-w-[1200px] items-center gap-10 px-4 py-16 sm:px-6 sm:py-[88px] lg:grid-cols-2">
       <div class="reveal min-w-0">
-        <p class="text-[13px] font-bold tracking-[0.14em] text-accent-text">FOLLOW THE JOURNEY</p>
+        <p class="eyebrow">FOLLOW THE JOURNEY</p>
         <h2 id="follow-title" class="mb-3 mt-2.5 text-[2rem] font-extrabold leading-[1.1] sm:text-[38px]">See new drivers pass, every week</h2>
         <p class="mb-6 text-[17px] text-fg-muted">Test-day photos, quick driving tips and road-test advice for London drivers.</p>
         <ul class="flex flex-col gap-3">
@@ -308,7 +308,7 @@ const labelCls = 'block text-sm font-semibold';
 </style>
 
 <script>
-  import { site } from '../data/site';
+  import { messageBox, contactLinksHtml, showFieldErrors, resetTurnstile } from '../lib/forms';
 
   // Open / Closed badge, in Ontario time (hours 9 am – 6 pm, 7 days).
   const label = document.querySelector<HTMLElement>('[data-open-label]');
@@ -332,9 +332,8 @@ const labelCls = 'block text-sm font-semibold';
   if (form) {
     const status = form.querySelector<HTMLElement>('[data-form-status]')!;
     const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
-    const box = (tone: 'ok' | 'error', html: string) =>
-      `<div class="rounded-xl border px-4 py-3 ${tone === 'ok' ? 'border-good bg-good/10' : 'border-[#C81E1E] bg-[#C81E1E]/10'}">${html}</div>`;
-    const fallback = `Please reach us directly: call or text <a class="font-semibold underline" href="${site.phone.href}">${site.phone.display}</a>, <a class="font-semibold underline" href="${site.whatsapp}">WhatsApp</a> or <a class="font-semibold underline" href="mailto:${site.email}">${site.email}</a>.`;
+    const box = messageBox;
+    const fallback = `Please reach us directly: ${contactLinksHtml()}.`;
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -352,26 +351,18 @@ const labelCls = 'block text-sm font-semibold';
           form.reset();
           status.innerHTML = box('ok', '<strong>Thanks! Your message is on its way.</strong> We’ll get back to you soon, the way you prefer.');
         } else if (res.status === 400 && result.fields) {
-          // The server's own field messages (fixed text, inserted as text, never as HTML)
-          status.innerHTML = box('error', '<strong>Please check:</strong><ul class="mt-1 list-disc pl-5" data-errors></ul>');
-          const list = status.querySelector('[data-errors]')!;
-          for (const message of Object.values(result.fields)) {
-            const li = document.createElement('li');
-            li.textContent = message;
-            list.append(li);
-          }
+          showFieldErrors(status, result.fields);
         } else if (res.status === 403) {
           status.innerHTML = box('error', '<strong>We couldn’t confirm you’re a person.</strong> Please complete the check above and send again.');
         } else if (res.status === 429) {
-          status.innerHTML = box('error', `<strong>Too many messages in a short time.</strong> Please wait a minute and try again, or ${fallback.charAt(0).toLowerCase() + fallback.slice(1)}`);
+          status.innerHTML = box('error', `<strong>Too many messages in a short time.</strong> Please wait a minute and try again, or ${contactLinksHtml()}.`);
         } else {
           throw new Error(String(res.status));
         }
       } catch {
         status.innerHTML = box('error', `<strong>Sorry, your message couldn’t be sent.</strong> ${fallback}`);
       } finally {
-        // A Turnstile token works once; get a fresh one for the next try.
-        (window as unknown as { turnstile?: { reset(): void } }).turnstile?.reset();
+        resetTurnstile();
         submit.disabled = false;
         status.focus();
       }

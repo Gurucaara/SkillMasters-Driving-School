@@ -38,6 +38,7 @@ https://claude.ai/artifact/JUJeKb3qj5zULdAJ9Lt7Wb
 - `npx astro preview --port 4322` – serve the production build locally, with the real
   `_headers`, redirects and service worker; `npx astro preview stop` to stop it
 - `node scripts/make-og-image.mjs` – regenerate `public/og-image.png` (social preview card)
+- `npm run check` – type-check (`astro check`); keep it at 0 errors
 - `npm audit` – before releases
 - Every push to `main` deploys to https://skillmasters-driving-school.pururana24.workers.dev
   (about a minute)
@@ -85,7 +86,7 @@ https://claude.ai/artifact/JUJeKb3qj5zULdAJ9Lt7Wb
 
 `/` Home · `/about` · `/bde-program` · `/lessons` · `/pricing` · `/reviews` · `/blog` + `/blog/[slug]`
 · `/g1-practice-test` · `/contact` · `/checkout` · `/checkout/success` · `/legal` (tabs `#privacy`,
-`#terms`, `#refunds`) · `/offline` (shown by the service worker)
+`#terms`, `#refunds`) · `/offline` (shown by the service worker) · `404` (any unknown address)
 
 Home sections in order: header with gold top bar → hero → trust strip → who we serve → package
 finder → packages → why Skillmasters → pass wall → FAQ → blog teaser → gold CTA band → footer.
@@ -116,7 +117,11 @@ src/lib/           page-path.ts   a page's clean URL path (see "How the site wor
                    stripe.ts      Stripe API calls + webhook signature check
                    server-env.ts  settings/secrets, JSON, rate limit, Turnstile
                    email.ts       sending email to the school (Resend)
-src/styles/        global.css     theme tokens (light/dark), .reveal/.lift/.grad, .prose
+                   forms.ts       shared form styles + browser helpers (messages, Turnstile)
+src/styles/        global.css     theme tokens (light/dark), .eyebrow/.section-title (headings),
+                                  .reveal/.lift/.grad, .prose (articles)
+src/env.d.ts       type for `cloudflare:workers` (don't add Wrangler's generated runtime types:
+                   they break the DOM types of the pages' scripts)
 public/            _headers, robots.txt, manifest.webmanifest, icons, og-image.png,
                    sw.js, offline.html
 scripts/           make-og-image.mjs

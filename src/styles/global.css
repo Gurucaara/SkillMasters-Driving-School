@@ -86,6 +86,14 @@
 
 /* Shared motion helpers (from the mockup). All switched off by the reduced-motion rule below. */
 @layer components {
+  /* Section headings: the small gold label above a title, and the title itself.
+     Spacing (mt-/mb-) stays on each element. */
+  .eyebrow {
+    @apply text-[13px] font-bold tracking-[0.14em] text-accent-text;
+  }
+  .section-title {
+    @apply text-[2rem] font-extrabold leading-[1.1] tracking-[-0.01em] sm:text-[40px];
+  }
   /* Gold gradient headline accent */
   .grad {
     background: var(--grad-text);

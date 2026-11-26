@@ -41,8 +41,6 @@ const infoCards = [
   },
 ];
 
-const eyebrow = 'text-[13px] font-bold tracking-[0.14em] text-accent-text';
-const h2 = 'mt-2.5 text-[2rem] font-extrabold leading-[1.1] sm:text-[40px]';
 ---
 
 <BaseLayout
@@ -59,8 +57,8 @@ const h2 = 'mt-2.5 text-[2rem] font-extrabold leading-[1.1] sm:text-[40px]';
   <!-- BDE packages -->
   <section aria-labelledby="bde-title" class="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-[88px]">
     <div class="reveal mb-9">
-      <p class={eyebrow}>BDE PROGRAMS</p>
-      <h2 id="bde-title" class={h2}>BDE packages</h2>
+      <p class="eyebrow">BDE PROGRAMS</p>
+      <h2 id="bde-title" class="mt-2.5 section-title">BDE packages</h2>
     </div>
     <ul class="grid gap-x-[22px] gap-y-8 pt-3 md:grid-cols-3">
       {bdeCards.map((pkg) => <li class="reveal"><PackageCard pkg={pkg} /></li>)}
@@ -71,8 +69,8 @@ const h2 = 'mt-2.5 text-[2rem] font-extrabold leading-[1.1] sm:text-[40px]';
   <section aria-labelledby="compare-title" class="border-y border-border bg-section">
     <div class="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-[88px]">
       <div class="reveal mb-9 max-w-[680px]">
-        <p class={eyebrow}>COMPARE</p>
-        <h2 id="compare-title" class={h2}>Which BDE package is right for you?</h2>
+        <p class="eyebrow">COMPARE</p>
+        <h2 id="compare-title" class="mt-2.5 section-title">Which BDE package is right for you?</h2>
       </div>
       <!-- Scrolls sideways on narrow phones instead of squashing the columns -->
       <p class="mb-3 text-sm text-fg-muted sm:hidden" aria-hidden="true">Swipe to compare all three →</p>
@@ -123,8 +121,8 @@ const h2 = 'mt-2.5 text-[2rem] font-extrabold leading-[1.1] sm:text-[40px]';
   <!-- Lessons & road test -->
   <section aria-labelledby="lessons-title" class="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-[88px]">
     <div class="reveal mb-9">
-      <p class={eyebrow}>LESSONS &amp; ROAD TEST</p>
-      <h2 id="lessons-title" class={h2}>In-car lessons</h2>
+      <p class="eyebrow">LESSONS &amp; ROAD TEST</p>
+      <h2 id="lessons-title" class="mt-2.5 section-title">In-car lessons</h2>
     </div>
     <ul class="grid gap-x-[22px] gap-y-8 pt-3 sm:grid-cols-2 lg:grid-cols-4">
       {lessonCards.map((pkg) => <li class="reveal"><PackageCard pkg={pkg} variant="lessons" /></li>)}
